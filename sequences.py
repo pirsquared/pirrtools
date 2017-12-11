@@ -5,17 +5,23 @@ from math import gcd
 from functools import reduce
 
 
-def fast_fib(n, *, cache={0: 0, 1: 1, 2: 1}):
-    """Use of mutable default as memory is bad practice!!!"""
-    if n in cache:
-        return cache[n]
-    k0 = n // 2
-    k1 = k0 + 1
-    fk0, fk1 = fast_fib(k0), fast_fib(k1)
-    cache[2 * k0] = fk0 * (2 * fk1 - fk0)
-    cache[2 * k0 + 1] = fk0 * fk0 + fk1 * fk1
-    return cache[n]
+def fast_fib():
+    a = {0: 0, 1: 1, 2: 1}
 
+    def fib(n):
+
+        if n in a:
+            return a[n]
+
+        else:
+            k0 = n // 2
+            k1 = k0 + 1
+            fk0, fk1 = fib(k0), fib(k1)
+            a[2 * k0] = fk0 * (2 * fk1 - fk0)
+            a[2 * k0 + 1] = fk0 * fk0 + fk1 * fk1
+            return a[n]
+
+    return fib
 
 def get_prime_generator():
     D = {}
