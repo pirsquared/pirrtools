@@ -23,6 +23,7 @@ def fast_fib():
 
     return fib
 
+
 def get_prime_generator():
     D = {}
     yield 2
