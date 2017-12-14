@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from functools import reduce
 
 
 def _normalize(data, width):
@@ -53,25 +54,49 @@ class Str2d(object):
     def width(self):
         return max(map(len, self.data))
 
+    @property
+    def height(self):
+        return len(self.data)
+
+    @property
+    def shape(self):
+        return self.height, self.width
+
     def __repr__(self):
         return '\n'.join(self.data)
 
     def __add__(self, other):
-        other = type(self)(other)
+        t = type(self)
+        s, o = self, t(other)
 
-        width = max(self.width, other.width)
-        self_data = _normalize(self.data, width)
-        other_data = _normalize(other.data, width)
+        sh, oh = s.height, o.height
+        height = max(sh, oh)
 
-        return type(self)(map(
-            ' '.join,
-            zip_longest(
-                self_data,
-                other_data,
-                fillvalue=' ' * width
+        if sh < height:
+            s = t(
+                s.data + ('',) * (height - sh)
             )
+        elif oh < height:
+            o = t(
+                o.data + ('',) * (height - oh)
+            )
+
+        return t(map(
+            ' '.join,
+            zip(s.data, o.data)
         ))
+
+    def __radd__(self, other):
+        return type(self)(other) + self
 
     def __truediv__(self, other):
         other = type(self)(other)
         return type(self)(self.data + other.data)
+
+    def __mul__(self, n):
+        add = lambda self, other: self + other
+        return reduce(add, [self] * n)
+
+    def __floordiv__(self, n):
+        div = lambda self, other: self / other
+        return reduce(div, [self] * n)
