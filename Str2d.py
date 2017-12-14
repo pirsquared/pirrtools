@@ -1,10 +1,10 @@
 from functools import reduce
 
 
-def _normalize(data, width):
+def _normalize(data, width, halign='^'):
     return tuple(
         map(
-            lambda datum: f'{datum:^{width}}',
+            lambda datum: f'{datum:{halign}{width}}',
             data
         )
     )
@@ -15,7 +15,7 @@ def _is_str(s):
 
 
 class Str2d(object):
-    def __init__(self, str_, width=0):
+    def __init__(self, str_, width=0, height=0):
         """Creates a 2-D string thing that can be concatenated
         vertically and horizontally
 
@@ -36,8 +36,6 @@ class Str2d(object):
                 is
         """
 
-        self.data = tuple()
-
         if isinstance(str_, str):
             splits = str_.splitlines()
             width = max(width, max(map(len, splits)))
@@ -50,6 +48,13 @@ class Str2d(object):
                 if all(map(_is_str, data)) and bool(data):
                     width = max(width, max(map(len, data)))
                     self.data = _normalize(data, width)
+            else:
+                print(str_)
+
+        if self.height < height:
+            up_buf, lo_buf = self._get_vbuffer(height - self.height, 'c')
+            empty = ('',)
+            self.data = _normalize(empty * up_buf + self.data + empty * lo_buf, self.width)
 
     @property
     def width(self):
@@ -63,24 +68,35 @@ class Str2d(object):
     def shape(self):
         return self.height, self.width
 
+    @staticmethod
+    def _get_vbuffer(buffer_size, valign):
+        upper_buffer = (
+            0 if valign == 'u' else
+            (buffer_size + 1) // 2 if valign == 'c' else
+            buffer_size
+        )
+        lower_buffer = buffer_size - upper_buffer
+        return upper_buffer, lower_buffer
+
     def __repr__(self):
         return '\n'.join(self.data)
 
-    def __add__(self, other):
+    def __add__(self, other, valign='c'):
+
         t = type(self)
         s, o = self, t(other)
 
         sh, oh = s.height, o.height
         height = max(sh, oh)
+        empty = ('',)
 
         if sh < height:
-            s = t(
-                s.data + ('',) * (height - sh)
-            )
+            up_buf, lo_buf = self._get_vbuffer(height - sh, valign)
+            s = t(empty * up_buf + s.data + empty * lo_buf)
+
         elif oh < height:
-            o = t(
-                o.data + ('',) * (height - oh)
-            )
+            up_buf, lo_buf = self._get_vbuffer(height - oh, valign)
+            o = t(empty * up_buf + o.data + empty * lo_buf)
 
         return t(map(
             ' '.join,
