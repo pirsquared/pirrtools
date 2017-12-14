@@ -15,7 +15,7 @@ def _is_str(s):
 
 
 class Str2d(object):
-    def __init__(self, str_):
+    def __init__(self, str_, width=0):
         """Creates a 2-D string thing that can be concatenated
         vertically and horizontally
 
@@ -40,14 +40,16 @@ class Str2d(object):
 
         if isinstance(str_, str):
             splits = str_.splitlines()
-            self.data = _normalize(splits, max(map(len, splits)))
+            width = max(width, max(map(len, splits)))
+            self.data = _normalize(splits, width)
         elif isinstance(str_, type(self)):
-            self.data = str_.data
+            self.data = _normalize(str_.data, max(width, str_.width))
         else:
             if hasattr(str_, '__iter__') and not isinstance(str_, str):
                 data = tuple(str_)
                 if all(map(_is_str, data)) and bool(data):
-                    self.data = _normalize(data, max(map(len, data)))
+                    width = max(width, max(map(len, data)))
+                    self.data = _normalize(data, width)
 
     @property
     def width(self):
