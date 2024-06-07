@@ -55,4 +55,15 @@ def __load_pirc_file():
             for path in pirc.mypaths:
                 addpath(path, verbose=True)
 
+def __load_matplotlib_inline():
+    try:
+        from IPython import get_ipython
+        ipython = get_ipython()
+        if ipython:
+            ipython.run_line_magic('matplotlib', 'inline')
+            print("Loaded '%matplotlib inline'")
+    except ImportError:
+        pass
+
+__load_matplotlib_inline()
 __load_pirc_file()
