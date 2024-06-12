@@ -47,6 +47,8 @@ def _load_index(path: Path, name: str) -> Index:
 
     index_df = pd.read_feather(path / f"{name}_index.feather").set_axis(level_names, axis=1)
     index = MultiIndex.from_frame(index_df, names=level_names)
+    if index.nlevels == 1:
+        index = index.get_level_values(0)
     return index
 
 def _save_values(df: PandasObject, path: Path):
@@ -75,7 +77,7 @@ def _load_values(path: Path) -> pd.DataFrame:
     """
     return pd.read_feather(path / f"values.feather")
 
-def _save_feather(df: PandasObject, path: Union[str, Path]):
+def _save_cache(df: PandasObject, path: Union[str, Path]):
     """
     Save the DataFrame or Series to a feather file.
 
@@ -98,12 +100,12 @@ def _save_feather(df: PandasObject, path: Union[str, Path]):
         with open(path / "series.json", "w") as f:
             json.dump(df.name, f)
 
-def load_feather(path: Union[str, Path]) -> PandasObject:
+def load_cache(path: Union[str, Path]) -> PandasObject:
     """
-    Load the DataFrame or Series from a feather file.
+    Load the DataFrame or Series from a directory of files.
 
     Args:
-        path (Union[str, Path]): The path to load the feather file from.
+        path (Union[str, Path]): The path to load the cached data from.
 
     Returns:
         PandasObject: The loaded DataFrame or Series.
@@ -116,17 +118,19 @@ def load_feather(path: Union[str, Path]) -> PandasObject:
         index = _load_index(path, "index")
         columns = _load_index(path, "columns")
         values = _load_values(path)
-        df = pd.DataFrame(values, index=index, columns=columns)
+        values.index = index
+        values.columns = columns
     else:
         index = _load_index(path, "index")
-        values = _load_values(path)
+        values = _load_values(path).squeeze()
         with open(path / "series.json", "r") as f:
             name = json.load(f)
             if isinstance(name, list):
                 name = tuple(name)
-        df = pd.Series(values.squeeze().values, index=index, name=name)
+        values.name = name
+        values.index = index
 
-    return df
+    return values
 
 
 class UtilsAccessor:
@@ -158,14 +162,14 @@ class UtilsAccessor:
         if not isinstance(obj, (DataFrame, Series)):
             raise AttributeError("The object must be a pandas DataFrame or Series.")
         
-    def to_feather(self, path: Union[str, Path]):
+    def to_cache(self, path: Union[str, Path]):
         """
-        Save the DataFrame or Series to a feather file.
+        Save the DataFrame or Series to a directory.
 
         Args:
-            path (Union[str, Path]): The path to save the feather file.
+            path (Union[str, Path]): The path to save the directory of files.
         """
-        _save_feather(self._obj, path)
+        _save_cache(self._obj, path)
 
 reg_df('pirr')(UtilsAccessor)
 reg_ser('pirr')(UtilsAccessor)
