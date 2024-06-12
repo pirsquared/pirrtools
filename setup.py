@@ -25,7 +25,8 @@ setup(
         'dev': [
             'pytest',
             'pytest-cov',
-            'build'
+            'build',
+            'twine',
         ],
     },
 )

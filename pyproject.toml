@@ -30,4 +30,5 @@ dev = [
   "pytest",
   "pytest-cov",
   "build",
+  "twine",
 ]
