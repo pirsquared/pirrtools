@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pirrtools"
-version = "0.1.10"
+version = "0.2.1"
 description = "Collection of tools I use in my projects"
 readme = "README.md"
 license = { text = "MIT" }
@@ -28,5 +28,6 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest",
-  "pytest-cov"  # You can add more dev dependencies here
+  "pytest-cov",
+  "build",
 ]
