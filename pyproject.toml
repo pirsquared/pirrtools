@@ -17,7 +17,16 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent"
 ]
-dependencies = []
+dependencies = [
+  "pandas",
+  "feather-format"
+]
 
 [project.urls]
 "Homepage" = "https://github.com/pirsquared/pirrtools"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov"  # You can add more dev dependencies here
+]

@@ -1,35 +1,47 @@
-# Project Name
+# pirrtools
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+*I find them useful*
 
 ## Description
 
-A brief description of the project goes here.
+`pirrtools` is a set of bespoke tools I wanted preserved in a library. It provides various utilities, with a key feature being a pandas accessor that enables caching of usually non-conforming datasets.
 
-## Table of Contents
+## Features
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- **Pandas Accessor**: Easily cache and load pandas DataFrames and Series, even those with non-conforming datasets.
+
+## Requirements
+
+- Python 3.6 or greater
+- pandas
+- feather-format
 
 ## Installation
 
-Instructions on how to install and set up the project.
+Install `pirrtools` using pip:
+
+```bash
+pip install pirrtools
+```
 
 ## Usage
 
-Information on how to use the project and any relevant examples.
+```python
+import pirrtools as pirr
+import pandas as pd
 
-## Contributing
+# Create a DataFrame
+df = pd.DataFrame(1, range(10), ['a', 'b', 'c']).rename_axis('N')
 
-Guidelines for contributing to the project.
+# Cache the DataFrame
+df.pirr.to_cache('name_of_cache_path')
+
+# Load the cached DataFrame
+loaded_df = pirr.load_cache('name_of_cache_path')
+```
 
 ## License
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
-This project is licensed under the [MIT License](LICENSE).
-
-## Contact
-
-For any questions or feedback, please contact [email@example.com](mailto:email@example.com).
+## Authors
+- Sean Smith

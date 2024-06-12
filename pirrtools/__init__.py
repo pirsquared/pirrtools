@@ -3,6 +3,7 @@ import pathlib as __pathlib
 import importlib as __importlib
 import importlib.util as __importlib_util
 import types as __types
+from .pandas import load_cache
 
 __HOME = __pathlib.Path.home().absolute()
 

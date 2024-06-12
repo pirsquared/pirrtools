@@ -1,3 +1,4 @@
+from pyarrow.lib import ArrowInvalid
 import pandas as pd
 import json
 from pandas import Index, MultiIndex, DataFrame, Series
@@ -5,7 +6,7 @@ from typing import Union
 from pathlib import Path
 from pandas.api.extensions import register_dataframe_accessor as reg_df
 from pandas.api.extensions import register_series_accessor as reg_ser
-
+import shutil
 
 PandasObject = Union[DataFrame, Series]
 
@@ -60,8 +61,11 @@ def _save_values(df: PandasObject, path: Path):
     Args:
         df (PandasObject): The DataFrame or Series to be saved.
         path (Path): The path to save the values.
-    """            
-    pd.DataFrame(df.values).rename(columns=str).to_feather(path / f"values.feather")
+    """
+    try:
+        pd.DataFrame(df.values).rename(columns=str).to_feather(path / f"values.feather")
+    except ArrowInvalid as e:
+        raise ValueError("The DataFrame or Series contains an unsupported data type.") from e
 
 def _load_values(path: Path) -> pd.DataFrame:
     """
@@ -77,28 +81,39 @@ def _load_values(path: Path) -> pd.DataFrame:
     """
     return pd.read_feather(path / f"values.feather")
 
-def _save_cache(df: PandasObject, path: Union[str, Path]):
+def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool=False):
     """
     Save the DataFrame or Series to a feather file.
 
     Args:
         df (PandasObject): The DataFrame or Series to be saved.
         path (Union[str, Path]): The path to save the feather file.
+        overwrite (bool): A flag indicating whether to overwrite the existing file, defaults to False.
     """
     path = Path(path)
     if path.exists():
-        raise FileExistsError("The path already exists.")
-    path.mkdir(parents=True)
+        if overwrite:
+            shutil.rmtree(path)
+        elif any(path.iterdir()):
+            raise FileExistsError("The path already exists and is not empty.")
+    if df.empty:
+        raise ValueError("The DataFrame or Series is empty.")
+    
+    path.mkdir(parents=True, exist_ok=True)
 
-    if isinstance(df, DataFrame):
-        _save_index(df.index, path, "index")
-        _save_index(df.columns, path, "columns")
-        _save_values(df, path)
-    else:
-        _save_index(df.index, path, "index")
-        _save_values(df, path)
-        with open(path / "series.json", "w") as f:
-            json.dump(df.name, f)
+    try:
+        if isinstance(df, DataFrame):
+            _save_index(df.index, path, "index")
+            _save_index(df.columns, path, "columns")
+            _save_values(df, path)
+        else:
+            _save_index(df.index, path, "index")
+            _save_values(df, path)
+            with open(path / "series.json", "w") as f:
+                json.dump(df.name, f)
+    except Exception as e:
+        shutil.rmtree(path)
+        raise e
 
 def load_cache(path: Union[str, Path]) -> PandasObject:
     """
@@ -132,6 +147,21 @@ def load_cache(path: Union[str, Path]) -> PandasObject:
 
     return values
 
+def cache_and_load(obj, path, overwrite=False):
+    """
+    Cache and load a Pandas DataFrame or Series.
+
+    Args:
+        obj (PandasObject): The DataFrame or Series to be cached and loaded.
+        path (Path): The path to save and load the cache.
+        overwrite (bool): A flag indicating whether to overwrite the existing cache, defaults to False.
+
+    Returns:
+        PandasObject: The loaded DataFrame or Series.
+    """
+    _save_cache(obj, path, overwrite=overwrite)
+    return load_cache(path)
+
 
 class UtilsAccessor:
     """
@@ -162,14 +192,15 @@ class UtilsAccessor:
         if not isinstance(obj, (DataFrame, Series)):
             raise AttributeError("The object must be a pandas DataFrame or Series.")
         
-    def to_cache(self, path: Union[str, Path]):
+    def to_cache(self, *args, **kwargs):
         """
         Save the DataFrame or Series to a directory.
 
         Args:
             path (Union[str, Path]): The path to save the directory of files.
+            overwrite (bool): A flag indicating whether to overwrite the existing directory, defaults to False.
         """
-        _save_cache(self._obj, path)
+        _save_cache(self._obj, *args, **kwargs)
 
 reg_df('pirr')(UtilsAccessor)
 reg_ser('pirr')(UtilsAccessor)

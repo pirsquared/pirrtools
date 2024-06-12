@@ -28,46 +28,11 @@ def chunk(iterable: Iterable[Union[int, str, float]], chunk_size: int, equalize:
        [[1, 2], [3, 4], [5, 6]]
     """
 
+    # Ensure chunk size is at least 1
+    chunk_size = max(1, chunk_size)
     iterable = list(iterable)
     if equalize:
         iterable.sort(key=lambda x: len(str(x)))
     n = int(np.ceil(len(iterable) / chunk_size))
     return [iterable[i::n] for i in range(n)]
 
-
-def align_columns(iterable_of_iterables: Iterable[Iterable[Any]]) -> List[str]:
-    """
-    Given an iterable of iterables, this function finds the maximum length of string representation
-    of each element in the corresponding position of the sublists. It then returns a list of strings where 
-    each string is a representation of each corresponding sub iterable with format width for each element 
-    of the sub iterable equal to the corresponding max length for that element's position.
-    
-    :param iterable_of_iterables: An iterable of iterables
-    :type iterable_of_iterables: Iterable[Iterable[Any]]
-    :return: A list of strings with equal lengths, which when printed out on separate lines, the columns will be aligned.
-    :rtype: List[str]
-
-    .. note::
-       The `zip` function is used to make an iterator that aggregates elements from each of the iterables.
-       Refer: https://docs.python.org/3.3/library/functions.html#zip
-       
-    .. code-block:: python
-
-       >>> align_columns([['apple', 'cherry'], ['dates', 'elderberry'], ['banana']])
-       ['apple  cherry    ', 
-        'dates  elderberry', 
-        'banana            ']
-    """
-
-    max_lengths = [
-        max(len(str(elem)) for elem in col)
-        for col in zip(*[iterable + [None] * (len(max(iterable_of_iterables, key=len)) - len(iterable)) 
-                         for iterable in iterable_of_iterables])
-    ]
-
-    output = [
-        " ".join((str(elem) if elem is not None else '').ljust(length) for elem, length in zip(iterable + [None] * (len(max_lengths) - len(iterable)), max_lengths))
-        for iterable in iterable_of_iterables
-    ]
-
-    return output

@@ -1,4 +1,4 @@
-from typing import Generator, List, Union
+from typing import Generator, List, Union, Dict
 import pandas as pd
 from itertools import product, count, islice
 from numpy import prod
@@ -9,24 +9,36 @@ from functools import reduce
 class FibCalculator:
     def __init__(self):
         """Initialize the FibCalculator with a base cache."""
-        self._cache = {0: 0, 1: 1, 2: 1}
+        self._cache: Dict[int, int] = {0: 0, 1: 1, 2: 1}
 
     def __call__(self, n: int) -> int:
         """
-        Calculate the nth Fibonacci number.
+        Calculate the nth Fibonacci number using memoization and the fast doubling algorithm.
 
         Args:
-            n: The index of the Fibonacci number to calculate.
+            n (int): The index of the Fibonacci number to calculate. Must be non-negative.
 
         Returns:
-            The nth Fibonacci number.
+            int: The nth Fibonacci number.
+
+        Raises:
+            ValueError: If n is a negative integer.
+        
+        Reference:
+            Fast Doubling Algorithm for Fibonacci Numbers: 
+            https://www.nayuki.io/page/fast-fibonacci-algorithms
         """
+        if n < 0:
+            raise ValueError("Index must be a non-negative integer")
+        
         if n in self._cache:
             return self._cache[n]
 
         k0, k1 = n // 2, n // 2 + 1
         fk0, fk1 = self(k0), self(k1)
-        self._cache[2*k0], self._cache[2*k0+1] = fk0 * (2*fk1 - fk0), fk0**2 + fk1**2
+        self._cache[2 * k0] = fk0 * (2 * fk1 - fk0)
+        self._cache[2 * k0 + 1] = fk0**2 + fk1**2
+        
         return self._cache[n]
 
 
