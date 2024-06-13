@@ -11,7 +11,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pirrtools',
-    version='0.2.1',
+    version='0.2.2',  # Update this version number before releasing a new version
     description='Collection of tools I use in my projects',
     author='Sean Smith',
     author_email='pirsquared.pirr@gmail.com',
