@@ -19,7 +19,9 @@ classifiers = [
 ]
 dependencies = [
   "pandas",
-  "feather-format"
+  "numpy",
+  "feather-format",
+  "ipython",
 ]
 
 [project.urls]
@@ -33,6 +35,7 @@ dev = [
   "twine",
   "black",
   'pre-commit',
+  'pylint',
 ]
 
 [tool.black]
@@ -59,4 +62,8 @@ exclude = '''
   | unmanaged
 )/
 '''
+
+[tool.docformatter]
+wrap-summaries = 88
+wrap-descriptions = 88
 

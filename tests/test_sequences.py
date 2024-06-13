@@ -1,3 +1,7 @@
+"""
+This module contains test functions to be used with the pytest framework.
+"""
+
 import pytest
 from pirrtools.sequences import (
     FibCalculator,
@@ -10,12 +14,18 @@ from pirrtools.sequences import (
 
 
 def test_fib_calculator_negative():
+    """
+    Test case for FibCalculator with negative index.
+    """
     fib = FibCalculator()
     with pytest.raises(ValueError, match="Index must be a non-negative integer"):
         fib(-1)
 
 
 def test_fib_calculator():
+    """
+    Test case for FibCalculator with positive indices.
+    """
     fib = FibCalculator()
     assert fib(0) == 0
     assert fib(1) == 1
@@ -30,12 +40,18 @@ def test_fib_calculator():
 
 
 def test_get_prime_generator():
+    """
+    Test case for get_prime_generator function.
+    """
     prime_gen = get_prime_generator()
     primes = [next(prime_gen) for _ in range(10)]
     assert primes == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 
 
 def test_get_prime_factorization_generator():
+    """
+    Test case for get_prime_factorization_generator function.
+    """
     factors_28 = list(get_prime_factorization_generator(28))
     factors_100 = list(get_prime_factorization_generator(100))
     factors_17 = list(get_prime_factorization_generator(17))
@@ -46,6 +62,9 @@ def test_get_prime_factorization_generator():
 
 
 def test_count_prime_factors():
+    """
+    Test case for count_prime_factors function.
+    """
     factors_28 = count_prime_factors(28)
     factors_100 = count_prime_factors(100)
     factors_17 = count_prime_factors(17)
@@ -56,6 +75,9 @@ def test_count_prime_factors():
 
 
 def test_get_divisors():
+    """
+    Test case for get_divisors function.
+    """
     divisors_28 = get_divisors(28)
     divisors_100 = get_divisors(100)
     divisors_17 = get_divisors(17)
@@ -66,6 +88,9 @@ def test_get_divisors():
 
 
 def test_lcm():
+    """
+    Test case for lcm function.
+    """
     assert lcm(4, 6) == 12
     assert lcm(3, 5, 7) == 105
     assert lcm(10, 15, 20) == 60
