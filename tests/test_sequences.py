@@ -97,8 +97,3 @@ def test_lcm():
     assert lcm(21, 6) == 42
     assert lcm(1, 1, 1) == 1
     assert lcm(0, 1) == 0  # Edge case, including 0 in lcm should return 0
-
-
-# Run the tests
-if __name__ == "__main__":
-    pytest.main()

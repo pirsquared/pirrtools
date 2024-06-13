@@ -241,8 +241,3 @@ def test_load_cache_nonexistent_path():
     # Check that loading from a nonexistent path raises a FileNotFoundError
     with pytest.raises(FileNotFoundError, match="The path does not exist."):
         load_cache(path)
-
-
-# Run the tests
-if __name__ == "__main__":
-    pytest.main()
