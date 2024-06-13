@@ -26,9 +26,11 @@ def test_chunk_basic_case_5():
 
 
 def test_chunk_basic_case_6():
-    assert chunk(
-        ["apple", "banana", "cherry", "dates", "elderberry"], 2, True
-    ) == [["apple", "cherry"], ["dates", "elderberry"], ["banana"]]
+    assert chunk(["apple", "banana", "cherry", "dates", "elderberry"], 2, True) == [
+        ["apple", "cherry"],
+        ["dates", "elderberry"],
+        ["banana"],
+    ]
 
 
 def test_chunk_edge_case_1():

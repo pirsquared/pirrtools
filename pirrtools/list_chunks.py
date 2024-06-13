@@ -1,7 +1,10 @@
 from typing import List, Iterable, Any, Union, Optional
 import numpy as np
 
-def chunk(iterable: Iterable[Union[int, str, float]], chunk_size: int, equalize: bool=False) -> List[List[Optional[Union[int, str, float]]]]:
+
+def chunk(
+    iterable: Iterable[Union[int, str, float]], chunk_size: int, equalize: bool = False
+) -> List[List[Optional[Union[int, str, float]]]]:
     """
     This function splits an iterable into chunks of a specified size.
     If the `equalize` flag is set to True, it will try to make the lengths of the elements
@@ -35,4 +38,3 @@ def chunk(iterable: Iterable[Union[int, str, float]], chunk_size: int, equalize:
         iterable.sort(key=lambda x: len(str(x)))
     n = int(np.ceil(len(iterable) / chunk_size))
     return [iterable[i::n] for i in range(n)]
-

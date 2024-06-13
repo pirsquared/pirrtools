@@ -23,14 +23,14 @@ class FibCalculator:
 
         Raises:
             ValueError: If n is a negative integer.
-        
+
         Reference:
-            Fast Doubling Algorithm for Fibonacci Numbers: 
+            Fast Doubling Algorithm for Fibonacci Numbers:
             https://www.nayuki.io/page/fast-fibonacci-algorithms
         """
         if n < 0:
             raise ValueError("Index must be a non-negative integer")
-        
+
         if n in self._cache:
             return self._cache[n]
 
@@ -38,7 +38,7 @@ class FibCalculator:
         fk0, fk1 = self(k0), self(k1)
         self._cache[2 * k0] = fk0 * (2 * fk1 - fk0)
         self._cache[2 * k0 + 1] = fk0**2 + fk1**2
-        
+
         return self._cache[n]
 
 
@@ -113,8 +113,12 @@ def get_divisors(n: int) -> List[int]:
     primes, counts = prime_factors.index.tolist(), prime_factors.tolist()
 
     return sorted(
-        prod(divisor) for divisor in product(
-            *[list(map(lambda x: prime**x, range(count + 1))) for prime, count in zip(primes, counts)]
+        prod(divisor)
+        for divisor in product(
+            *[
+                list(map(lambda x: prime**x, range(count + 1)))
+                for prime, count in zip(primes, counts)
+            ]
         )
     )[:-1]
 

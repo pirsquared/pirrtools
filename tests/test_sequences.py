@@ -1,12 +1,20 @@
 import pytest
-from pirrtools.sequences import FibCalculator, get_prime_generator, get_prime_factorization_generator, count_prime_factors, get_divisors, lcm
+from pirrtools.sequences import (
+    FibCalculator,
+    get_prime_generator,
+    get_prime_factorization_generator,
+    count_prime_factors,
+    get_divisors,
+    lcm,
+)
 
 
 def test_fib_calculator_negative():
     fib = FibCalculator()
     with pytest.raises(ValueError, match="Index must be a non-negative integer"):
         fib(-1)
-        
+
+
 def test_fib_calculator():
     fib = FibCalculator()
     assert fib(0) == 0

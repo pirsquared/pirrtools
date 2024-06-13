@@ -28,7 +28,9 @@ def _save_index(index: Union[MultiIndex, Index], path: Path, name: str):
     with open(path / f"{name}_index.json", "w") as f:
         json.dump(level_names, f)
 
-    index.to_frame(index=False).rename(columns=str).to_feather(path / f"{name}_index.feather")
+    index.to_frame(index=False).rename(columns=str).to_feather(
+        path / f"{name}_index.feather"
+    )
 
 
 def _load_index(path: Path, name: str) -> Index:
@@ -46,11 +48,14 @@ def _load_index(path: Path, name: str) -> Index:
     with open(path / f"{name}_index.json", "r") as f:
         level_names = json.load(f)
 
-    index_df = pd.read_feather(path / f"{name}_index.feather").set_axis(level_names, axis=1)
+    index_df = pd.read_feather(path / f"{name}_index.feather").set_axis(
+        level_names, axis=1
+    )
     index = MultiIndex.from_frame(index_df, names=level_names)
     if index.nlevels == 1:
         index = index.get_level_values(0)
     return index
+
 
 def _save_values(df: PandasObject, path: Path):
     """
@@ -65,7 +70,10 @@ def _save_values(df: PandasObject, path: Path):
     try:
         pd.DataFrame(df.values).rename(columns=str).to_feather(path / f"values.feather")
     except ArrowInvalid as e:
-        raise ValueError("The DataFrame or Series contains an unsupported data type.") from e
+        raise ValueError(
+            "The DataFrame or Series contains an unsupported data type."
+        ) from e
+
 
 def _load_values(path: Path) -> pd.DataFrame:
     """
@@ -81,7 +89,8 @@ def _load_values(path: Path) -> pd.DataFrame:
     """
     return pd.read_feather(path / f"values.feather")
 
-def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool=False):
+
+def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool = False):
     """
     Save the DataFrame or Series to a feather file.
 
@@ -98,7 +107,7 @@ def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool=False)
             raise FileExistsError("The path already exists and is not empty.")
     if df.empty:
         raise ValueError("The DataFrame or Series is empty.")
-    
+
     path.mkdir(parents=True, exist_ok=True)
 
     try:
@@ -114,6 +123,7 @@ def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool=False)
     except Exception as e:
         shutil.rmtree(path)
         raise e
+
 
 def load_cache(path: Union[str, Path]) -> PandasObject:
     """
@@ -147,6 +157,7 @@ def load_cache(path: Union[str, Path]) -> PandasObject:
 
     return values
 
+
 def cache_and_load(obj, path, overwrite=False):
     """
     Cache and load a Pandas DataFrame or Series.
@@ -177,7 +188,7 @@ class UtilsAccessor:
         """
         self._validate(pandas_obj)
         self._obj = pandas_obj
-    
+
     @staticmethod
     def _validate(obj: PandasObject):
         """
@@ -185,13 +196,13 @@ class UtilsAccessor:
 
         Args:
             obj (PandasObject): The object to be validated.
-        
+
         Raises:
             AttributeError: .
         """
         if not isinstance(obj, (DataFrame, Series)):
             raise AttributeError("The object must be a pandas DataFrame or Series.")
-        
+
     def to_cache(self, *args, **kwargs):
         """
         Save the DataFrame or Series to a directory.
@@ -202,5 +213,6 @@ class UtilsAccessor:
         """
         _save_cache(self._obj, *args, **kwargs)
 
-reg_df('pirr')(UtilsAccessor)
-reg_ser('pirr')(UtilsAccessor)
+
+reg_df("pirr")(UtilsAccessor)
+reg_ser("pirr")(UtilsAccessor)

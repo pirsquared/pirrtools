@@ -10,23 +10,25 @@ with tools and workflows that rely on setup.py.
 from setuptools import setup, find_packages
 
 setup(
-    name='pirrtools',
-    version='0.2.2',  # Update this version number before releasing a new version
-    description='Collection of tools I use in my projects',
-    author='Sean Smith',
-    author_email='pirsquared.pirr@gmail.com',
-    url='https://github.com/pirsquared/pirrtools',
+    name="pirrtools",
+    version="0.2.2",  # Update this version number before releasing a new version
+    description="Collection of tools I use in my projects",
+    author="Sean Smith",
+    author_email="pirsquared.pirr@gmail.com",
+    url="https://github.com/pirsquared/pirrtools",
     packages=find_packages(),
     install_requires=[
-        'pandas',
-        'feather-format',
+        "pandas",
+        "feather-format",
     ],
     extras_require={
-        'dev': [
-            'pytest',
-            'pytest-cov',
-            'build',
-            'twine',
+        "dev": [
+            "pytest",
+            "pytest-cov",
+            "build",
+            "twine",
+            "black",
+            "pre-commit",
         ],
     },
 )
