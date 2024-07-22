@@ -11,6 +11,9 @@ Functions:
 - __load_matplotlib_inline(): Loads the '%matplotlib inline' magic command in IPython if
   available.
 
+Classes:
+- AttrDict: A dictionary-like object that allows attribute access to its items.
+
 Usage:
 - To add a path to the system path, use the addpath() function.
 - To reload a module or class, use the reload_entity() function.
@@ -30,6 +33,7 @@ import importlib.util as __importlib_util
 import types as __types
 from IPython import get_ipython
 from .pandas import load_cache
+from .structures import AttrDict
 
 
 __HOME = __pathlib.Path.home().absolute()
