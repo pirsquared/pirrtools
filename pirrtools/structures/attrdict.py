@@ -17,7 +17,7 @@ class AttrDict(dict):
         # Convert nested dictionaries to AttrDict instances
         for key, value in self.items():
             if isinstance(value, dict):
-                self[key] = AttrDict(value)
+                self[key] = type(self)(value)
 
     def __getattr__(self, item):
         try:
@@ -35,7 +35,7 @@ class AttrDict(dict):
             del self[item]
         except KeyError as exc:
             raise AttributeError(
-                f"'AttrDict' object has no attribute '{item}'"
+                f"'{self.__name__}' object has no attribute '{item}'"
             ) from exc
 
     def __dir__(self):
