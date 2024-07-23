@@ -12,7 +12,7 @@ Functions:
   available.
 
 Classes:
-- AttrDict: A dictionary-like object that allows attribute access to its items.
+- AttrDict: A dictionary-like object that allows attribute access to its items.9
 
 Usage:
 - To add a path to the system path, use the addpath() function.
@@ -113,7 +113,3 @@ def __load_matplotlib_inline():
             print("Loaded '%matplotlib inline'")
     except ImportError:
         pass
-
-
-__load_matplotlib_inline()
-__load_pirc_file()
