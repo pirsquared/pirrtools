@@ -140,12 +140,11 @@ def find_instances(cls, module, tracker_type=AttrDict, filter_func=None):
     tracker = tracker_type()
     ModuleType = __types.ModuleType
     for name, obj in vars(module).items():
-        if not filter_func(name, obj):
-            continue
-        elif isinstance(obj, cls):
-            tracker[name] = obj
-        elif isinstance(obj, ModuleType) and get_base_package(obj) == base_package:
-            subtracker = find_instances(cls, obj)
-            if subtracker:
-                tracker[name] = subtracker
+        if filter_func(name, obj):
+            if isinstance(obj, cls):
+                tracker[name] = obj
+            elif isinstance(obj, ModuleType) and get_base_package(obj) == base_package:
+                subtracker = find_instances(cls, obj)
+                if subtracker:
+                    tracker[name] = subtracker
     return tracker
