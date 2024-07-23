@@ -135,7 +135,10 @@ def get_base_package(module):
 def find_instances(cls, module, tracker_type=AttrDict, filter_func=None):
     """Find all instances of a class in a module or submodules."""
     if filter_func is None:
-        filter_func = lambda *_: True
+
+        def filter_func(*_):
+            return True
+
     base_package = get_base_package(module)
     tracker = tracker_type()
     ModuleType = __types.ModuleType
