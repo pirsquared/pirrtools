@@ -129,7 +129,7 @@ def get_base_package(module):
     Returns:
         str: The base package of the module.
     """
-    return module.__name__.split(".", maxsplits=1)[0]
+    return module.__name__.split(".", maxsplit=1)[0]
 
 
 def find_instances(cls, module):
