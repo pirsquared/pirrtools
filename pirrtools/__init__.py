@@ -113,3 +113,35 @@ def __load_matplotlib_inline():
             print("Loaded '%matplotlib inline'")
     except ImportError:
         pass
+
+
+################################################################################
+# Bespoke functions ############################################################
+################################################################################
+
+
+def get_base_package(module):
+    """Get the base package of a module.
+
+    Args:
+        module (module): The module to get the base package of.
+
+    Returns:
+        str: The base package of the module.
+    """
+    return module.__name__.split(".", maxsplits=1)[0]
+
+
+def find_instances(cls, module):
+    """Find all instances of a class in a module or submodules."""
+    base_package = get_base_package(module)
+    tracker = AttrDict()
+    ModuleType = __types.ModuleType
+    for name, obj in vars(module).items():
+        if isinstance(obj, cls):
+            tracker[name] = obj
+        elif isinstance(obj, ModuleType) and get_base_package(obj) == base_package:
+            subtracker = find_instances(cls, obj)
+            if subtracker:
+                tracker[name] = subtracker
+    return tracker

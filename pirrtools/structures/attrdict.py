@@ -39,7 +39,7 @@ class AttrDict(dict):
             ) from exc
 
     def __dir__(self):
-        return list(self.keys()) + super().__dir__()
+        return list(self.keys())
 
     def __getitem__(self, key):
         return super().setdefault(key, type(self)())
