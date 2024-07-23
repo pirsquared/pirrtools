@@ -144,7 +144,7 @@ def find_instances(cls, module, tracker_type=AttrDict, filter_func=None):
             if isinstance(obj, cls):
                 tracker[name] = obj
             elif isinstance(obj, ModuleType) and get_base_package(obj) == base_package:
-                subtracker = find_instances(cls, obj)
+                subtracker = find_instances(cls, obj, tracker_type, filter_func)
                 if subtracker:
                     tracker[name] = subtracker
     return tracker
