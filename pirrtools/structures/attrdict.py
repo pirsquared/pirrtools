@@ -45,6 +45,6 @@ class AttrDict(dict):
         return super().setdefault(key, type(self)())
 
     def __setitem__(self, key, value):
-        if isinstance(value, dict):
+        if isinstance(value, dict) and not isinstance(value, AttrDict):
             value = type(self)(value)
         super().__setitem__(key, value)
