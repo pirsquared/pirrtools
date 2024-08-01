@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pirrtools",
-    version="0.2.10",  # Update this version number before releasing a new version
+    version="0.2.11",  # Update this version number before releasing a new version
     description="Collection of tools I use in my projects",
     author="Sean Smith",
     author_email="pirsquared.pirr@gmail.com",
@@ -21,6 +21,7 @@ setup(
         "numpy",
         "feather-format",
         "ipython",
+        "Pygments",
     ],
     extras_require={
         "dev": [
