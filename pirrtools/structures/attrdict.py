@@ -1,5 +1,7 @@
 """A dictionary that allows access to its keys as attributes."""
 
+__all__ = ["AttrDict"]
+
 
 class AttrDict(dict):
     """A dictionary that allows access to its keys as attributes.

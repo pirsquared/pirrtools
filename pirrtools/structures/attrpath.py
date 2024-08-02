@@ -1,8 +1,8 @@
 from pathlib import Path
 from functools import cached_property
-from collections.abc import Mapping
 from textwrap import dedent
 import json
+import re
 from pygments import highlight
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
@@ -11,6 +11,9 @@ from IPython import get_ipython
 from IPython.display import HTML, SVG, Image, Markdown
 import pandas as pd
 from .attrdict import AttrDict
+
+
+__all__ = ["AttrPath"]
 
 
 def read_and_highlight(file_path: str, lexer) -> str:
@@ -62,16 +65,6 @@ def read_and_highlight(file_path: str, lexer) -> str:
     return tagged_code
 
 
-def hightlight_handler(lexer):
-    """Returns a handler that reads a file and returns its contents highlighted as HTML
-    with syntax highlighting dictated by the passed lexer."""
-
-    def handler(file_path: Path):
-        return read_and_highlight(file_path, lexer)
-
-    return handler
-
-
 def generalized_handler(file_path: Path):
     """Returns a handler that reads a file and returns its contents highlighted as HTML
     with syntax highlighting dictated by the file extension.
@@ -96,129 +89,12 @@ def generalized_handler(file_path: Path):
         return handler
 
 
-def dict_pack(d: dict, k_: tuple = ()):
-    """Generator that yields tuples of nested keys and values from a dictionary.
-
-    Parameters
-    ----------
-    d : dict
-        The dictionary to pack.
-
-    k_ : tuple, optional
-        The keys of the parent dictionaries. Default is an empty tuple.
-        Purpose is to allow for recursive unpacking.  It is not recommended
-        to pass this argument directly.
-
-    Yields
-    ------
-    tuple
-        A tuple of the nested keys and the value.
-
-    Examples
-    --------
-
-    .. testcode::
-
-        d = {'a': {'b': 1, 'c': 2}}
-        list(dict_pack(d))
-
-    .. testoutput::
-
-        [(('a', 'b'), 1), (('a', 'c'), 2)]
-
-    """
-
-    for k, v in d.items():
-        kt = (*k_, k)
-        if isinstance(v, Mapping):
-            yield from dict_pack(v, kt)
-        else:
-            yield kt, v
+_NON_ALPHANUMERIC = re.compile("(?=^\d)|\W")
 
 
-def dict_pack_as_dict(d: dict):
-    """Packs a dictionary with nested dictionaries into a flat dictionary with tuples as
-    keys.
-
-    Parameters
-    ----------
-    d : dict
-        The dictionary to pack.
-
-    Returns
-    -------
-    dict
-        A flat dictionary with tuples as keys.
-
-    Examples
-    --------
-
-    .. testcode::
-
-        d = {'a': {'b': 1, 'c': 2}}
-        dict_pack_as_dict(d)
-
-    .. testoutput::
-
-        {('a', 'b'): 1, ('a', 'c'): 2}
-
-    """
-    return dict(dict_pack(d))
-
-
-class ExtendedAttrDict(AttrDict):
-    """A dictionary that allows access to its keys as attributes.
-
-    This class extends the `AttrDict` class to allow for nested dictionaries to be
-    accessed as attributes.  The difference between this class and the `AttrDict` class
-    is that this class allows for nested dictionaries to be show up in the `dir` method.
-    """
-
-    @cached_property
-    def _pact(self):
-
-        return {".".join(k): v for k, v in dict_pack(self)}
-
-    def __dir__(self):
-
-        return list(self._pact)
-
-
-_Path = type(Path())
-
-
-class HandledPath(_Path):
-    """Adds properties to a path that allow for the path to be handled based on its
-    extension.
-
-    An instance of this class will be assigned as the value of one of the keys in the
-    `categorize_paths` property of the `AttrPath` class.  In that example, the
-    result will be for those files whose extensions are in the `_handlers` attribute of
-    or have a lexer in the `pygments.lexers` module will have two properties: `view` and
-    `code`.  The `view` property will return the file as whatever is specified in the
-    `_handlers` attribute.  The `code` property will return the file as HTML with syntax
-    highlighting dictated by the file extension."""
-
-    _handlers = AttrDict()
-
-    def __dir__(self):
-        return list(self._handlers.keys())
-
-    def __getattr__(self, name):
-        if name in self._handlers:
-            return self._handlers[name](self)
-        return getattr(super(), name)
-
-
-def subclass_handledpath(name, handlers):
-    """Generalizing the creation of subclasses of the `HandledPath` class."""
-
-    class SubclassPath(HandledPath):
-
-        _handlers = handlers
-
-    SubclassPath.__name__ = name
-    return SubclassPath
+def attribute_safe_string(string):
+    """Returns a path with a name that is safe for use as an attribute."""
+    return _NON_ALPHANUMERIC.sub("_", string)
 
 
 def html_handler(file_path: Path):
@@ -276,13 +152,11 @@ def markdown_handler(file_path: Path):
         return Markdown(file.read())
 
 
-class AttrPath(_Path):
-    """A subclass of the `pathlib.Path` class that allows for the path to be handled
-    based on its extension and directory structure traversed via `.` notation and tab
-    completion."""
+_Path = type(Path())
 
-    _flavour = _Path._flavour
-    _handlers = {
+
+class AttrPath(_Path):
+    _view_handlers = {
         "html": html_handler,
         "svg": svg_handler,
         "jpg": jpg_handler,
@@ -296,80 +170,75 @@ class AttrPath(_Path):
         "md": markdown_handler,
     }
 
+    def __new__(cls, *args, **kwargs):
+        self = super().__new__(cls, *args, **kwargs).expanduser().resolve()
+        self._attr = AttrDict()
+        return self
+
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self._attr = AttrDict()
+
+    @cached_property
+    def _code_handler(self):
+        if self._suffix == "csv":
+            proxy = self.with_suffix(".txt")
+        else:
+            proxy = self
+        handler = generalized_handler(proxy)
+        if handler is not None:
+
+            def _handler():
+                return handler(self)
+
+            return _handler
+
     @property
-    def categorize_paths(self):
+    def _suffix(self):
+        return self.suffix[1:]
 
-        handlers = set(type(self)._handlers.keys())
-        root = self.expanduser().resolve()
-
-        if root.is_file():
-            return root
-
-        maptype = ExtendedAttrDict
-        result = maptype()
-
-        if root.is_dir():
-            for path in root.iterdir():
-                *keys, last = path.name.split(".")
-                if path.is_file():
-                    subresult = result.setdefault("F", maptype())
-                    for key in keys:
-                        subresult = subresult.setdefault(key or "_", maptype())
-                    subresult[last] = path
-
-                    suffix = path.suffix[1:]
-                    code_handler = generalized_handler(path)
-                    handler = maptype()
-                    if suffix in handlers:
-                        handler["view"] = self._handlers[suffix]
-                    if code_handler:
-                        handler["code"] = code_handler
-
-                    if handler:
-                        subresult = result.setdefault(suffix, maptype())
-                        for key in keys:
-                            subresult = subresult.setdefault(key or "_", maptype())
-
-                        subclass_name = f"{suffix.title()}Path"
-                        subclass = subclass_handledpath(subclass_name, handler)
-                        subresult[last] = subclass(path)
-
+    @property
+    def _get_attr(self):
+        try:
+            _attr = self.__getattribute__("_attr")
+        except AttributeError as e:
+            self.__setattr__("_attr", AttrDict())
+            _attr = self.__getattribute__("_attr")
+        if not _attr and self.is_dir():
+            _attr = self._attr
+            for path in self.iterdir():
+                safe_name = attribute_safe_string(path.name)
+                safe_stem = attribute_safe_string(path.stem)
+                new = AttrPath(path)
+                suffix = new._suffix
                 if path.is_dir():
-                    subresult = result.setdefault("D", maptype())
-                    for key in keys:
-                        subresult = subresult.setdefault(key or "_", maptype())
-                    subresult[last] = path
-
-        return result
-
-    @cached_property
-    def get(self):
-
-        if self.is_file() and (suffix := self.suffix[1:]) in self._handlers:
-            return self._handlers[suffix](self)
-
-    @cached_property
-    def _attr(self):
-
-        return self.categorize_paths
+                    _attr.setdefault("D", AttrDict())[safe_name] = new
+                elif path.is_file():
+                    _attr.setdefault("F", AttrDict())[safe_name] = new
+                    if dir(new):
+                        _attr.setdefault(suffix, AttrDict())[safe_stem] = new
+        return self._attr
 
     def __dir__(self):
-
-        return list(self._attr.keys())
+        pop_ups = []
+        if self.is_file():
+            if self._suffix in self._view_handlers:
+                pop_ups.append("view")
+            if self._code_handler is not None:
+                pop_ups.append("code")
+        elif self.is_dir():
+            pop_ups.extend(self._get_attr.keys())
+        return pop_ups
 
     def __getattr__(self, name):
 
-        if name != "_str" and name in self._attr:
-            return getattr(self._attr, name)
+        if name != "_str":
+            if name in dir(self):
+                if self.is_dir() and name in self._get_attr:
+                    return getattr(self._get_attr, name)
+                elif self.is_file():
+                    if name == "view" and self._suffix in self._view_handlers:
+                        return type(self)._view_handlers[self._suffix](self)
+                    if name == "code" and self._code_handler is not None:
+                        return self._code_handler()
         return getattr(super(), name)
-
-
-def subclass_attrpath(name, handlers):
-    """Generalizing the creation of subclasses of the `AttrPath` class."""
-
-    class SubclassPath(AttrPath):
-
-        _handlers = handlers
-
-    SubclassPath.__name__ = name
-    return SubclassPath

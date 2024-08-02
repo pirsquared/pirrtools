@@ -1,5 +1,5 @@
 """Moduel for structures.
 """
 
-from .attrdict import AttrDict
-from .attrpath import AttrPath
+from .attrdict import *
+from .attrpath import *
