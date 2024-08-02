@@ -47,8 +47,10 @@ def read_and_highlight(file_path: str, lexer) -> str:
         f"""\
         <style>
             pre.formatted-code {{
-                border: solid 1px white;
+                border: solid 1px var(--jp-inverse-border-color);
                 padding: 1rem;
+                max-height: 500px;
+                overflow-y: auto;
             }}
             .formatted-code-container strong {{
                 display: block;
@@ -90,11 +92,17 @@ def generalized_handler(file_path: Path):
 
 
 _NON_ALPHANUMERIC = re.compile("(?=^\d)|\W")
+_IS_DUNDER = re.compile("(^__(?!_).*(?<!_)__$)")
 
 
 def attribute_safe_string(string):
     """Returns a path with a name that is safe for use as an attribute."""
-    return _NON_ALPHANUMERIC.sub("_", string)
+    string = _NON_ALPHANUMERIC.sub("_", _IS_DUNDER.sub(r"DUNDER_\1", string))
+    if string[0].isdigit():
+        string = f"INT_{string}"
+    if string[0] == "_":
+        string = f"PRI{string}"
+    return string
 
 
 def html_handler(file_path: Path):
@@ -172,12 +180,28 @@ class AttrPath(_Path):
 
     def __new__(cls, *args, **kwargs):
         self = super().__new__(cls, *args, **kwargs).expanduser().resolve()
-        self._attr = AttrDict()
         return self
 
     def __init__(self, *args, **kwargs):
         super().__init__()
-        self._attr = AttrDict()
+
+    @cached_property
+    def _attr(self):
+        if self.is_dir():
+            _attr = AttrDict()
+            for path in self.iterdir():
+                safe_name = attribute_safe_string(path.name)
+                safe_stem = attribute_safe_string(path.stem)
+                new = AttrPath(path)
+                suffix = new._suffix
+                if path.is_dir():
+                    _attr.setdefault("D", AttrDict())[safe_name] = new
+                elif path.is_file():
+                    _attr.setdefault("F", AttrDict())[safe_name] = new
+                    if dir(new):
+                        _attr.setdefault(suffix, AttrDict())[safe_stem] = new
+            if _attr:
+                return _attr
 
     @cached_property
     def _code_handler(self):
@@ -197,28 +221,6 @@ class AttrPath(_Path):
     def _suffix(self):
         return self.suffix[1:]
 
-    @property
-    def _get_attr(self):
-        try:
-            _attr = self.__getattribute__("_attr")
-        except AttributeError as e:
-            self.__setattr__("_attr", AttrDict())
-            _attr = self.__getattribute__("_attr")
-        if not _attr and self.is_dir():
-            _attr = self._attr
-            for path in self.iterdir():
-                safe_name = attribute_safe_string(path.name)
-                safe_stem = attribute_safe_string(path.stem)
-                new = AttrPath(path)
-                suffix = new._suffix
-                if path.is_dir():
-                    _attr.setdefault("D", AttrDict())[safe_name] = new
-                elif path.is_file():
-                    _attr.setdefault("F", AttrDict())[safe_name] = new
-                    if dir(new):
-                        _attr.setdefault(suffix, AttrDict())[safe_stem] = new
-        return self._attr
-
     def __dir__(self):
         pop_ups = []
         if self.is_file():
@@ -227,15 +229,15 @@ class AttrPath(_Path):
             if self._code_handler is not None:
                 pop_ups.append("code")
         elif self.is_dir():
-            pop_ups.extend(self._get_attr.keys())
+            pop_ups.extend(self._attr.keys())
         return pop_ups
 
     def __getattr__(self, name):
 
         if name != "_str":
             if name in dir(self):
-                if self.is_dir() and name in self._get_attr:
-                    return getattr(self._get_attr, name)
+                if self.is_dir() and name in self._attr:
+                    return getattr(self._attr, name)
                 elif self.is_file():
                     if name == "view" and self._suffix in self._view_handlers:
                         return type(self)._view_handlers[self._suffix](self)
