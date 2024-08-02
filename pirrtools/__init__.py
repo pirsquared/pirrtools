@@ -33,7 +33,7 @@ import importlib.util as __importlib_util
 import types as __types
 from IPython import get_ipython
 from .pandas import load_cache
-from .structures import AttrDict
+from .structures import AttrDict, AttrPath
 
 
 __HOME = __pathlib.Path.home().absolute()

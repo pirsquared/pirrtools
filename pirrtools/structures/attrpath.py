@@ -63,6 +63,8 @@ def read_and_highlight(file_path: str, lexer) -> str:
 
 
 def hightlight_handler(lexer):
+    """Returns a handler that reads a file and returns its contents highlighted as HTML
+    with syntax highlighting dictated by the passed lexer."""
 
     def handler(file_path: Path):
         return read_and_highlight(file_path, lexer)
@@ -71,6 +73,9 @@ def hightlight_handler(lexer):
 
 
 def generalized_handler(file_path: Path):
+    """Returns a handler that reads a file and returns its contents highlighted as HTML
+    with syntax highlighting dictated by the file extension.
+    """
     try:
         lexer = get_lexer_for_filename(file_path.name)
     except ClassNotFound:
@@ -183,6 +188,16 @@ _Path = type(Path())
 
 
 class HandledPath(_Path):
+    """Adds properties to a path that allow for the path to be handled based on its
+    extension.
+
+    An instance of this class will be assigned as the value of one of the keys in the
+    `categorize_paths` property of the `AttrPath` class.  In that example, the
+    result will be for those files whose extensions are in the `_handlers` attribute of
+    or have a lexer in the `pygments.lexers` module will have two properties: `view` and
+    `code`.  The `view` property will return the file as whatever is specified in the
+    `_handlers` attribute.  The `code` property will return the file as HTML with syntax
+    highlighting dictated by the file extension."""
 
     _handlers = AttrDict()
 
@@ -196,6 +211,7 @@ class HandledPath(_Path):
 
 
 def subclass_handledpath(name, handlers):
+    """Generalizing the creation of subclasses of the `HandledPath` class."""
 
     class SubclassPath(HandledPath):
 
@@ -206,51 +222,64 @@ def subclass_handledpath(name, handlers):
 
 
 def html_handler(file_path: Path):
+    """Returns the contents of an HTML file as an HTML object."""
     with file_path.open("r", encoding="utf-8") as file:
         return HTML(file.read())
 
 
 def svg_handler(file_path: Path):
+    """Returns the contents of an SVG file as an SVG object."""
     with file_path.open("r", encoding="utf-8") as file:
         return SVG(file.read())
 
 
 def jpg_handler(file_path: Path):
+    """Returns the contents of a JPG file as an Image object."""
     return Image(file_path.as_posix())
 
 
 def png_handler(file_path: Path):
+    """Returns the contents of a PNG file as an Image object."""
     return Image(file_path.as_posix())
 
 
 def txt_handler(file_path: Path):
+    """Returns the contents of a text file as a string."""
     with file_path.open("r", encoding="utf-8") as file:
         return file.read()
 
 
 def json_handler(file_path: Path):
+    """Returns the contents of a JSON file as a dictionary."""
     with file_path.open("r", encoding="utf-8") as file:
         return json.load(file)
 
 
 def csv_handler(file_path: Path):
+    """Returns the contents of a CSV file as a pandas DataFrame."""
     return pd.read_csv(file_path.as_posix())
 
 
 def feather_handler(file_path: Path):
+    """Returns the contents of a feather file as a pandas DataFrame."""
     return pd.read_feather(file_path.as_posix())
 
 
 def sas7bdat_handler(file_path: Path):
+    """Returns the contents of a SAS7BDAT file as a pandas DataFrame."""
     return pd.read_sas(file_path.as_posix(), encoding="iso-8859-1")
 
 
 def markdown_handler(file_path: Path):
+    """Returns the contents of a markdown file as a Markdown object."""
     with file_path.open("r", encoding="utf-8") as file:
         return Markdown(file.read())
 
 
 class AttrPath(_Path):
+    """A subclass of the `pathlib.Path` class that allows for the path to be handled
+    based on its extension and directory structure traversed via `.` notation and tab
+    completion."""
 
     _flavour = _Path._flavour
     _handlers = {
@@ -262,6 +291,7 @@ class AttrPath(_Path):
         "json": json_handler,
         "csv": csv_handler,
         "feather": feather_handler,
+        "f": feather_handler,
         "sas7bdat": sas7bdat_handler,
         "md": markdown_handler,
     }
@@ -335,6 +365,7 @@ class AttrPath(_Path):
 
 
 def subclass_attrpath(name, handlers):
+    """Generalizing the creation of subclasses of the `AttrPath` class."""
 
     class SubclassPath(AttrPath):
 
