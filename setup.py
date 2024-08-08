@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pirrtools",
-    version="0.2.12",  # Update this version number before releasing a new version
+    version="0.2.13",  # Update this version number before releasing a new version
     description="Collection of tools I use in my projects",
     author="Sean Smith",
     author_email="pirsquared.pirr@gmail.com",

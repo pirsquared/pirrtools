@@ -242,3 +242,35 @@ class UtilsAccessor:
 
 reg_df("pirr")(UtilsAccessor)
 reg_ser("pirr")(UtilsAccessor)
+
+
+def create_class(level: int):
+    class I_N:
+        def __init__(self, pandas_obj):
+            self._validate(pandas_obj)
+            self._obj = pandas_obj
+            self._grp = self._obj.groupby(level=level)
+
+        @staticmethod
+        def _validate(obj):
+            if not isinstance(obj, (pd.DataFrame, pd.Series)):
+                raise AttributeError("The object must be a pandas DataFrame or Series.")
+            if level + 1 > obj.index.nlevels:
+                raise AttributeError(
+                    f"The object must have at least {level + 1} index level(s)."
+                )
+
+        def __getattr__(self, name):
+            return getattr(self._grp, name)
+
+        def __dir__(self):
+            return dir(self._grp)
+
+    I_N.__name__ = f"I{level}"
+    return I_N
+
+
+for i in range(0, 2):
+    cls = create_class(i)
+    reg_df(cls.__name__.lower())(cls)
+    reg_ser(cls.__name__.lower())(cls)

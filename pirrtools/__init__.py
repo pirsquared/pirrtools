@@ -90,7 +90,7 @@ def __get_pirc_file():
     return None
 
 
-def __load_pirc_file():
+def __load_pirc_file(verbose=False):
     """Loads the `.pirc` module from the `.pirc.py` file in the home directory and adds
     the specified paths to the system path."""
     pirc_file = __get_pirc_file()
@@ -98,19 +98,21 @@ def __load_pirc_file():
         spec = __importlib_util.spec_from_file_location("pirc", pirc_file)
         pirc = __importlib_util.module_from_spec(spec)
         spec.loader.exec_module(pirc)
-        print(f"Loaded {pirc_file.stem} module from {pirc_file}")
+        if verbose:
+            print(f"Loaded {pirc_file.stem} module from {pirc_file}")
         if hasattr(pirc, "mypaths"):
             for path in pirc.mypaths:
-                addpath(path, verbose=True)
+                addpath(path, verbose=verbose)
 
 
-def __load_matplotlib_inline():
+def __load_matplotlib_inline(verbose=False):
     """Loads the '%matplotlib inline' magic command in IPython if available."""
     try:
         ipython = get_ipython()
         if ipython:
             ipython.run_line_magic("matplotlib", "inline")
-            print("Loaded '%matplotlib inline'")
+            if verbose:
+                print("Loaded '%matplotlib inline'")
     except ImportError:
         pass
 
