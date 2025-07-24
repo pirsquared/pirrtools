@@ -166,7 +166,7 @@ def count_prime_factors(n: int) -> pd.Series:
         A pandas Series of counts of the prime factors of n.
     """
     prime_factors = list(get_prime_factorization_generator(n))
-    return pd.value_counts(prime_factors, sort=False)
+    return pd.Series(prime_factors).value_counts(sort=False)
 
 
 def get_divisors(n: int) -> List[int]:

@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.pirrtools-testScriptsactivate.bat)",
+      "Bash(pip install:*)",
+      "Bash(docker-compose run:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose exec:*)",
+      "Bash(python:*)",
+      "Bash(docker-compose restart:*)",
+      "Bash(docker-compose:*)",
+      "WebFetch(domain:rich.readthedocs.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

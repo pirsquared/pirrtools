@@ -91,7 +91,7 @@ def generalized_handler(file_path: Path):
         return handler
 
 
-_NON_ALPHANUMERIC = re.compile("(?=^\d)|\W")
+_NON_ALPHANUMERIC = re.compile(r"(?=^\d)|\W")
 _IS_DUNDER = re.compile("(^__(?!_).*(?<!_)__$)")
 
 

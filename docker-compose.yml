@@ -1,0 +1,16 @@
+services:
+  pirrtools-dev:
+    build: .
+    container_name: pirrtools-dev
+    volumes:
+      - .:/workspace:cached
+      - pirrtools-cache:/home/developer/.cache
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    environment:
+      - PYTHONPATH=/workspace
+    command: /bin/bash
+
+volumes:
+  pirrtools-cache:

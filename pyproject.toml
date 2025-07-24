@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,14 +7,13 @@ name = "pirrtools"
 version = "0.2.13"  # Update this version number before you upload a new version to PyPI
 description = "Collection of tools I use in my projects"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
   { name = "Sean Smith", email = "pirsquared.pirr@gmail.com" }
 ]
 requires-python = ">=3.8"
 classifiers = [
   "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent"
 ]
 dependencies = [
@@ -23,6 +22,9 @@ dependencies = [
   "feather-format",
   "ipython",
   "Pygments",
+  "rich",
+  "jinja2",
+  "matplotlib",
 ]
 
 [project.urls]
@@ -41,7 +43,7 @@ dev = [
 
 [tool.black]
 line-length = 88
-target-version = ['py36']
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 /(
