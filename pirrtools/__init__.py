@@ -1,29 +1,19 @@
-"""This module provides utility functions for the pirrtools package.
+"""Main entry point for the pirrtools package.
 
-Functions:
-- addpath(path, position=0, verbose=False): Adds a path to the system path at the
-  specified position.
-- reload_entity(entity): Reloads a module or class. If a class is provided, its module
-  is reloaded, and then the class is re-imported from this module.
-- __get_pirc_file(): Looks for a `.pirc` file in the home directory.
-- __load_pirc_file(): Loads the `.pirc` module from the `.pirc.py` file in the home
-  directory and adds the specified paths to the system path.
-- __load_matplotlib_inline(): Loads the '%matplotlib inline' magic command in IPython if
-  available.
+This module provides core utility functions for path management, module reloading,
+and environment setup. It automatically loads configuration from `.pirc` files
+and sets up matplotlib inline mode for IPython environments.
 
-Classes:
-- AttrDict: A dictionary-like object that allows attribute access to its items.9
+The module exposes key functionality from submodules and provides utilities for:
+- System path manipulation
+- Module and class reloading
+- Configuration file loading
+- IPython environment setup
 
-Usage:
-- To add a path to the system path, use the addpath() function.
-- To reload a module or class, use the reload_entity() function.
-- The __get_pirc_file() function looks for a `.pirc` file in the home directory.
-- The __load_pirc_file() function loads the `.pirc` module from the `.pirc.py` file in
-  the home directory and adds the specified paths to the system path.
-- The __load_matplotlib_inline() function loads the '%matplotlib inline' magic command
-  in IPython if available.
-
-Note: This module is part of the pirrtools package.
+Example:
+    >>> from pirrtools import addpath, reload_entity
+    >>> addpath('/my/custom/path')
+    >>> reloaded_module = reload_entity(my_module)
 """
 
 import sys as __sys
@@ -40,14 +30,18 @@ __HOME = __pathlib.Path.home().absolute()
 
 
 def addpath(path, position=0, verbose=False):
-    """Adds a path to the system path at the specified position.
+    """Add a path to the system path at the specified position.
 
     Args:
-        path (str): The path to add.
-        position (int, optional): The position in the system path where the path should
-          be added. Defaults to 0.
-        verbose (bool, optional): Whether to print a message when the path is added.
-          Defaults to False.
+        path (str): The path to add to sys.path.
+        position (int, optional): The position in sys.path where the path should
+            be inserted. Defaults to 0 (beginning of path).
+        verbose (bool, optional): Whether to print a confirmation message when
+            the path is added. Defaults to False.
+
+    Note:
+        The path is expanded and converted to absolute form before adding.
+        Duplicate paths are not added.
     """
     path = __pathlib.Path(path).expanduser().absolute()
     if path not in __sys.path:
@@ -57,14 +51,21 @@ def addpath(path, position=0, verbose=False):
 
 
 def reload_entity(entity):
-    """Reloads a module or class. If a class is provided, its module is reloaded, and
-    then the class is re-imported from this module.
+    """Reload a module or class.
+
+    If a class is provided, its module is reloaded and the class is
+    re-imported from the reloaded module.
 
     Args:
         entity (module or class): The module or class to reload.
 
     Returns:
-        The reloaded module or class.
+        module or class: The reloaded module or class.
+
+    Example:
+        >>> import my_module
+        >>> reloaded_module = reload_entity(my_module)
+        >>> reloaded_class = reload_entity(MyClass)
     """
     if isinstance(entity, __types.ModuleType):
         # It's a module, reload directly
@@ -79,10 +80,11 @@ def reload_entity(entity):
 
 
 def __get_pirc_file():
-    """Looks for a `.pirc` file in the home directory.
+    """Look for a `.pirc.py` file in the home directory.
 
     Returns:
-        The path to the `.pirc` file if it exists, None otherwise.
+        pathlib.Path or None: The path to the `.pirc.py` file if it exists,
+            None otherwise.
     """
     pirc_file = __HOME / ".pirc.py"
     if pirc_file.exists():
@@ -91,8 +93,16 @@ def __get_pirc_file():
 
 
 def __load_pirc_file(verbose=False):
-    """Loads the `.pirc` module from the `.pirc.py` file in the home directory and adds
-    the specified paths to the system path."""
+    """Load the `.pirc` module from the home directory and add specified paths.
+
+    This function loads the `.pirc.py` file from the home directory and
+    automatically adds any paths specified in the `mypaths` variable to
+    the system path.
+
+    Args:
+        verbose (bool, optional): Whether to print status messages.
+            Defaults to False.
+    """
     pirc_file = __get_pirc_file()
     if pirc_file:
         spec = __importlib_util.spec_from_file_location("pirc", pirc_file)
@@ -106,7 +116,12 @@ def __load_pirc_file(verbose=False):
 
 
 def __load_matplotlib_inline(verbose=False):
-    """Loads the '%matplotlib inline' magic command in IPython if available."""
+    """Load the '%matplotlib inline' magic command in IPython if available.
+
+    Args:
+        verbose (bool, optional): Whether to print status messages.
+            Defaults to False.
+    """
     try:
         ipython = get_ipython()
         if ipython:
@@ -123,19 +138,42 @@ def __load_matplotlib_inline(verbose=False):
 
 
 def get_base_package(module):
-    """Get the base package of a module.
+    """Get the base package name of a module.
 
     Args:
         module (module): The module to get the base package of.
 
     Returns:
-        str: The base package of the module.
+        str: The name of the base package (first component of module.__name__).
+
+    Example:
+        >>> import numpy.linalg
+        >>> get_base_package(numpy.linalg)
+        'numpy'
     """
     return module.__name__.split(".", maxsplit=1)[0]
 
 
 def find_instances(cls, module, tracker_type=AttrDict, filter_func=None):
-    """Find all instances of a class in a module or submodules."""
+    """Find all instances of a class in a module and its submodules.
+
+    Args:
+        cls (type): The class type to search for instances of.
+        module (module): The module to search in.
+        tracker_type (type, optional): The container type to use for results.
+            Defaults to AttrDict.
+        filter_func (callable, optional): A function to filter results.
+            Should accept (name, obj) and return bool. If None, no filtering
+            is applied.
+
+    Returns:
+        tracker_type: A nested structure containing found instances,
+            organized by module hierarchy.
+
+    Example:
+        >>> instances = find_instances(MyClass, my_module)
+        >>> print(instances.submodule.instance_name)
+    """
     if filter_func is None:
 
         def filter_func(*_):

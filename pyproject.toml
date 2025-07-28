@@ -39,6 +39,8 @@ dev = [
   "black",
   'pre-commit',
   'pylint',
+  'sphinx',
+  'sphinx-rtd-theme',
 ]
 
 [tool.black]

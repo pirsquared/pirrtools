@@ -11,7 +11,21 @@
       "Bash(docker-compose:*)",
       "WebFetch(domain:rich.readthedocs.io)",
       "WebFetch(domain:github.com)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(gh workflow:*)",
+      "WebFetch(domain:pypi.org)",
+      "Bash(pip search:*)",
+      "Bash(pip index versions:*)",
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(mv:*)",
+      "Bash(sphinx-build:*)",
+      "Bash(sphinx-apidoc:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

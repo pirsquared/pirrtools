@@ -1,35 +1,35 @@
-"""
-This module provides utility functions for caching and loading pandas DataFrame and
-Series objects using feather format. It includes functions for saving and loading
-indexes, values, and managing cache directories.
+"""Pandas utilities for caching and rich display formatting.
 
-Functions:
-    - _save_index(index, path, name): Save the index to a feather file (internal use).
-    - _load_index(path, name): Load the index from a feather file (internal use).
-    - _save_values(df, path): Save the values of the DataFrame or Series to a feather
-      file (internal use).
-    - _load_values(path): Load the values of the DataFrame or Series from a feather file
-      (internal use).
-    - _save_cache(df, path, overwrite=False): Save the DataFrame or Series to a cache
-      directory.
-    - load_cache(path): Load the DataFrame or Series from a cache directory.
-    - cache_and_load(obj, path, overwrite=False): Cache and load a DataFrame or Series.
+This module provides comprehensive utilities for pandas DataFrame and Series objects,
+including efficient caching using feather format and advanced rich table display
+with styling support.
 
-Classes:
-    - UtilsAccessor: Accessor for utility functions to save and load pandas objects.
+Key Features:
+    - Efficient caching system for non-conforming datasets using feather format
+    - Rich table display with CSS styling support and background colors
+    - Pandas accessor (.pirr) for convenient method access
+    - Support for MultiIndex and complex pandas objects
+    - Dynamic column width optimization for styled tables
+
+Main Classes:
+    UtilsAccessor: Pandas accessor providing caching and rich display methods
+
+Public Functions:
+    load_cache: Load cached DataFrame or Series from directory
+    cache_and_load: Cache and immediately reload a pandas object
 
 Example:
     >>> import pandas as pd
-    >>> from pirrtools import cache_and_load
     >>> df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
-    >>> path = 'cache_dir'
-    >>> cached_df = cache_and_load(df, path)
-    >>> print(cached_df)
-
-Note:
-    This module is part of the pirrtools package and is intended for internal use. The
-      primary
-    functions are not meant to be called directly by users.
+    >>> 
+    >>> # Cache the DataFrame
+    >>> df.pirr.to_cache('my_cache')
+    >>> 
+    >>> # Display with rich formatting
+    >>> df.pirr.to_rich(bg='gradient')
+    >>> 
+    >>> # Load from cache
+    >>> cached_df = load_cache('my_cache')
 """
 
 import json
@@ -37,6 +37,7 @@ import shutil
 from typing import Union
 from pathlib import Path
 import pandas as pd
+import numpy as np
 from pandas import Index, MultiIndex, DataFrame, Series
 from pandas.api.extensions import register_dataframe_accessor as reg_df
 from pandas.api.extensions import register_series_accessor as reg_ser
@@ -51,13 +52,23 @@ PandasObject = Union[DataFrame, Series]
 
 
 def _parse_css_color(css_value: str) -> str:
-    """Extract color from CSS property value.
+    """Parse CSS color value into Rich-compatible format.
+
+    Converts various CSS color formats (hex, rgb, rgba, named colors)
+    into formats compatible with the Rich library.
 
     Args:
-        css_value: CSS color value like '#ff0000', 'rgb(255, 0, 0)', etc.
+        css_value (str): CSS color value such as '#ff0000', 'rgb(255, 0, 0)',
+            'rgba(255, 0, 0, 0.5)', or named colors like 'red'.
 
     Returns:
-        Rich-compatible color string
+        str: Rich-compatible color string, typically in hex format.
+
+    Example:
+        >>> _parse_css_color('rgb(255, 0, 0)')
+        '#ff0000'
+        >>> _parse_css_color('#123456')
+        '#123456'
     """
     css_value = css_value.strip()
 
@@ -81,17 +92,31 @@ def _parse_css_color(css_value: str) -> str:
     return css_value
 
 
-def _css_to_rich_text(css_styles: list, text: str) -> Text:
-    """Convert CSS styles to Rich Text object with full-width background.
+def _css_to_rich_text(css_styles: list, text: str, column_width: int = None) -> Text:
+    """Convert CSS styles to Rich Text object with styling applied.
+
+    This function takes CSS styles from pandas Styler and converts them
+    to Rich Text styling, with optional padding for better background display.
 
     Args:
-        css_styles: List of (property, value) tuples from pandas styler
-        text: The text content to wrap
+        css_styles (list): List of (property, value) tuples from pandas styler.
+        text (str): The text content to style and wrap.
+        column_width (int, optional): Target width for padding to achieve
+            full-width background colors. If None, no padding is applied.
 
     Returns:
-        Rich Text object with styling applied
+        Text: Rich Text object with CSS styles converted to Rich formatting.
+
+    Note:
+        Supports background-color, color, font-weight (bold), and font-style
+        (italic) CSS properties.
     """
-    text_obj = Text(str(text))
+    text_content = str(text)
+    text_obj = Text(text_content)
+    
+    # Pad the text to fill the column width for better background display
+    if column_width is not None and len(text_content) < column_width:
+        text_obj.pad_right(column_width - len(text_content))
 
     if not css_styles:
         return text_obj
@@ -115,11 +140,16 @@ def _css_to_rich_text(css_styles: list, text: str) -> Text:
 def _extract_styler_styles(styler) -> dict:
     """Extract CSS styles from pandas Styler object.
 
+    Forces computation of styles and extracts the context dictionary
+    containing cell-level styling information.
+
     Args:
-        styler: pandas Styler object
+        styler (pandas.io.formats.style.Styler): A pandas Styler object
+            with applied styles.
 
     Returns:
-        Dictionary mapping (row, col) to CSS styles
+        dict: Dictionary mapping (row, col) tuples to lists of
+            (property, value) CSS style tuples.
     """
     # Force computation of styles
     styler._compute()
@@ -168,7 +198,7 @@ def _optimize_table_for_backgrounds(
             "collapse_padding": True,  # Merge adjacent cell padding
             "show_edge": True,  # Keep outer border for structure
             "pad_edge": False,  # No padding around table edges
-            "expand": True,  # Allow table to expand to fill width
+            "expand": False,  # Keep table size to fit content
         }
     else:
         return {
@@ -252,14 +282,78 @@ def _extract_index_styles(styles: dict, is_series: bool = False) -> dict:
     return index_styles
 
 
-def _save_index(index: Union[MultiIndex, Index], path: Path, name: str):
-    """Save the index to a feather file.
-
-    Not a public function.  Internal use only.
+def _measure_column_widths(df, show_index: bool = True) -> dict:
+    """Measure the maximum width needed for each column.
 
     Args:
-        index (Union[MultiIndex, Index]): The index to be saved.
-        path (Path): The path to save the index.
+        df: DataFrame or Series to measure
+        show_index: Whether index column will be shown
+
+    Returns:
+        Dictionary mapping column names/index to their measured widths
+    """
+    widths = {}
+    
+    if isinstance(df, DataFrame):
+        # Measure index column width if showing index
+        if show_index:
+            index_header = _get_index_header_name(df.index)
+            index_values = []
+            
+            for idx in df.index:
+                if isinstance(df.index, MultiIndex):
+                    index_values.append(_format_multiindex_value(idx))
+                else:
+                    index_values.append(_format_index_value(idx))
+            
+            max_index_width = max(len(index_header), max(len(str(v)) for v in index_values) if index_values else 0)
+            widths['__index__'] = max_index_width
+        
+        # Measure data columns
+        for col in df.columns:
+            col_header = str(col)
+            col_values = [str(val) for val in df[col]]
+            max_width = max(len(col_header), max(len(v) for v in col_values) if col_values else 0)
+            widths[col] = max_width
+            
+    elif isinstance(df, Series):
+        # For Series, measure index and value columns
+        if show_index:
+            index_header = _get_index_header_name(df.index)
+            index_values = []
+            
+            for idx in df.index:
+                if isinstance(df.index, MultiIndex):
+                    index_values.append(_format_multiindex_value(idx))
+                else:
+                    index_values.append(_format_index_value(idx))
+            
+            max_index_width = max(len(index_header), max(len(str(v)) for v in index_values) if index_values else 0)
+            widths['__index__'] = max_index_width
+        
+        # Measure value column
+        series_name = df.name if df.name is not None else "Value"
+        series_values = [str(val) for val in df]
+        max_width = max(len(str(series_name)), max(len(v) for v in series_values) if series_values else 0)
+        widths['__value__'] = max_width
+    
+    return widths
+
+
+def _save_index(index: Union[MultiIndex, Index], path: Path, name: str):
+    """Save pandas index to feather file with metadata.
+
+    Internal function that saves index data and level names separately
+    to ensure proper reconstruction of complex indexes.
+
+    Args:
+        index (Union[MultiIndex, Index]): The pandas index to save.
+        path (Path): Directory path where index files will be saved.
+        name (str): Prefix name for the saved index files.
+
+    Note:
+        Creates two files: {name}_index.json for level names and
+        {name}_index.feather for index data.
     """
     level_names = index.names
     if level_names is None:
@@ -274,15 +368,21 @@ def _save_index(index: Union[MultiIndex, Index], path: Path, name: str):
 
 
 def _load_index(path: Path, name: str) -> Index:
-    """Load the index from a feather file.
+    """Load pandas index from feather file with metadata.
 
-    Not a public function.  Internal use only.
+    Internal function that reconstructs pandas index from saved
+    feather data and JSON metadata.
 
     Args:
-        path (Path): The path to load the index from.
+        path (Path): Directory path containing the index files.
+        name (str): Prefix name of the saved index files.
 
     Returns:
-        Index: The loaded index.
+        Index: The reconstructed pandas Index or MultiIndex.
+
+    Note:
+        Automatically detects and returns single-level Index from MultiIndex
+        when appropriate.
     """
     with open(path / f"{name}_index.json", "r", encoding="utf-8") as f:
         level_names = json.load(f)
@@ -297,13 +397,18 @@ def _load_index(path: Path, name: str) -> Index:
 
 
 def _save_values(df: PandasObject, path: Path):
-    """Save the values of the DataFrame or Series to a feather file.
+    """Save DataFrame or Series values to feather file.
 
-    Not a public function.  Internal use only.
+    Internal function that extracts and saves the underlying data values
+    from pandas objects to feather format.
 
     Args:
-        df (PandasObject): The DataFrame or Series to be saved.
-        path (Path): The path to save the values.
+        df (PandasObject): The DataFrame or Series whose values to save.
+        path (Path): Directory path where values.feather will be saved.
+
+    Raises:
+        ValueError: If the DataFrame contains unsupported data types
+            for feather format.
     """
     try:
         pd.DataFrame(df.values).rename(columns=str).to_feather(path / "values.feather")
@@ -314,27 +419,39 @@ def _save_values(df: PandasObject, path: Path):
 
 
 def _load_values(path: Path) -> pd.DataFrame:
-    """Load the values of the DataFrame or Series from a feather file.
+    """Load DataFrame values from feather file.
 
-    Not a public function.  Internal use only.
+    Internal function that loads the raw data values that were
+    saved by _save_values().
 
     Args:
-        path (Path): The path to load the values from.
+        path (Path): Directory path containing values.feather file.
 
     Returns:
-        pd.DataFrame: The loaded values.
+        pd.DataFrame: The loaded values as a DataFrame.
     """
     return pd.read_feather(path / "values.feather")
 
 
 def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool = False):
-    """Save the DataFrame or Series to a feather file.
+    """Save pandas DataFrame or Series to cache directory.
+
+    Creates a directory structure with separate files for indexes,
+    column information, and data values to handle complex pandas objects.
 
     Args:
-        df (PandasObject): The DataFrame or Series to be saved.
-        path (Union[str, Path]): The path to save the feather file.
-        overwrite (bool): A flag indicating whether to overwrite the existing file,
-          defaults to False.
+        df (PandasObject): The DataFrame or Series to cache.
+        path (Union[str, Path]): Directory path for the cache.
+        overwrite (bool, optional): Whether to overwrite existing cache.
+            Defaults to False.
+
+    Raises:
+        FileExistsError: If path exists, is not empty, and overwrite is False.
+        ValueError: If the DataFrame or Series is empty.
+
+    Note:
+        For DataFrames, saves index, columns, and values separately.
+        For Series, saves index, values, and series name.
     """
     path = Path(path)
     if path.exists():
@@ -363,13 +480,25 @@ def _save_cache(df: PandasObject, path: Union[str, Path], overwrite: bool = Fals
 
 
 def load_cache(path: Union[str, Path]) -> PandasObject:
-    """Load the DataFrame or Series from a directory of files.
+    """Load cached pandas DataFrame or Series from directory.
+
+    Reconstructs a pandas object from the cache directory created
+    by _save_cache(), properly restoring indexes, columns, and metadata.
 
     Args:
-        path (Union[str, Path]): The path to load the cached data from.
+        path (Union[str, Path]): Path to the cache directory.
 
     Returns:
-        PandasObject: The loaded DataFrame or Series.
+        PandasObject: The reconstructed DataFrame or Series with all
+            original structure and metadata preserved.
+
+    Raises:
+        FileNotFoundError: If the cache directory does not exist.
+
+    Example:
+        >>> df = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
+        >>> _save_cache(df, 'my_cache')
+        >>> loaded_df = load_cache('my_cache')
     """
     path = Path(path)
     if not path.exists():
@@ -395,54 +524,88 @@ def load_cache(path: Union[str, Path]) -> PandasObject:
 
 
 def cache_and_load(obj, path, overwrite=False):
-    """Cache and load a Pandas DataFrame or Series.
+    """Cache a pandas object and immediately reload it.
+
+    This is a convenience function that saves an object to cache
+    and then loads it back, useful for testing cache integrity
+    or for ensuring feather-compatible data types.
 
     Args:
-        obj (PandasObject): The DataFrame or Series to be cached and loaded.
-        path (Path): The path to save and load the cache.
-        overwrite (bool): A flag indicating whether to overwrite the existing cache,
-          defaults to False.
+        obj (PandasObject): The DataFrame or Series to cache and reload.
+        path (Union[str, Path]): Directory path for the cache.
+        overwrite (bool, optional): Whether to overwrite existing cache.
+            Defaults to False.
 
     Returns:
-        PandasObject: The loaded DataFrame or Series.
+        PandasObject: The reloaded DataFrame or Series.
+
+    Example:
+        >>> df = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
+        >>> reloaded_df = cache_and_load(df, 'test_cache')
     """
     _save_cache(obj, path, overwrite=overwrite)
     return load_cache(path)
 
 
 class UtilsAccessor:
-    """Accessor for utility functions."""
+    """Pandas accessor providing caching and rich display utilities.
+    
+    This accessor is automatically registered as '.pirr' on pandas
+    DataFrame and Series objects, providing convenient access to
+    caching functionality and rich table display features.
+    
+    Attributes:
+        _obj (PandasObject): The underlying pandas DataFrame or Series.
+    
+    Example:
+        >>> df = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
+        >>> df.pirr.to_cache('my_cache')  # Cache the DataFrame
+        >>> df.pirr.to_rich()  # Display as rich table
+    """
 
     def __init__(self, pandas_obj: PandasObject):
         """Initialize the UtilsAccessor.
 
         Args:
-            pandas_obj (PandasObject): The pandas DataFrame or Series object to be
-              accessed.
+            pandas_obj (PandasObject): The pandas DataFrame or Series object
+                that this accessor is attached to.
+        
+        Raises:
+            AttributeError: If pandas_obj is not a DataFrame or Series.
         """
         self._validate(pandas_obj)
         self._obj = pandas_obj
 
     @staticmethod
     def _validate(obj: PandasObject):
-        """Validate the input object.
+        """Validate that the object is a supported pandas type.
 
         Args:
-            obj (PandasObject): The object to be validated.
+            obj (PandasObject): The object to validate.
 
         Raises:
-            AttributeError: .
+            AttributeError: If the object is not a pandas DataFrame or Series.
         """
         if not isinstance(obj, (DataFrame, Series)):
             raise AttributeError("The object must be a pandas DataFrame or Series.")
 
     def to_cache(self, *args, **kwargs):
-        """Save the DataFrame or Series to a directory.
+        """Save the DataFrame or Series to a cache directory.
+
+        This method provides convenient access to the caching functionality
+        through the pandas accessor interface.
 
         Args:
-            path (Union[str, Path]): The path to save the directory of files.
-            overwrite (bool): A flag indicating whether to overwrite the existing
-              directory, defaults to False.
+            *args: Positional arguments passed to _save_cache().
+            **kwargs: Keyword arguments passed to _save_cache().
+            
+        Common Parameters:
+            path (Union[str, Path]): Directory path for the cache.
+            overwrite (bool, optional): Whether to overwrite existing cache.
+                Defaults to False.
+                
+        Example:
+            >>> df.pirr.to_cache('my_cache', overwrite=True)
         """
         _save_cache(self._obj, *args, **kwargs)
 
@@ -456,46 +619,149 @@ class UtilsAccessor:
         index_header_style="bold dim",
         index_justify="left",
         index_width=None,
+        # Built-in styling options
+        bg=None,
+        bg_kwargs=None,
+        tg=None,
+        tg_kwargs=None,
+        column_header_style=None,
+        index_bg=None,
+        index_bg_kwargs=None,
+        alternating_rows=False,
+        alternating_row_colors=("", "on grey11"),
+        table_style=None,
         **table_kwargs,
     ):
-        """Create a Rich table from pandas DataFrame or Series with optional styling.
+        """Create a Rich table from pandas DataFrame or Series with advanced styling.
+
+        This method converts pandas objects into beautifully formatted Rich tables
+        with support for CSS styling from pandas Styler objects, built-in gradients,
+        and extensive customization options.
 
         Args:
-            styler: pandas Styler object with applied styles. If None, uses basic formatting.
-            console: Rich Console object to use. If None, creates a new one.
-            minimize_gaps: Force minimal padding/borders for better background display.
-            show_index: Whether to show the index as a separate column.
-            index_style: Style string for index values (e.g., "dim", "bold blue").
-            index_header_style: Style string for index column header.
-            index_justify: Text justification for index column ("left", "center", "right").
-            index_width: Fixed width for index column (None for auto-sizing).
-            **table_kwargs: Additional arguments passed to Rich Table constructor.
+            styler (pandas.io.formats.style.Styler, optional): Pandas Styler object
+                with applied styles. If None, uses basic formatting.
+            console (rich.console.Console, optional): Rich Console object to use.
+                If None, creates a new one.
+            minimize_gaps (bool, optional): Force minimal padding/borders for better
+                background color display. Defaults to False.
+            show_index (bool, optional): Whether to show the index as a separate
+                column. Defaults to True.
+            index_style (str, optional): Rich style string for index values
+                (e.g., "dim", "bold blue"). Defaults to "dim".
+            index_header_style (str, optional): Rich style string for index column
+                header. Defaults to "bold dim".
+            index_justify (str, optional): Text justification for index column
+                ("left", "center", "right"). Defaults to "left".
+            index_width (int, optional): Fixed width for index column. If None,
+                auto-sizes based on content.
+
+            bg (str, optional): Background gradient style. Use "gradient" for
+                default colormap or specify colormap name (e.g., "viridis").
+            bg_kwargs (dict, optional): Additional arguments for background_gradient().
+            tg (str, optional): Text gradient style. Use "gradient" for default
+                colormap or specify colormap name.
+            tg_kwargs (dict, optional): Additional arguments for text_gradient().
+            column_header_style (str, optional): Rich style string for column headers.
+            index_bg (str, optional): Background gradient for index. Use "gradient"
+                or specify colormap name.
+            index_bg_kwargs (dict, optional): Additional arguments for index
+                background_gradient().
+            alternating_rows (bool, optional): Whether to apply alternating row
+                colors. Defaults to False.
+            alternating_row_colors (tuple, optional): Tuple of (even_style, odd_style)
+                for alternating rows. Defaults to ("", "on grey11").
+            table_style (str, optional): Rich style string applied to entire table.
+            **table_kwargs: Additional keyword arguments passed to Rich Table constructor.
 
         Returns:
-            Rich Table object that can be printed or displayed.
+            rich.table.Table: A Rich Table object ready for display or printing.
 
         Examples:
-            # Basic usage with index
-            df.pirr.to_rich()
+            Basic usage:
+                >>> df.pirr.to_rich()
 
-            # Hide index
-            df.pirr.to_rich(show_index=False)
+            Background gradients:
+                >>> df.pirr.to_rich(bg="gradient")
+                >>> df.pirr.to_rich(bg="viridis", bg_kwargs={"axis": 0})
 
-            # Custom index styling
-            df.pirr.to_rich(index_style="bold blue", index_justify="right")
+            Text gradients:
+                >>> df.pirr.to_rich(tg="gradient")
 
-            # With pandas styling (auto-optimizes for backgrounds)
-            styled = df.style.background_gradient()
-            df.pirr.to_rich(styler=styled)
+            Header styling:
+                >>> df.pirr.to_rich(column_header_style="bold blue on white")
 
-            # Force minimal gaps
-            df.pirr.to_rich(minimize_gaps=True)
+            Alternating rows:
+                >>> df.pirr.to_rich(alternating_rows=True)
+                >>> df.pirr.to_rich(alternating_rows=True, 
+                ...                 alternating_row_colors=("", "on blue"))
 
-            # With custom table options
-            df.pirr.to_rich(title="My Data", border_style="blue")
+            Combined styling:
+                >>> df.pirr.to_rich(bg="viridis", tg="plasma", alternating_rows=True,
+                ...                 table_style="bold", title="My Data")
+
+        Note:
+            The method automatically optimizes table settings when background colors
+            are detected, minimizing gaps for better visual appearance.
         """
         if console is None:
             console = Console()
+
+        # Create or modify styler with built-in styling options
+        if (bg or tg or index_bg or alternating_rows or 
+            any([bg, tg, column_header_style, index_bg, alternating_rows])):
+            
+            # Start with existing styler or create new one
+            if styler is None:
+                # Only DataFrames have .style, Series need to be converted
+                if isinstance(self._obj, pd.Series):
+                    # Convert Series to DataFrame for styling, then back
+                    temp_df = self._obj.to_frame()
+                    styler = temp_df.style
+                else:
+                    styler = self._obj.style
+            
+            # Apply background gradient
+            if bg:
+                bg_kwargs = bg_kwargs or {}
+                if bg == "gradient":
+                    styler = styler.background_gradient(**bg_kwargs)
+                else:
+                    styler = styler.background_gradient(cmap=bg, **bg_kwargs)
+            
+            # Apply text gradient
+            if tg:
+                tg_kwargs = tg_kwargs or {}
+                if tg == "gradient":
+                    styler = styler.text_gradient(**tg_kwargs)
+                else:
+                    styler = styler.text_gradient(cmap=tg, **tg_kwargs)
+            
+            # Apply index background gradient (only works with numeric data)
+            if index_bg and show_index:
+                index_bg_kwargs = index_bg_kwargs or {}
+                try:
+                    # Only apply to numeric columns if it's a DataFrame
+                    if isinstance(self._obj, pd.DataFrame):
+                        numeric_cols = self._obj.select_dtypes(include=[np.number]).columns
+                        if len(numeric_cols) > 0:
+                            if index_bg == "gradient":
+                                styler = styler.background_gradient(subset=numeric_cols, **index_bg_kwargs)
+                            else:
+                                styler = styler.background_gradient(subset=numeric_cols, cmap=index_bg, **index_bg_kwargs)
+                    else:
+                        # For Series, check if it's numeric
+                        if pd.api.types.is_numeric_dtype(self._obj):
+                            if index_bg == "gradient":
+                                styler = styler.background_gradient(**index_bg_kwargs)
+                            else:
+                                styler = styler.background_gradient(cmap=index_bg, **index_bg_kwargs)
+                except:
+                    # Skip if gradient fails
+                    pass
+            
+            # Note: Alternating row colors will be handled in Rich rendering stage
+            # since pandas styler expects CSS format, not Rich format
 
         # Extract styles if styler is provided
         styles = {}
@@ -507,9 +773,16 @@ class UtilsAccessor:
         optimized_settings = _optimize_table_for_backgrounds(
             has_backgrounds, minimize_gaps
         )
+        
+        # Measure column widths for dynamic padding when backgrounds are present
+        column_widths = _measure_column_widths(self._obj, show_index) if has_backgrounds else {}
 
         # Merge optimized settings with user-provided kwargs (user kwargs take priority)
         final_table_kwargs = {**optimized_settings, **table_kwargs}
+        
+        # Apply table-wide style if specified
+        if table_style:
+            final_table_kwargs["style"] = table_style
 
         # Create Rich table with optimized settings
         table = Table(**final_table_kwargs)
@@ -528,11 +801,12 @@ class UtilsAccessor:
 
             # Add data columns
             for col in self._obj.columns:
+                column_args = {"header_style": column_header_style} if column_header_style else {}
                 # Enable expansion for data columns when backgrounds are present
                 if has_backgrounds:
-                    table.add_column(str(col), min_width=8)
+                    table.add_column(str(col), min_width=8, **column_args)
                 else:
-                    table.add_column(str(col))
+                    table.add_column(str(col), **column_args)
 
             # Add rows with styling
             for i, (idx, row) in enumerate(self._obj.iterrows()):
@@ -544,12 +818,31 @@ class UtilsAccessor:
                         index_value = _format_multiindex_value(idx)
                     else:
                         index_value = _format_index_value(idx)
-                    styled_row.append(index_value)
+                    # Apply padding to index if backgrounds are present
+                    if has_backgrounds:
+                        index_width = column_widths.get('__index__', None)
+                        index_text = Text(str(index_value))
+                        if index_width and len(str(index_value)) < index_width:
+                            index_text.pad_right(index_width - len(str(index_value)))
+                        styled_row.append(index_text)
+                    else:
+                        styled_row.append(index_value)
 
                 # Add data values with styling
                 for j, (col, value) in enumerate(row.items()):
                     cell_styles = styles.get((i, j), [])
-                    styled_text = _css_to_rich_text(cell_styles, value)
+                    # Use dynamic column width for background padding
+                    column_width = column_widths.get(col, None) if has_backgrounds else None
+                    styled_text = _css_to_rich_text(cell_styles, value, column_width)
+                    
+                    # Apply alternating row colors if enabled
+                    if alternating_rows and styled_text is not None:
+                        alt_style = alternating_row_colors[i % 2]
+                        if alt_style and isinstance(styled_text, Text):
+                            styled_text.style = alt_style
+                        elif alt_style and not isinstance(styled_text, Text):
+                            styled_text = Text(str(styled_text), style=alt_style)
+                    
                     styled_row.append(styled_text)
 
                 table.add_row(*styled_row)
@@ -568,10 +861,11 @@ class UtilsAccessor:
 
             # Add value column
             series_name = self._obj.name if self._obj.name is not None else "Value"
+            column_args = {"header_style": column_header_style} if column_header_style else {}
             if has_backgrounds:
-                table.add_column(str(series_name), min_width=8)
+                table.add_column(str(series_name), min_width=8, **column_args)
             else:
-                table.add_column(str(series_name))
+                table.add_column(str(series_name), **column_args)
 
             for i, (idx, value) in enumerate(self._obj.items()):
                 styled_row = []
@@ -582,11 +876,21 @@ class UtilsAccessor:
                         index_value = _format_multiindex_value(idx)
                     else:
                         index_value = _format_index_value(idx)
-                    styled_row.append(index_value)
+                    # Apply padding to index if backgrounds are present
+                    if has_backgrounds:
+                        index_width = column_widths.get('__index__', None)
+                        index_text = Text(str(index_value))
+                        if index_width and len(str(index_value)) < index_width:
+                            index_text.pad_right(index_width - len(str(index_value)))
+                        styled_row.append(index_text)
+                    else:
+                        styled_row.append(index_value)
 
                 # Series styler uses (row, 0) for indexing
                 cell_styles = styles.get((i, 0), [])
-                styled_value = _css_to_rich_text(cell_styles, value)
+                # Use dynamic column width for background padding
+                column_width = column_widths.get('__value__', None) if has_backgrounds else None
+                styled_value = _css_to_rich_text(cell_styles, value, column_width)
                 styled_row.append(styled_value)
 
                 table.add_row(*styled_row)

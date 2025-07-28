@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=71c180b9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api_reference.html" />
+    <link rel="prev" title="Examples Gallery" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quick-installation">Quick Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-installation">Development Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-development-environment">Docker Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-environment-setup">Virtual Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verification">Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrading">Upgrading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uninstalling">Uninstalling</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>This guide covers different ways to install and set up pirrtools for various use cases.</p>
+<section id="quick-installation">
+<h2>Quick Installation<a class="headerlink" href="#quick-installation" title="Link to this heading"></a></h2>
+<p>Install from PyPI (recommended):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p>This installs pirrtools and all required dependencies.</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Python Version</strong></dt><dd><p>Python 3.8 or higher is required.</p>
+</dd>
+<dt><strong>Core Dependencies</strong></dt><dd><ul class="simple">
+<li><p>pandas - DataFrame and Series manipulation</p></li>
+<li><p>numpy - Numerical computing</p></li>
+<li><p>rich - Terminal styling and Rich tables</p></li>
+<li><p>feather-format - Fast DataFrame serialization</p></li>
+<li><p>ipython - Interactive Python shell</p></li>
+<li><p>pygments - Code syntax highlighting</p></li>
+<li><p>jinja2 - Templating engine</p></li>
+<li><p>matplotlib - Plotting (for IPython integration)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="development-installation">
+<h2>Development Installation<a class="headerlink" href="#development-installation" title="Link to this heading"></a></h2>
+<p>For development work or to get the latest features:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/pirsquared/pirrtools.git
+<span class="nb">cd</span><span class="w"> </span>pirrtools
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
+<p>This installs pirrtools in editable mode with development dependencies:</p>
+<ul class="simple">
+<li><p>pytest - Testing framework</p></li>
+<li><p>pytest-cov - Coverage reporting</p></li>
+<li><p>build - Package building</p></li>
+<li><p>twine - PyPI publishing</p></li>
+<li><p>black - Code formatting</p></li>
+<li><p>pre-commit - Git hooks</p></li>
+<li><p>pylint - Code linting</p></li>
+</ul>
+</section>
+<section id="docker-development-environment">
+<h2>Docker Development Environment<a class="headerlink" href="#docker-development-environment" title="Link to this heading"></a></h2>
+<p>Use the provided Docker setup for consistent development:</p>
+<p><strong>Docker Compose</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start development container</span>
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># Access container shell</span>
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>pirrtools-dev<span class="w"> </span>bash
+
+<span class="c1"># Run commands in container</span>
+docker-compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>pirrtools-dev<span class="w"> </span>pytest
+docker-compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>pirrtools-dev<span class="w"> </span>black<span class="w"> </span>pirrtools<span class="w"> </span>tests
+</pre></div>
+</div>
+<p><strong>VS Code Dev Container</strong></p>
+<ol class="arabic simple">
+<li><p>Open the project in VS Code</p></li>
+<li><p>Install the “Dev Containers” extension</p></li>
+<li><p>Use Command Palette &gt; “Dev Containers: Reopen in Container”</p></li>
+<li><p>VS Code will automatically build and open the development environment</p></li>
+</ol>
+<p>The container includes:
+- Python 3.11
+- All dependencies pre-installed
+- VS Code extensions for Python development
+- Pre-commit hooks configured</p>
+</section>
+<section id="virtual-environment-setup">
+<h2>Virtual Environment Setup<a class="headerlink" href="#virtual-environment-setup" title="Link to this heading"></a></h2>
+<p>Create an isolated environment:</p>
+<p><strong>Using venv:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>pirrtools-env
+<span class="nb">source</span><span class="w"> </span>pirrtools-env/bin/activate<span class="w">  </span><span class="c1"># On Windows: pirrtools-env\\Scripts\\activate</span>
+pip<span class="w"> </span>install<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p><strong>Using conda:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>pirrtools<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9
+conda<span class="w"> </span>activate<span class="w"> </span>pirrtools
+pip<span class="w"> </span>install<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+</section>
+<section id="verification">
+<h2>Verification<a class="headerlink" href="#verification" title="Link to this heading"></a></h2>
+<p>Test your installation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
+<span class="c1"># Create test DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+
+<span class="c1"># Test Rich table conversion</span>
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Test Table&quot;</span><span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ pirrtools installed successfully!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the interactive tutorial:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">import subprocess</span>
+<span class="s2">import sys</span>
+<span class="s2">from pathlib import Path</span>
+
+<span class="s2"># Find examples directory</span>
+<span class="s2">import pirrtools</span>
+<span class="s2">pkg_path = Path(pirrtools.__file__).parent.parent</span>
+<span class="s2">examples_path = pkg_path / &#39;examples&#39;</span>
+
+<span class="s2">if examples_path.exists():</span>
+<span class="s2">    subprocess.run([sys.executable, str(examples_path / &#39;tutor.py&#39;)])</span>
+<span class="s2">else:</span>
+<span class="s2">    print(&#39;Examples not found. Clone the repository for full examples.&#39;)</span>
+<span class="s2">&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p><strong>IPython Integration</strong></p>
+<p>pirrtools automatically configures matplotlib inline mode in IPython/Jupyter environments.</p>
+<p><strong>Custom Configuration</strong></p>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.pirc.py</span></code> file in your home directory to customize paths:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ~/.pirc.py</span>
+<span class="n">mypaths</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;/path/to/my/modules&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;/another/development/path&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>These paths will be automatically added to sys.path when pirrtools is imported.</p>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<p><strong>Import Errors</strong></p>
+<p>If you encounter import errors, ensure all dependencies are installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p><strong>Permission Issues</strong></p>
+<p>On some systems, you may need to use <code class="docutils literal notranslate"><span class="pre">--user</span></code> flag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p><strong>Development Dependencies</strong></p>
+<p>If development dependencies fail to install:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools<span class="w"> </span>wheel
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Docker Issues</strong></p>
+<p>If Docker commands fail:</p>
+<ol class="arabic simple">
+<li><p>Ensure Docker is running</p></li>
+<li><p>Check Docker Compose version (v2+ recommended)</p></li>
+<li><p>Try rebuilding: <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">build</span> <span class="pre">--no-cache</span></code></p></li>
+</ol>
+<p><strong>Rich Display Issues</strong></p>
+<p>If Rich tables don’t display correctly:</p>
+<ol class="arabic simple">
+<li><p>Ensure terminal supports color</p></li>
+<li><p>Update terminal if using old version</p></li>
+<li><p>Try in Jupyter notebook for best experience</p></li>
+</ol>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<p>If you encounter issues:</p>
+<ol class="arabic simple">
+<li><p>Check the GitHub Issues: <a class="reference external" href="https://github.com/pirsquared/pirrtools/issues">https://github.com/pirsquared/pirrtools/issues</a></p></li>
+<li><p>Review the documentation: <a class="reference internal" href="api_reference.html"><span class="doc">API Reference</span></a></p></li>
+<li><p>Try the examples: <a class="reference internal" href="examples.html"><span class="doc">Examples Gallery</span></a></p></li>
+<li><p>Create a new issue with error details</p></li>
+</ol>
+</section>
+<section id="upgrading">
+<h2>Upgrading<a class="headerlink" href="#upgrading" title="Link to this heading"></a></h2>
+<p>To upgrade to the latest version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p>Check your version:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pirrtools</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="uninstalling">
+<h2>Uninstalling<a class="headerlink" href="#uninstalling" title="Link to this heading"></a></h2>
+<p>To remove pirrtools:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>uninstall<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p>This removes pirrtools but leaves dependencies installed. To remove dependencies, you may need to uninstall them manually or recreate your virtual environment.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples Gallery" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_reference.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

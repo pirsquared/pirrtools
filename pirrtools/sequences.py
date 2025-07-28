@@ -192,7 +192,7 @@ def get_divisors(n: int) -> List[int]:
         )
     )[
         :-1
-    ]  # Exclude n itself from the divisors
+    ]  # Return all divisors except n itself (proper divisors)
 
 
 def lcm(*a: Union[int, List[int]]) -> int:

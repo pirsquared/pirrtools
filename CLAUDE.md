@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Session Context
+
+For context from previous conversations and changes made to this codebase, see [CONVERSATION_LOG.md](CONVERSATION_LOG.md). This log maintains a chronological record of discussions, decisions, and modifications across development sessions.
+
 ## Development Commands
 
 ### Testing

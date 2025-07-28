@@ -1,0 +1,1069 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pirrtools.pandas &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=71c180b9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../pirrtools.html">pirrtools</a></li>
+      <li class="breadcrumb-item active">pirrtools.pandas</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pirrtools.pandas</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Pandas utilities for caching and rich display formatting.</span>
+
+<span class="sd">This module provides comprehensive utilities for pandas DataFrame and Series objects,</span>
+<span class="sd">including efficient caching using feather format and advanced rich table display</span>
+<span class="sd">with styling support.</span>
+
+<span class="sd">Key Features:</span>
+<span class="sd">    - Efficient caching system for non-conforming datasets using feather format</span>
+<span class="sd">    - Rich table display with CSS styling support and background colors</span>
+<span class="sd">    - Pandas accessor (.pirr) for convenient method access</span>
+<span class="sd">    - Support for MultiIndex and complex pandas objects</span>
+<span class="sd">    - Dynamic column width optimization for styled tables</span>
+
+<span class="sd">Main Classes:</span>
+<span class="sd">    UtilsAccessor: Pandas accessor providing caching and rich display methods</span>
+
+<span class="sd">Public Functions:</span>
+<span class="sd">    load_cache: Load cached DataFrame or Series from directory</span>
+<span class="sd">    cache_and_load: Cache and immediately reload a pandas object</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2, 3], &#39;b&#39;: [4, 5, 6]})</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Cache the DataFrame</span>
+<span class="sd">    &gt;&gt;&gt; df.pirr.to_cache(&#39;my_cache&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Display with rich formatting</span>
+<span class="sd">    &gt;&gt;&gt; df.pirr.to_rich(bg=&#39;gradient&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Load from cache</span>
+<span class="sd">    &gt;&gt;&gt; cached_df = load_cache(&#39;my_cache&#39;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.api.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_dataframe_accessor</span> <span class="k">as</span> <span class="n">reg_df</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.api.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_series_accessor</span> <span class="k">as</span> <span class="n">reg_ser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyarrow.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrowInvalid</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Text</span>
+
+<span class="n">PandasObject</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_css_color</span><span class="p">(</span><span class="n">css_value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse CSS color value into Rich-compatible format.</span>
+
+<span class="sd">    Converts various CSS color formats (hex, rgb, rgba, named colors)</span>
+<span class="sd">    into formats compatible with the Rich library.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        css_value (str): CSS color value such as &#39;#ff0000&#39;, &#39;rgb(255, 0, 0)&#39;,</span>
+<span class="sd">            &#39;rgba(255, 0, 0, 0.5)&#39;, or named colors like &#39;red&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Rich-compatible color string, typically in hex format.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; _parse_css_color(&#39;rgb(255, 0, 0)&#39;)</span>
+<span class="sd">        &#39;#ff0000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; _parse_css_color(&#39;#123456&#39;)</span>
+<span class="sd">        &#39;#123456&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">css_value</span> <span class="o">=</span> <span class="n">css_value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="c1"># Handle hex colors</span>
+    <span class="k">if</span> <span class="n">css_value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">css_value</span>
+
+    <span class="c1"># Handle rgb() colors</span>
+    <span class="n">rgb_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;rgb\((\d+),\s*(\d+),\s*(\d+)\)&quot;</span><span class="p">,</span> <span class="n">css_value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rgb_match</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rgb_match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="nb">int</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Handle rgba() colors (ignore alpha for now)</span>
+    <span class="n">rgba_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)&quot;</span><span class="p">,</span> <span class="n">css_value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rgba_match</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rgba_match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="nb">int</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Return as-is for named colors</span>
+    <span class="k">return</span> <span class="n">css_value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_css_to_rich_text</span><span class="p">(</span><span class="n">css_styles</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CSS styles to Rich Text object with styling applied.</span>
+
+<span class="sd">    This function takes CSS styles from pandas Styler and converts them</span>
+<span class="sd">    to Rich Text styling, with optional padding for better background display.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        css_styles (list): List of (property, value) tuples from pandas styler.</span>
+<span class="sd">        text (str): The text content to style and wrap.</span>
+<span class="sd">        column_width (int, optional): Target width for padding to achieve</span>
+<span class="sd">            full-width background colors. If None, no padding is applied.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Text: Rich Text object with CSS styles converted to Rich formatting.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Supports background-color, color, font-weight (bold), and font-style</span>
+<span class="sd">        (italic) CSS properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text_content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">text_obj</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
+    
+    <span class="c1"># Pad the text to fill the column width for better background display</span>
+    <span class="k">if</span> <span class="n">column_width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">column_width</span><span class="p">:</span>
+        <span class="n">text_obj</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span><span class="n">column_width</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_content</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">css_styles</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">text_obj</span>
+
+    <span class="c1"># Apply styles to the Text object</span>
+    <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">css_styles</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;background-color&quot;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">_parse_css_color</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">text_obj</span><span class="o">.</span><span class="n">stylize</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;on </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">_parse_css_color</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">text_obj</span><span class="o">.</span><span class="n">stylize</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;font-weight&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;bold&quot;</span><span class="p">:</span>
+            <span class="n">text_obj</span><span class="o">.</span><span class="n">stylize</span><span class="p">(</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;font-style&quot;</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;italic&quot;</span><span class="p">:</span>
+            <span class="n">text_obj</span><span class="o">.</span><span class="n">stylize</span><span class="p">(</span><span class="s2">&quot;italic&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text_obj</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_styler_styles</span><span class="p">(</span><span class="n">styler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract CSS styles from pandas Styler object.</span>
+
+<span class="sd">    Forces computation of styles and extracts the context dictionary</span>
+<span class="sd">    containing cell-level styling information.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        styler (pandas.io.formats.style.Styler): A pandas Styler object</span>
+<span class="sd">            with applied styles.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary mapping (row, col) tuples to lists of</span>
+<span class="sd">            (property, value) CSS style tuples.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Force computation of styles</span>
+    <span class="n">styler</span><span class="o">.</span><span class="n">_compute</span><span class="p">()</span>
+
+    <span class="c1"># Extract the context dictionary</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">styler</span><span class="o">.</span><span class="n">ctx</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_has_background_styles</span><span class="p">(</span><span class="n">styles</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if any styles contain background colors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        styles: Dictionary of styles from _extract_styler_styles</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if any background-color styles are found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">style_list</span> <span class="ow">in</span> <span class="n">styles</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">style_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;background-color&quot;</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;transparent&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;inherit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;initial&quot;</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_optimize_table_for_backgrounds</span><span class="p">(</span>
+    <span class="n">has_backgrounds</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">minimize_gaps</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get optimized table settings for background display.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        has_backgrounds: Whether the table has background colors</span>
+<span class="sd">        minimize_gaps: Force minimal gaps even without backgrounds</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary of table settings</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="ow">or</span> <span class="n">minimize_gaps</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="n">box</span><span class="o">.</span><span class="n">MINIMAL</span><span class="p">,</span>  <span class="c1"># Minimal borders to reduce gaps</span>
+            <span class="s2">&quot;padding&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># Minimal padding</span>
+            <span class="s2">&quot;collapse_padding&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Merge adjacent cell padding</span>
+            <span class="s2">&quot;show_edge&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Keep outer border for structure</span>
+            <span class="s2">&quot;pad_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># No padding around table edges</span>
+            <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Keep table size to fit content</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="n">box</span><span class="o">.</span><span class="n">ROUNDED</span><span class="p">,</span>  <span class="c1"># Default nice rounded borders</span>
+            <span class="s2">&quot;padding&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># Standard padding</span>
+            <span class="s2">&quot;collapse_padding&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;show_edge&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;pad_edge&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Don&#39;t expand by default</span>
+        <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_index_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format index value for display.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: Index value to format</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Formatted string representation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_multiindex_value</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format MultiIndex tuple for display.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values: Tuple of index values</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Formatted string with separator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">formatted</span> <span class="o">=</span> <span class="p">[</span><span class="n">_format_index_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_index_header_name</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get appropriate header name for index column.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        index: pandas Index object</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Header name string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;names&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+        <span class="c1"># MultiIndex or named index</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;Level_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;Index&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Index&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_index_styles</span><span class="p">(</span><span class="n">styles</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">is_series</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract styles that apply to index from pandas styler.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        styles: Extracted styles dictionary</span>
+<span class="sd">        is_series: Whether this is for a Series (different indexing)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary mapping index position to styles</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index_styles</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">is_series</span><span class="p">:</span>
+        <span class="c1"># For Series, index styles might be in column -1 or similar</span>
+        <span class="c1"># This is complex and pandas doesn&#39;t always style indices</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># For DataFrames, index styles are rare but possible</span>
+        <span class="c1"># This would require pandas styler that explicitly styles index</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">index_styles</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_measure_column_widths</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">show_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Measure the maximum width needed for each column.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df: DataFrame or Series to measure</span>
+<span class="sd">        show_index: Whether index column will be shown</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary mapping column names/index to their measured widths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">widths</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
+        <span class="c1"># Measure index column width if showing index</span>
+        <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+            <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">index_values</span> <span class="o">=</span> <span class="p">[]</span>
+            
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_multiindex_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_index_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+            
+            <span class="n">max_index_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">index_header</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">index_values</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">widths</span><span class="p">[</span><span class="s1">&#39;__index__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_index_width</span>
+        
+        <span class="c1"># Measure data columns</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">col_header</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="n">col_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]]</span>
+            <span class="n">max_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col_header</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">col_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">col_values</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_width</span>
+            
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="c1"># For Series, measure index and value columns</span>
+        <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+            <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">index_values</span> <span class="o">=</span> <span class="p">[]</span>
+            
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_multiindex_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_index_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+            
+            <span class="n">max_index_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">index_header</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">index_values</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">widths</span><span class="p">[</span><span class="s1">&#39;__index__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_index_width</span>
+        
+        <span class="c1"># Measure value column</span>
+        <span class="n">series_name</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Value&quot;</span>
+        <span class="n">series_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="p">]</span>
+        <span class="n">max_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">series_name</span><span class="p">)),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">series_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">series_values</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">widths</span><span class="p">[</span><span class="s1">&#39;__value__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_width</span>
+    
+    <span class="k">return</span> <span class="n">widths</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_index</span><span class="p">(</span><span class="n">index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">MultiIndex</span><span class="p">,</span> <span class="n">Index</span><span class="p">],</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save pandas index to feather file with metadata.</span>
+
+<span class="sd">    Internal function that saves index data and level names separately</span>
+<span class="sd">    to ensure proper reconstruction of complex indexes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        index (Union[MultiIndex, Index]): The pandas index to save.</span>
+<span class="sd">        path (Path): Directory path where index files will be saved.</span>
+<span class="sd">        name (str): Prefix name for the saved index files.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Creates two files: {name}_index.json for level names and</span>
+<span class="sd">        {name}_index.feather for index data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">level_names</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">names</span>
+    <span class="k">if</span> <span class="n">level_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">level_names</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">index</span><span class="o">.</span><span class="n">nlevels</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_index.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">level_names</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+    <span class="n">index</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">to_feather</span><span class="p">(</span>
+        <span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_index.feather&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_index</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Index</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load pandas index from feather file with metadata.</span>
+
+<span class="sd">    Internal function that reconstructs pandas index from saved</span>
+<span class="sd">    feather data and JSON metadata.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (Path): Directory path containing the index files.</span>
+<span class="sd">        name (str): Prefix name of the saved index files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Index: The reconstructed pandas Index or MultiIndex.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Automatically detects and returns single-level Index from MultiIndex</span>
+<span class="sd">        when appropriate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_index.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">level_names</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">index_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_index.feather&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis</span><span class="p">(</span>
+        <span class="n">level_names</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="n">index_df</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">level_names</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">nlevels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">index</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_values</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">PandasObject</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save DataFrame or Series values to feather file.</span>
+
+<span class="sd">    Internal function that extracts and saves the underlying data values</span>
+<span class="sd">    from pandas objects to feather format.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (PandasObject): The DataFrame or Series whose values to save.</span>
+<span class="sd">        path (Path): Directory path where values.feather will be saved.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the DataFrame contains unsupported data types</span>
+<span class="sd">            for feather format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">to_feather</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;values.feather&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ArrowInvalid</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;The DataFrame or Series contains an unsupported data type.&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_values</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load DataFrame values from feather file.</span>
+
+<span class="sd">    Internal function that loads the raw data values that were</span>
+<span class="sd">    saved by _save_values().</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (Path): Directory path containing values.feather file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: The loaded values as a DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_feather</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;values.feather&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_cache</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">PandasObject</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save pandas DataFrame or Series to cache directory.</span>
+
+<span class="sd">    Creates a directory structure with separate files for indexes,</span>
+<span class="sd">    column information, and data values to handle complex pandas objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (PandasObject): The DataFrame or Series to cache.</span>
+<span class="sd">        path (Union[str, Path]): Directory path for the cache.</span>
+<span class="sd">        overwrite (bool, optional): Whether to overwrite existing cache.</span>
+<span class="sd">            Defaults to False.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileExistsError: If path exists, is not empty, and overwrite is False.</span>
+<span class="sd">        ValueError: If the DataFrame or Series is empty.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        For DataFrames, saves index, columns, and values separately.</span>
+<span class="sd">        For Series, saves index, values, and series name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="s2">&quot;The path already exists and is not empty.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The DataFrame or Series is empty.&quot;</span><span class="p">)</span>
+
+    <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
+            <span class="n">_save_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span>
+            <span class="n">_save_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">)</span>
+            <span class="n">_save_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_save_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span>
+            <span class="n">_save_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;series.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
+
+
+<div class="viewcode-block" id="load_cache">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.load_cache">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_cache</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PandasObject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load cached pandas DataFrame or Series from directory.</span>
+
+<span class="sd">    Reconstructs a pandas object from the cache directory created</span>
+<span class="sd">    by _save_cache(), properly restoring indexes, columns, and metadata.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (Union[str, Path]): Path to the cache directory.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        PandasObject: The reconstructed DataFrame or Series with all</span>
+<span class="sd">            original structure and metadata preserved.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If the cache directory does not exist.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2], &#39;b&#39;: [3, 4]})</span>
+<span class="sd">        &gt;&gt;&gt; _save_cache(df, &#39;my_cache&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; loaded_df = load_cache(&#39;my_cache&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;The path does not exist.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;columns_index.feather&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">_load_index</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">_load_index</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">_load_values</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">_load_index</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">_load_values</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;series.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+
+    <span class="k">return</span> <span class="n">values</span></div>
+
+
+
+<div class="viewcode-block" id="cache_and_load">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.cache_and_load">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cache_and_load</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache a pandas object and immediately reload it.</span>
+
+<span class="sd">    This is a convenience function that saves an object to cache</span>
+<span class="sd">    and then loads it back, useful for testing cache integrity</span>
+<span class="sd">    or for ensuring feather-compatible data types.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj (PandasObject): The DataFrame or Series to cache and reload.</span>
+<span class="sd">        path (Union[str, Path]): Directory path for the cache.</span>
+<span class="sd">        overwrite (bool, optional): Whether to overwrite existing cache.</span>
+<span class="sd">            Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        PandasObject: The reloaded DataFrame or Series.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2], &#39;b&#39;: [3, 4]})</span>
+<span class="sd">        &gt;&gt;&gt; reloaded_df = cache_and_load(df, &#39;test_cache&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_save_cache</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">load_cache</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="UtilsAccessor">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.UtilsAccessor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UtilsAccessor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pandas accessor providing caching and rich display utilities.</span>
+<span class="sd">    </span>
+<span class="sd">    This accessor is automatically registered as &#39;.pirr&#39; on pandas</span>
+<span class="sd">    DataFrame and Series objects, providing convenient access to</span>
+<span class="sd">    caching functionality and rich table display features.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        _obj (PandasObject): The underlying pandas DataFrame or Series.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; df = pd.DataFrame({&#39;a&#39;: [1, 2], &#39;b&#39;: [3, 4]})</span>
+<span class="sd">        &gt;&gt;&gt; df.pirr.to_cache(&#39;my_cache&#39;)  # Cache the DataFrame</span>
+<span class="sd">        &gt;&gt;&gt; df.pirr.to_rich()  # Display as rich table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UtilsAccessor.__init__">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.UtilsAccessor.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pandas_obj</span><span class="p">:</span> <span class="n">PandasObject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the UtilsAccessor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pandas_obj (PandasObject): The pandas DataFrame or Series object</span>
+<span class="sd">                that this accessor is attached to.</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If pandas_obj is not a DataFrame or Series.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">pandas_obj</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">pandas_obj</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">PandasObject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate that the object is a supported pandas type.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj (PandasObject): The object to validate.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If the object is not a pandas DataFrame or Series.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;The object must be a pandas DataFrame or Series.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UtilsAccessor.to_cache">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.UtilsAccessor.to_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the DataFrame or Series to a cache directory.</span>
+
+<span class="sd">        This method provides convenient access to the caching functionality</span>
+<span class="sd">        through the pandas accessor interface.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Positional arguments passed to _save_cache().</span>
+<span class="sd">            **kwargs: Keyword arguments passed to _save_cache().</span>
+<span class="sd">            </span>
+<span class="sd">        Common Parameters:</span>
+<span class="sd">            path (Union[str, Path]): Directory path for the cache.</span>
+<span class="sd">            overwrite (bool, optional): Whether to overwrite existing cache.</span>
+<span class="sd">                Defaults to False.</span>
+<span class="sd">                </span>
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; df.pirr.to_cache(&#39;my_cache&#39;, overwrite=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_save_cache</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UtilsAccessor.to_rich">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.UtilsAccessor.to_rich">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_rich</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">styler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">console</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">minimize_gaps</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span>
+        <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold dim&quot;</span><span class="p">,</span>
+        <span class="n">index_justify</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+        <span class="n">index_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># Built-in styling options</span>
+        <span class="n">bg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bg_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">tg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">tg_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">column_header_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">index_bg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">index_bg_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">alternating_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">alternating_row_colors</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;on grey11&quot;</span><span class="p">),</span>
+        <span class="n">table_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">table_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Rich table from pandas DataFrame or Series with advanced styling.</span>
+
+<span class="sd">        This method converts pandas objects into beautifully formatted Rich tables</span>
+<span class="sd">        with support for CSS styling from pandas Styler objects, built-in gradients,</span>
+<span class="sd">        and extensive customization options.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            styler (pandas.io.formats.style.Styler, optional): Pandas Styler object</span>
+<span class="sd">                with applied styles. If None, uses basic formatting.</span>
+<span class="sd">            console (rich.console.Console, optional): Rich Console object to use.</span>
+<span class="sd">                If None, creates a new one.</span>
+<span class="sd">            minimize_gaps (bool, optional): Force minimal padding/borders for better</span>
+<span class="sd">                background color display. Defaults to False.</span>
+<span class="sd">            show_index (bool, optional): Whether to show the index as a separate</span>
+<span class="sd">                column. Defaults to True.</span>
+<span class="sd">            index_style (str, optional): Rich style string for index values</span>
+<span class="sd">                (e.g., &quot;dim&quot;, &quot;bold blue&quot;). Defaults to &quot;dim&quot;.</span>
+<span class="sd">            index_header_style (str, optional): Rich style string for index column</span>
+<span class="sd">                header. Defaults to &quot;bold dim&quot;.</span>
+<span class="sd">            index_justify (str, optional): Text justification for index column</span>
+<span class="sd">                (&quot;left&quot;, &quot;center&quot;, &quot;right&quot;). Defaults to &quot;left&quot;.</span>
+<span class="sd">            index_width (int, optional): Fixed width for index column. If None,</span>
+<span class="sd">                auto-sizes based on content.</span>
+
+<span class="sd">            bg (str, optional): Background gradient style. Use &quot;gradient&quot; for</span>
+<span class="sd">                default colormap or specify colormap name (e.g., &quot;viridis&quot;).</span>
+<span class="sd">            bg_kwargs (dict, optional): Additional arguments for background_gradient().</span>
+<span class="sd">            tg (str, optional): Text gradient style. Use &quot;gradient&quot; for default</span>
+<span class="sd">                colormap or specify colormap name.</span>
+<span class="sd">            tg_kwargs (dict, optional): Additional arguments for text_gradient().</span>
+<span class="sd">            column_header_style (str, optional): Rich style string for column headers.</span>
+<span class="sd">            index_bg (str, optional): Background gradient for index. Use &quot;gradient&quot;</span>
+<span class="sd">                or specify colormap name.</span>
+<span class="sd">            index_bg_kwargs (dict, optional): Additional arguments for index</span>
+<span class="sd">                background_gradient().</span>
+<span class="sd">            alternating_rows (bool, optional): Whether to apply alternating row</span>
+<span class="sd">                colors. Defaults to False.</span>
+<span class="sd">            alternating_row_colors (tuple, optional): Tuple of (even_style, odd_style)</span>
+<span class="sd">                for alternating rows. Defaults to (&quot;&quot;, &quot;on grey11&quot;).</span>
+<span class="sd">            table_style (str, optional): Rich style string applied to entire table.</span>
+<span class="sd">            **table_kwargs: Additional keyword arguments passed to Rich Table constructor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            rich.table.Table: A Rich Table object ready for display or printing.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            Basic usage:</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich()</span>
+
+<span class="sd">            Background gradients:</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(bg=&quot;gradient&quot;)</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(bg=&quot;viridis&quot;, bg_kwargs={&quot;axis&quot;: 0})</span>
+
+<span class="sd">            Text gradients:</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(tg=&quot;gradient&quot;)</span>
+
+<span class="sd">            Header styling:</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(column_header_style=&quot;bold blue on white&quot;)</span>
+
+<span class="sd">            Alternating rows:</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(alternating_rows=True)</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(alternating_rows=True, </span>
+<span class="sd">                ...                 alternating_row_colors=(&quot;&quot;, &quot;on blue&quot;))</span>
+
+<span class="sd">            Combined styling:</span>
+<span class="sd">                &gt;&gt;&gt; df.pirr.to_rich(bg=&quot;viridis&quot;, tg=&quot;plasma&quot;, alternating_rows=True,</span>
+<span class="sd">                ...                 table_style=&quot;bold&quot;, title=&quot;My Data&quot;)</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            The method automatically optimizes table settings when background colors</span>
+<span class="sd">            are detected, minimizing gaps for better visual appearance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">console</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+        <span class="c1"># Create or modify styler with built-in styling options</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">bg</span> <span class="ow">or</span> <span class="n">tg</span> <span class="ow">or</span> <span class="n">index_bg</span> <span class="ow">or</span> <span class="n">alternating_rows</span> <span class="ow">or</span> 
+            <span class="nb">any</span><span class="p">([</span><span class="n">bg</span><span class="p">,</span> <span class="n">tg</span><span class="p">,</span> <span class="n">column_header_style</span><span class="p">,</span> <span class="n">index_bg</span><span class="p">,</span> <span class="n">alternating_rows</span><span class="p">])):</span>
+            
+            <span class="c1"># Start with existing styler or create new one</span>
+            <span class="k">if</span> <span class="n">styler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Only DataFrames have .style, Series need to be converted</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+                    <span class="c1"># Convert Series to DataFrame for styling, then back</span>
+                    <span class="n">temp_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+                    <span class="n">styler</span> <span class="o">=</span> <span class="n">temp_df</span><span class="o">.</span><span class="n">style</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">styler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">style</span>
+            
+            <span class="c1"># Apply background gradient</span>
+            <span class="k">if</span> <span class="n">bg</span><span class="p">:</span>
+                <span class="n">bg_kwargs</span> <span class="o">=</span> <span class="n">bg_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">bg</span> <span class="o">==</span> <span class="s2">&quot;gradient&quot;</span><span class="p">:</span>
+                    <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="o">**</span><span class="n">bg_kwargs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">bg</span><span class="p">,</span> <span class="o">**</span><span class="n">bg_kwargs</span><span class="p">)</span>
+            
+            <span class="c1"># Apply text gradient</span>
+            <span class="k">if</span> <span class="n">tg</span><span class="p">:</span>
+                <span class="n">tg_kwargs</span> <span class="o">=</span> <span class="n">tg_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">tg</span> <span class="o">==</span> <span class="s2">&quot;gradient&quot;</span><span class="p">:</span>
+                    <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">text_gradient</span><span class="p">(</span><span class="o">**</span><span class="n">tg_kwargs</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">text_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">tg</span><span class="p">,</span> <span class="o">**</span><span class="n">tg_kwargs</span><span class="p">)</span>
+            
+            <span class="c1"># Apply index background gradient (only works with numeric data)</span>
+            <span class="k">if</span> <span class="n">index_bg</span> <span class="ow">and</span> <span class="n">show_index</span><span class="p">:</span>
+                <span class="n">index_bg_kwargs</span> <span class="o">=</span> <span class="n">index_bg_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Only apply to numeric columns if it&#39;s a DataFrame</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+                        <span class="n">numeric_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numeric_cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">index_bg</span> <span class="o">==</span> <span class="s2">&quot;gradient&quot;</span><span class="p">:</span>
+                                <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">numeric_cols</span><span class="p">,</span> <span class="o">**</span><span class="n">index_bg_kwargs</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">numeric_cols</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">index_bg</span><span class="p">,</span> <span class="o">**</span><span class="n">index_bg_kwargs</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># For Series, check if it&#39;s numeric</span>
+                        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_numeric_dtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">index_bg</span> <span class="o">==</span> <span class="s2">&quot;gradient&quot;</span><span class="p">:</span>
+                                <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="o">**</span><span class="n">index_bg_kwargs</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">index_bg</span><span class="p">,</span> <span class="o">**</span><span class="n">index_bg_kwargs</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="c1"># Skip if gradient fails</span>
+                    <span class="k">pass</span>
+            
+            <span class="c1"># Note: Alternating row colors will be handled in Rich rendering stage</span>
+            <span class="c1"># since pandas styler expects CSS format, not Rich format</span>
+
+        <span class="c1"># Extract styles if styler is provided</span>
+        <span class="n">styles</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">styler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">styles</span> <span class="o">=</span> <span class="n">_extract_styler_styles</span><span class="p">(</span><span class="n">styler</span><span class="p">)</span>
+
+        <span class="c1"># Auto-detect backgrounds and optimize table settings</span>
+        <span class="n">has_backgrounds</span> <span class="o">=</span> <span class="n">_has_background_styles</span><span class="p">(</span><span class="n">styles</span><span class="p">)</span>
+        <span class="n">optimized_settings</span> <span class="o">=</span> <span class="n">_optimize_table_for_backgrounds</span><span class="p">(</span>
+            <span class="n">has_backgrounds</span><span class="p">,</span> <span class="n">minimize_gaps</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Measure column widths for dynamic padding when backgrounds are present</span>
+        <span class="n">column_widths</span> <span class="o">=</span> <span class="n">_measure_column_widths</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">show_index</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="p">{}</span>
+
+        <span class="c1"># Merge optimized settings with user-provided kwargs (user kwargs take priority)</span>
+        <span class="n">final_table_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">optimized_settings</span><span class="p">,</span> <span class="o">**</span><span class="n">table_kwargs</span><span class="p">}</span>
+        
+        <span class="c1"># Apply table-wide style if specified</span>
+        <span class="k">if</span> <span class="n">table_style</span><span class="p">:</span>
+            <span class="n">final_table_kwargs</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table_style</span>
+
+        <span class="c1"># Create Rich table with optimized settings</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="o">**</span><span class="n">final_table_kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
+            <span class="c1"># Add index column if requested</span>
+            <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+                <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span>
+                    <span class="n">index_header</span><span class="p">,</span>
+                    <span class="n">style</span><span class="o">=</span><span class="n">index_style</span><span class="p">,</span>
+                    <span class="n">header_style</span><span class="o">=</span><span class="n">index_header_style</span><span class="p">,</span>
+                    <span class="n">justify</span><span class="o">=</span><span class="n">index_justify</span><span class="p">,</span>
+                    <span class="n">width</span><span class="o">=</span><span class="n">index_width</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Add data columns</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">column_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;header_style&quot;</span><span class="p">:</span> <span class="n">column_header_style</span><span class="p">}</span> <span class="k">if</span> <span class="n">column_header_style</span> <span class="k">else</span> <span class="p">{}</span>
+                <span class="c1"># Enable expansion for data columns when backgrounds are present</span>
+                <span class="k">if</span> <span class="n">has_backgrounds</span><span class="p">:</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">),</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="o">**</span><span class="n">column_args</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">),</span> <span class="o">**</span><span class="n">column_args</span><span class="p">)</span>
+
+            <span class="c1"># Add rows with styling</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()):</span>
+                <span class="n">styled_row</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="c1"># Add index value if showing index</span>
+                <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+                        <span class="n">index_value</span> <span class="o">=</span> <span class="n">_format_multiindex_value</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">index_value</span> <span class="o">=</span> <span class="n">_format_index_value</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                    <span class="c1"># Apply padding to index if backgrounds are present</span>
+                    <span class="k">if</span> <span class="n">has_backgrounds</span><span class="p">:</span>
+                        <span class="n">index_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;__index__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                        <span class="n">index_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">index_width</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">index_width</span><span class="p">:</span>
+                            <span class="n">index_text</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span><span class="n">index_width</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">)))</span>
+                        <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_text</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_value</span><span class="p">)</span>
+
+                <span class="c1"># Add data values with styling</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                    <span class="n">cell_styles</span> <span class="o">=</span> <span class="n">styles</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="p">[])</span>
+                    <span class="c1"># Use dynamic column width for background padding</span>
+                    <span class="n">column_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">styled_text</span> <span class="o">=</span> <span class="n">_css_to_rich_text</span><span class="p">(</span><span class="n">cell_styles</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">column_width</span><span class="p">)</span>
+                    
+                    <span class="c1"># Apply alternating row colors if enabled</span>
+                    <span class="k">if</span> <span class="n">alternating_rows</span> <span class="ow">and</span> <span class="n">styled_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">alt_style</span> <span class="o">=</span> <span class="n">alternating_row_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">alt_style</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">styled_text</span><span class="p">,</span> <span class="n">Text</span><span class="p">):</span>
+                            <span class="n">styled_text</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">alt_style</span>
+                        <span class="k">elif</span> <span class="n">alt_style</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">styled_text</span><span class="p">,</span> <span class="n">Text</span><span class="p">):</span>
+                            <span class="n">styled_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">styled_text</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="n">alt_style</span><span class="p">)</span>
+                    
+                    <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">styled_text</span><span class="p">)</span>
+
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="o">*</span><span class="n">styled_row</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">Series</span><span class="p">):</span>
+            <span class="c1"># For Series, always show index (it&#39;s the main identifier)</span>
+            <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+                <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span>
+                    <span class="n">index_header</span><span class="p">,</span>
+                    <span class="n">style</span><span class="o">=</span><span class="n">index_style</span><span class="p">,</span>
+                    <span class="n">header_style</span><span class="o">=</span><span class="n">index_header_style</span><span class="p">,</span>
+                    <span class="n">justify</span><span class="o">=</span><span class="n">index_justify</span><span class="p">,</span>
+                    <span class="n">width</span><span class="o">=</span><span class="n">index_width</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Add value column</span>
+            <span class="n">series_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Value&quot;</span>
+            <span class="n">column_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;header_style&quot;</span><span class="p">:</span> <span class="n">column_header_style</span><span class="p">}</span> <span class="k">if</span> <span class="n">column_header_style</span> <span class="k">else</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">has_backgrounds</span><span class="p">:</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">series_name</span><span class="p">),</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="o">**</span><span class="n">column_args</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">series_name</span><span class="p">),</span> <span class="o">**</span><span class="n">column_args</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">styled_row</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="c1"># Add index value if showing index</span>
+                <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+                        <span class="n">index_value</span> <span class="o">=</span> <span class="n">_format_multiindex_value</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">index_value</span> <span class="o">=</span> <span class="n">_format_index_value</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                    <span class="c1"># Apply padding to index if backgrounds are present</span>
+                    <span class="k">if</span> <span class="n">has_backgrounds</span><span class="p">:</span>
+                        <span class="n">index_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;__index__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                        <span class="n">index_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">index_width</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">index_width</span><span class="p">:</span>
+                            <span class="n">index_text</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span><span class="n">index_width</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">)))</span>
+                        <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_text</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_value</span><span class="p">)</span>
+
+                <span class="c1"># Series styler uses (row, 0) for indexing</span>
+                <span class="n">cell_styles</span> <span class="o">=</span> <span class="n">styles</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[])</span>
+                <span class="c1"># Use dynamic column width for background padding</span>
+                <span class="n">column_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;__value__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">styled_value</span> <span class="o">=</span> <span class="n">_css_to_rich_text</span><span class="p">(</span><span class="n">cell_styles</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">column_width</span><span class="p">)</span>
+                <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">styled_value</span><span class="p">)</span>
+
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="o">*</span><span class="n">styled_row</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">table</span></div>
+</div>
+
+
+
+<span class="n">reg_df</span><span class="p">(</span><span class="s2">&quot;pirr&quot;</span><span class="p">)(</span><span class="n">UtilsAccessor</span><span class="p">)</span>
+<span class="n">reg_ser</span><span class="p">(</span><span class="s2">&quot;pirr&quot;</span><span class="p">)(</span><span class="n">UtilsAccessor</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="create_class">
+<a class="viewcode-back" href="../../api_reference.html#pirrtools.pandas.create_class">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_class</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">I_N</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pandas_obj</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">pandas_obj</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span> <span class="o">=</span> <span class="n">pandas_obj</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_grp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span>
+
+        <span class="nd">@staticmethod</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_validate</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;The object must be a pandas DataFrame or Series.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">nlevels</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The object must have at least </span><span class="si">{</span><span class="n">level</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> index level(s).&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grp</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grp</span><span class="p">)</span>
+
+    <span class="n">I_N</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;I</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">I_N</span></div>
+
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="n">create_class</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">reg_df</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">())(</span><span class="bp">cls</span><span class="p">)</span>
+    <span class="n">reg_ser</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">())(</span><span class="bp">cls</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
