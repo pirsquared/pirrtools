@@ -15,8 +15,14 @@ For context from previous conversations and changes made to this codebase, see [
 
 ### Code Quality
 - Format code: `black pirrtools tests`
-- Run linter: `pylint pirrtools`
+- Run modern linter: `ruff check pirrtools tests`
+- Run type checker: `mypy pirrtools`
 - Pre-commit hooks: `pre-commit run --all-files`
+
+### Documentation
+- Build Sphinx docs: `make -C docs html`
+- Serve docs locally: `python -m http.server 8080 --directory docs/_build/html`
+- Interactive tutorial: `python examples/tutor.py`
 
 ### Building and Distribution
 - Build package: `python -m build`
@@ -92,8 +98,11 @@ docker-compose run --rm pirrtools-dev black pirrtools tests
 ### Testing Strategy
 
 Tests are located in `tests/` directory with pytest framework. Key test files:
-- `test_pandas.py`: Core caching functionality tests
+- `test_pandas.py`: Core caching functionality tests  
+- `test_to_rich.py`: Comprehensive to_rich method testing (177 tests)
+- `test_structures.py`: AttrDict/AttrPath testing
+- `test_init.py`: Integration and utility testing
 - `test_list_chunks.py`: List chunking utilities
 - `test_sequences.py`: Sequence manipulation functions
 
-Tests use temporary directories (`tmp_path` fixture) and pandas testing utilities for DataFrame/Series comparisons.
+Tests use temporary directories (`tmp_path` fixture) and pandas testing utilities for DataFrame/Series comparisons. Current test coverage: 88% with comprehensive parameter testing and edge case validation.

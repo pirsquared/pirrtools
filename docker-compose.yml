@@ -2,18 +2,34 @@ services:
   pirrtools-dev:
     build: .
     container_name: pirrtools-dev
+    ports:
+      - "8000:8000"  # General web server port
+      - "8080:8080"  # Sphinx docs server port
     volumes:
       - .:/workspace:cached
       - pirrtools-cache:/home/developer/.cache
       - pre-commit-cache:/home/developer/.cache/pre-commit
+      - ruff-cache:/home/developer/.cache/ruff
+      - mypy-cache:/home/developer/.cache/mypy
+      - jupyter-cache:/home/developer/.cache/jupyter
     working_dir: /workspace
     tty: true
     stdin_open: true
     environment:
       - PYTHONPATH=/workspace
       - PRE_COMMIT_HOME=/home/developer/.cache/pre-commit
+      - MPLCONFIGDIR=/home/developer/.cache/matplotlib
+      - RUFF_CACHE_DIR=/home/developer/.cache/ruff
+      - MYPY_CACHE_DIR=/home/developer/.cache/mypy  
+      - NOX_DEFAULT_VENV_BACKEND=venv
+      - JUPYTER_CONFIG_DIR=/home/developer/.cache/jupyter
+      - PYTHONIOENCODING=utf-8
+      - TERM=xterm-256color
     command: /bin/bash -c "/home/developer/.setup-dev.sh && exec /bin/bash"
 
 volumes:
   pirrtools-cache:
   pre-commit-cache:
+  ruff-cache:
+  mypy-cache:
+  jupyter-cache:

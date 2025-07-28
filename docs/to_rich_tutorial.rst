@@ -24,11 +24,11 @@ Quick Start
 
 Basic usage is simple:
 
-.. code-block:: python
+.. rich-table::
+   :width: 600px
 
    import pandas as pd
    import pirrtools
-   from rich.console import Console
    
    # Create sample data
    df = pd.DataFrame({
@@ -37,7 +37,6 @@ Basic usage is simple:
    })
    
    # Convert to Rich table
-   console = Console()
    table = df.pirr.to_rich(title="Sales Report")
    console.print(table)
 
@@ -86,15 +85,27 @@ Apply color gradients to table backgrounds for enhanced data visualization.
 Basic Gradients
 ---------------
 
-.. code-block:: python
+.. rich-table::
+   :width: 600px
 
-   # Default gradient
-   table = df.pirr.to_rich(bg="gradient")
+   import pandas as pd
+   import pirrtools
    
-   # Specific colormap
-   table = df.pirr.to_rich(bg="viridis")
-   table = df.pirr.to_rich(bg="plasma")
-   table = df.pirr.to_rich(bg="coolwarm")
+   # Create sample data with quarterly performance
+   df = pd.DataFrame({
+       'Q1': [100, 150, 200],
+       'Q2': [120, 180, 220], 
+       'Q3': [140, 200, 180],
+       'Q4': [160, 170, 240]
+   }, index=['Product A', 'Product B', 'Product C'])
+   
+   # Convert to Rich table with gradient background
+   table = df.pirr.to_rich(
+       bg="viridis",
+       title="📊 Quarterly Performance",
+       column_header_style="bold white on blue"
+   )
+   console.print(table)
 
 Available colormaps include: ``viridis``, ``plasma``, ``inferno``, ``magma``, ``cividis``, ``coolwarm``, ``RdYlBu``, ``RdYlGn``, ``spectral``, and more.
 
@@ -131,16 +142,26 @@ Text Gradients
 
 Apply color gradients to text for enhanced readability.
 
-.. code-block:: python
+.. rich-table::
+   :width: 700px
 
-   # Default text gradient
-   table = df.pirr.to_rich(tg="gradient")
+   import pandas as pd
+   import pirrtools
    
-   # Specific colormap
-   table = df.pirr.to_rich(tg="inferno")
+   # Create weather data
+   df = pd.DataFrame({
+       'Temperature': [32.1, 28.7, 35.4, 29.8, 33.2],
+       'Humidity': [65, 72, 58, 81, 69],
+       'Pressure': [1013.2, 1009.8, 1015.6, 1007.3, 1011.9]
+   }, index=['Mon', 'Tue', 'Wed', 'Thu', 'Fri'])
    
-   # Combined with background
-   table = df.pirr.to_rich(bg="viridis", tg="plasma")
+   # Convert to Rich table with text gradient
+   table = df.pirr.to_rich(
+       tg="plasma",
+       title="🌡️ Weather Data",
+       index_style="bold cyan"
+   )
+   console.print(table)
 
 Header and Index Styling
 ========================
@@ -181,23 +202,27 @@ Alternating Rows
 
 Improve readability with alternating row colors.
 
-.. code-block:: python
+.. rich-table::
+   :width: 500px
 
-   # Default alternating colors
-   table = df.pirr.to_rich(alternating_rows=True)
+   import pandas as pd
+   import pirrtools
    
-   # Custom colors
+   # Create student grades data
+   df = pd.DataFrame({
+       'Name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
+       'Score': [95, 87, 92, 89, 94],
+       'Grade': ['A', 'B+', 'A-', 'B+', 'A']
+   })
+   
+   # Convert to Rich table with alternating rows
    table = df.pirr.to_rich(
        alternating_rows=True,
-       alternating_row_colors=("", "on dark_blue")
+       alternating_row_colors=("", "on dark_blue"),
+       title="🎓 Student Grades",
+       show_index=False
    )
-   
-   # With gradients
-   table = df.pirr.to_rich(
-       bg="gradient",
-       alternating_rows=True,
-       alternating_row_colors=("", "on grey15")
-   )
+   console.print(table)
 
 Advanced Styling
 ===============
@@ -218,6 +243,33 @@ Professional Report Style
        border_style="blue"
    )
 
+.. rich-table::
+   :width: 700px
+
+   import pandas as pd
+   import pirrtools
+   
+   # Create sample data
+   df = pd.DataFrame({
+       'Q1': [100, 150, 200],
+       'Q2': [120, 180, 220], 
+       'Q3': [140, 200, 180],
+       'Q4': [160, 170, 240]
+   }, index=['Product A', 'Product B', 'Product C'])
+   
+   # Professional styling example
+   table = df.pirr.to_rich(
+       bg="viridis",
+       column_header_style="bold white on dark_blue",
+       index_header_style="bold yellow on dark_red", 
+       index_style="italic cyan",
+       alternating_rows=True,
+       alternating_row_colors=("", "on grey11"),
+       title="📊 Quarterly Sales Report",
+       border_style="blue"
+   )
+   console.print(table)
+
 High Contrast Theme
 ------------------
 
@@ -231,6 +283,31 @@ High Contrast Theme
        title="⚡ High Contrast Report",
        border_style="bright_yellow"
    )
+
+.. rich-table::
+   :width: 700px
+
+   import pandas as pd
+   import pirrtools
+   
+   # Create sample data
+   df = pd.DataFrame({
+       'Q1': [100, 150, 200],
+       'Q2': [120, 180, 220], 
+       'Q3': [140, 200, 180],
+       'Q4': [160, 170, 240]
+   }, index=['Product A', 'Product B', 'Product C'])
+   
+   # High contrast theme example
+   table = df.pirr.to_rich(
+       bg="coolwarm",
+       column_header_style="bold black on bright_white",
+       index_header_style="bold white on bright_black",
+       table_style="bold",
+       title="⚡ High Contrast Report",
+       border_style="bright_yellow"
+   )
+   console.print(table)
 
 Pandas Styler Integration
 ========================
