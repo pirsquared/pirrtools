@@ -30,7 +30,12 @@
       "Bash(pytest:*)",
       "Bash(make:*)",
       "Bash(pre-commit run:*)",
-      "Bash(git tag:*)"
+      "Bash(git tag:*)",
+      "Bash(isort:*)",
+      "Bash(flake8:*)",
+      "Bash(black:*)",
+      "Bash(sed:*)",
+      "Bash(mypy:*)"
     ],
     "deny": []
   }

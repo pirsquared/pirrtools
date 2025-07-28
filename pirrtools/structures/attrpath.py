@@ -300,7 +300,8 @@ _Path = type(Path())
 class AttrPath(_Path):
     @cached_property
     def _attr(self):
-        """Builds a dictionary of attribute-accessible children: D, F, extension groups, and all safe names."""
+        """Builds a dictionary of attribute-accessible children: D, F, extension
+        groups, and all safe names."""
         attr = {}
         pself = Path(self)
         try:
@@ -340,12 +341,12 @@ class AttrPath(_Path):
         return attr
 
     """Enhanced pathlib.Path with attribute-based navigation and file viewing.
-    
+
     AttrPath extends pathlib.Path to provide intuitive attribute-based
     navigation through file systems and intelligent viewing of different
     file types. Files and directories become accessible as attributes,
     with automatic safe naming and organized access patterns.
-    
+
     Key Features:
         - Access files and directories as attributes
         - Automatic file viewing based on extension
@@ -353,17 +354,17 @@ class AttrPath(_Path):
         - Organized access by file type (.py, .csv, etc.)
         - Safe attribute names for special characters
         - Built-in handlers for common file formats
-    
+
     Attributes:
         _view_handlers (dict): Mapping of file extensions to view handlers.
-    
+
     Example:
         >>> path = AttrPath('/project')
         >>> path.src.main_py.view  # View with syntax highlighting
         >>> path.data.D.subdir    # Navigate to subdirectory
         >>> path.py.utils         # Access utils.py via extension group
         >>> path.csv.data         # Access data.csv via extension group
-    
+
     Note:
         All paths are automatically expanded and resolved to absolute paths.
     """
@@ -383,7 +384,8 @@ class AttrPath(_Path):
     }
 
     def __new__(cls, *args, **kwargs):
-        """Create new AttrPath instance with expanded user path (no resolve to avoid recursion)."""
+        """Create new AttrPath instance with expanded user path (no resolve to
+        avoid recursion)."""
         self = super().__new__(cls, *args, **kwargs).expanduser()
         return self
 
@@ -436,7 +438,8 @@ class AttrPath(_Path):
         return self.suffix[1:]
 
     def __dir__(self):
-        """Return list of available attributes for this path, including safe names, D/F, extension groups, and .view/.code."""
+        """Return list of available attributes for this path, including safe
+        names, D/F, extension groups, and .view/.code."""
         names = set(super().__dir__())
         try:
             attr = self._attr or {}
@@ -459,7 +462,8 @@ class AttrPath(_Path):
         return list(names)
 
     def __getattr__(self, name):
-        """Attribute-based access to extension groups, D/F, safe names, and direct children. Never call is_file/is_dir here."""
+        """Attribute-based access to extension groups, D/F, safe names, and
+        direct children. Never call is_file/is_dir here."""
         # Provide .view for supported files
         if name == "view":
             ext = self._suffix
@@ -499,7 +503,8 @@ class AttrPath(_Path):
                     return handler(self, *args, **kwargs)
 
                 return _view
-        # Only handle custom attribute names for extension groups, D/F, safe names, and direct children
+        # Only handle custom attribute names for extension groups, D/F, safe
+        # names, and direct children
         try:
             _attr = object.__getattribute__(self, "_attr")
         except Exception:

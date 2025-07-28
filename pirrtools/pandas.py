@@ -724,7 +724,8 @@ class UtilsAccessor:
             alternating_row_colors (tuple, optional): Tuple of (even_style, odd_style)
                 for alternating rows. Defaults to ("", "on grey11").
             table_style (str, optional): Rich style string applied to entire table.
-            **table_kwargs: Additional keyword arguments passed to Rich Table constructor.
+            **table_kwargs: Additional keyword arguments passed to Rich Table
+                constructor.
 
         Returns:
             rich.table.Table: A Rich Table object ready for display or printing.
