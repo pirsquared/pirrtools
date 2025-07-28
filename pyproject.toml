@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pirrtools"
-version = "0.2.14"  # Update this version number before you upload a new version to PyPI
+version = "0.2.15"  # Update this version number before you upload a new version to PyPI
 description = "Collection of tools I use in my projects"
 readme = "README.md"
 license = "MIT"
@@ -32,15 +32,38 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "pytest",
-  "pytest-cov",
-  "build",
-  "twine",
-  "black",
-  'pre-commit',
-  'pylint',
-  'sphinx',
-  'sphinx-rtd-theme',
+  # Testing
+  "pytest>=7.0.0",
+  "pytest-cov>=4.0.0",
+  "pytest-xdist>=3.0.0",  # Parallel test execution
+  
+  # Code Quality
+  "black>=23.0.0",
+  "isort>=5.12.0",
+  "flake8>=6.0.0",
+  "mypy>=1.0.0",
+  "pylint>=2.17.0",
+  "pre-commit>=3.0.0",
+  
+  # Type checking helpers
+  "types-requests",
+  "types-setuptools",
+  
+  # Building and Publishing
+  "build>=0.10.0",
+  "twine>=4.0.0",
+  "wheel>=0.40.0",
+  
+  # Documentation
+  "sphinx>=6.0.0",
+  "sphinx-rtd-theme>=1.2.0",
+  "sphinx-autodoc-typehints>=1.22.0",
+  "myst-parser>=1.0.0",  # Markdown support for Sphinx
+  
+  # Development utilities
+  "tox>=4.0.0",  # Testing across environments
+  "coverage[toml]>=7.0.0",  # Coverage with TOML config
+  "bandit>=1.7.0",  # Security linting
 ]
 
 [tool.black]
@@ -65,5 +88,77 @@ exclude = '''
   | old
   | static
   | unmanaged
+  | pirrtools-test
 )/
 '''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["pirrtools"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+show_error_codes = true
+namespace_packages = true
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["pirrtools"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "pirrtools-test/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "pirrtools-test"]
+skips = ["B101", "B601"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py38,py39,py310,py311,lint,mypy
+isolated_build = True
+
+[testenv]
+deps = 
+    pytest
+    pytest-cov
+commands = pytest {posargs}
+
+[testenv:lint]
+deps = 
+    black
+    isort
+    flake8
+commands = 
+    black --check pirrtools tests
+    isort --check-only pirrtools tests
+    flake8 pirrtools tests
+
+[testenv:mypy]
+deps = 
+    mypy
+    types-requests
+    types-setuptools
+commands = mypy pirrtools --ignore-missing-imports
+"""

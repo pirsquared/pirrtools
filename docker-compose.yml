@@ -5,12 +5,15 @@ services:
     volumes:
       - .:/workspace:cached
       - pirrtools-cache:/home/developer/.cache
+      - pre-commit-cache:/home/developer/.cache/pre-commit
     working_dir: /workspace
     tty: true
     stdin_open: true
     environment:
       - PYTHONPATH=/workspace
-    command: /bin/bash
+      - PRE_COMMIT_HOME=/home/developer/.cache/pre-commit
+    command: /bin/bash -c "/home/developer/.setup-dev.sh && exec /bin/bash"
 
 volumes:
   pirrtools-cache:
+  pre-commit-cache:

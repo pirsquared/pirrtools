@@ -8,27 +8,94 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        // Python core
         "ms-python.python",
         "ms-python.black-formatter",
         "ms-python.pylint",
         "ms-python.isort",
-        "charliermarsh.ruff",
+        "ms-python.mypy-type-checker",
+        
+        // Testing
+        "ms-python.pytest",
         "ms-vscode.test-adapter-converter",
         "littlefoxteam.vscode-python-test-adapter",
+        
+        // Code quality
+        "charliermarsh.ruff",
+        "ms-python.flake8",
+        "tamasfe.even-better-toml",
+        
+        // Documentation
+        "ms-python.docstring-generator",
+        "lextudio.restructuredtext",
+        "trond-snekvik.simple-rst",
+        
+        // Git and pre-commit
+        "eamodio.gitlens",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        
+        // Development utilities
         "ms-vscode.vscode-typescript-next",
-        "ms-vscode.vscode-json"
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.hexeditor",
+        "gruntfuggly.todo-tree"
       ],
       "settings": {
+        // Python interpreter and tools
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.formatting.provider": "black",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
+        "python.linting.flake8Enabled": true,
+        "python.linting.mypyEnabled": true,
+        "python.linting.banditEnabled": true,
+        
+        // Testing configuration
         "python.testing.pytestEnabled": true,
         "python.testing.unittestEnabled": false,
+        "python.testing.pytestArgs": ["tests/"],
+        
+        // Editor behavior
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-          "source.organizeImports": true
-        }
+          "source.organizeImports": true,
+          "source.fixAll": true
+        },
+        "editor.rulers": [88],
+        
+        // File associations
+        "files.associations": {
+          "*.toml": "toml",
+          "*.yml": "yaml",
+          "*.yaml": "yaml",
+          ".pre-commit-config.yaml": "yaml",
+          "pyproject.toml": "toml",
+          "setup.cfg": "ini"
+        },
+        
+        // Terminal settings
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "args": ["-l"]
+          }
+        },
+        
+        // Git settings
+        "git.enableCommitSigning": false,
+        "git.autofetch": true,
+        
+        // Todo tree settings for development tasks
+        "todo-tree.general.tags": [
+          "TODO",
+          "FIXME",
+          "NOTE",
+          "HACK",
+          "XXX",
+          "BUG"
+        ]
       }
     }
   },

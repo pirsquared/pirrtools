@@ -16,15 +16,16 @@ Example:
     >>> reloaded_module = reload_entity(my_module)
 """
 
-import sys as __sys
-import pathlib as __pathlib
 import importlib as __importlib
 import importlib.util as __importlib_util
+import pathlib as __pathlib
+import sys as __sys
 import types as __types
-from IPython import get_ipython
-from .pandas import load_cache
-from .structures import *
 
+from IPython import get_ipython
+
+from .pandas import load_cache  # noqa: F401
+from .structures import AttrDict, AttrPath  # noqa: F401
 
 __HOME = __pathlib.Path.home().absolute()
 
@@ -44,10 +45,12 @@ def addpath(path, position=0, verbose=False):
         Duplicate paths are not added.
     """
     path = __pathlib.Path(path).expanduser().absolute()
-    if path not in __sys.path:
-        __sys.path.insert(position, str(path))
-        if verbose:
-            print(f'added "{str(path)}" into system path at position {position}')
+    path_str = str(path)
+    # Remove all existing occurrences of the path
+    __sys.path = [p for p in __sys.path if p != path_str]
+    __sys.path.insert(position, path_str)
+    if verbose:
+        print(f'added "{path_str}" into system path at position {position}')
 
 
 def reload_entity(entity):
@@ -92,7 +95,7 @@ def __get_pirc_file():
     return None
 
 
-def __load_pirc_file(verbose=False):
+def load_pirc_file(verbose=False):
     """Load the `.pirc` module from the home directory and add specified paths.
 
     This function loads the `.pirc.py` file from the home directory and
@@ -115,7 +118,7 @@ def __load_pirc_file(verbose=False):
                 addpath(path, verbose=verbose)
 
 
-def __load_matplotlib_inline(verbose=False):
+def load_matplotlib_inline(verbose=False):
     """Load the '%matplotlib inline' magic command in IPython if available.
 
     Args:

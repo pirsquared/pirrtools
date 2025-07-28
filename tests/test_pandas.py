@@ -3,9 +3,11 @@ This module contains test functions to be used with the pytest framework.
 """
 
 from pathlib import Path
-import pytest
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+import pytest
+
 from pirrtools.pandas import cache_and_load, load_cache
 
 

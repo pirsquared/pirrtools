@@ -3,9 +3,10 @@
 Test demonstrating full-width background colors with to_rich method.
 """
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from rich.console import Console
+
 import pirrtools
 
 # Create a DataFrame with different value ranges for better gradient demonstration

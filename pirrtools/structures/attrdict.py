@@ -26,7 +26,7 @@ class AttrDict(dict):
         >>> d.c.d = 'nested'  # Creates nested structure
         >>> d.c.d
         'nested'
-        
+
         >>> nested = AttrDict({'x': {'y': {'z': 42}}})
         >>> nested.x.y.z
         42
@@ -38,11 +38,11 @@ class AttrDict(dict):
 
     def __init__(self, *args, **kwargs):
         """Initialize AttrDict with automatic nested conversion.
-        
+
         Args:
             *args: Positional arguments passed to dict constructor.
             **kwargs: Keyword arguments passed to dict constructor.
-        
+
         Note:
             Any nested dictionaries in the input are automatically
             converted to AttrDict instances for consistent attribute access.
@@ -55,13 +55,13 @@ class AttrDict(dict):
 
     def __getattr__(self, item):
         """Get dictionary value as attribute.
-        
+
         Args:
             item (str): The attribute/key name to access.
-            
+
         Returns:
             The value associated with the key.
-            
+
         Raises:
             AttributeError: If the key doesn't exist.
         """
@@ -74,7 +74,7 @@ class AttrDict(dict):
 
     def __setattr__(self, key, value):
         """Set dictionary value as attribute.
-        
+
         Args:
             key (str): The attribute/key name to set.
             value: The value to associate with the key.
@@ -83,10 +83,10 @@ class AttrDict(dict):
 
     def __delattr__(self, item):
         """Delete dictionary key as attribute.
-        
+
         Args:
             item (str): The attribute/key name to delete.
-            
+
         Raises:
             AttributeError: If the key doesn't exist.
         """
@@ -99,7 +99,7 @@ class AttrDict(dict):
 
     def __dir__(self):
         """Return list of available attributes (dictionary keys).
-        
+
         Returns:
             list: List of dictionary keys available as attributes.
         """
@@ -107,10 +107,10 @@ class AttrDict(dict):
 
     def __getitem__(self, key):
         """Get item with automatic AttrDict creation for missing keys.
-        
+
         Args:
             key: The dictionary key to access.
-            
+
         Returns:
             The value for the key, or a new empty AttrDict if key doesn't exist.
         """
@@ -118,7 +118,7 @@ class AttrDict(dict):
 
     def __setitem__(self, key, value):
         """Set item with automatic dict-to-AttrDict conversion.
-        
+
         Args:
             key: The dictionary key to set.
             value: The value to set. Plain dicts are converted to AttrDict.

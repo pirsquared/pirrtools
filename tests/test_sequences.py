@@ -3,12 +3,13 @@ This module contains test functions to be used with the pytest framework.
 """
 
 import pytest
+
 from pirrtools.sequences import (
     FibCalculator,
-    get_prime_generator,
-    get_prime_factorization_generator,
     count_prime_factors,
     get_divisors,
+    get_prime_factorization_generator,
+    get_prime_generator,
     lcm,
 )
 

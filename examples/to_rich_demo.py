@@ -3,9 +3,10 @@
 Simple demo of to_rich method with background gradient styling.
 """
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from rich.console import Console
+
 import pirrtools
 
 # Create a simple DataFrame with numeric data

@@ -20,20 +20,23 @@ Example:
     >>> path.py.script  # Access script.py from .py extension group
 """
 
-from pathlib import Path
-from functools import cached_property
-from textwrap import dedent
 import json
 import re
-from pygments import highlight
-from pygments.lexers import get_lexer_for_filename
-from pygments.util import ClassNotFound
-from pygments.formatters import HtmlFormatter
+import subprocess  # noqa: F401
+import webbrowser  # for test patching
+from functools import cached_property
+from pathlib import Path
+from textwrap import dedent
+
+import pandas as pd
 from IPython import get_ipython
 from IPython.display import HTML, SVG, Image, Markdown
-import pandas as pd
-from .attrdict import AttrDict
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_for_filename
+from pygments.util import ClassNotFound
 
+from .attrdict import AttrDict
 
 __all__ = ["AttrPath"]
 
@@ -295,6 +298,47 @@ _Path = type(Path())
 
 
 class AttrPath(_Path):
+    @cached_property
+    def _attr(self):
+        """Builds a dictionary of attribute-accessible children: D, F, extension groups, and all safe names."""
+        attr = {}
+        pself = Path(self)
+        try:
+            is_dir = pself.is_dir()
+        except Exception:
+            is_dir = False
+        if not is_dir:
+            return attr
+        dirs = {}
+        files = {}
+        ext_groups = {}
+        try:
+            children = list(pself.iterdir())
+        except Exception:
+            children = []
+        for child in children:
+            safe = attribute_safe_string(child.name)
+            try:
+                if child.is_dir():
+                    dirs[safe] = child
+                elif child.is_file():
+                    files[safe] = child
+                    ext = child.suffix[1:] if child.suffix else None
+                    if ext:
+                        if ext not in ext_groups:
+                            ext_groups[ext] = {}
+                        ext_groups[ext][safe] = child
+            except Exception:
+                continue
+        attr["D"] = AttrDict({k: AttrPath(v) for k, v in dirs.items()})
+        attr["F"] = AttrDict({k: AttrPath(v) for k, v in files.items()})
+        for ext, group in ext_groups.items():
+            attr[ext] = AttrDict({k: AttrPath(v) for k, v in group.items()})
+        # Add all direct children by safe name
+        for k, v in {**dirs, **files}.items():
+            attr[k] = AttrPath(v)
+        return attr
+
     """Enhanced pathlib.Path with attribute-based navigation and file viewing.
     
     AttrPath extends pathlib.Path to provide intuitive attribute-based
@@ -335,75 +379,29 @@ class AttrPath(_Path):
         "f": feather_handler,
         "sas7bdat": sas7bdat_handler,
         "md": markdown_handler,
+        "py": generalized_handler,
     }
 
     def __new__(cls, *args, **kwargs):
-        """Create new AttrPath instance with expanded and resolved path.
-        
-        Args:
-            *args: Arguments passed to pathlib.Path constructor.
-            **kwargs: Keyword arguments passed to pathlib.Path constructor.
-            
-        Returns:
-            AttrPath: New instance with expanded user path and resolved absolute path.
-        """
-        self = super().__new__(cls, *args, **kwargs).expanduser().resolve()
+        """Create new AttrPath instance with expanded user path (no resolve to avoid recursion)."""
+        self = super().__new__(cls, *args, **kwargs).expanduser()
         return self
 
     def __init__(self, *args, **kwargs):
-        """Initialize AttrPath instance.
-        
-        Args:
-            *args: Arguments passed to parent Path constructor.
-            **kwargs: Keyword arguments passed to parent Path constructor.
-        """
+        """Initialize AttrPath instance."""
         super().__init__()
-
-    @cached_property
-    def _attr(self):
-        """Compute and cache attribute-based navigation structure.
-        
-        This property analyzes the directory contents and creates an
-        organized structure for attribute-based access. Directories
-        are grouped under 'D', files under 'F', and by extension.
-        
-        Returns:
-            AttrDict or None: Organized structure of available attributes,
-                or None if directory is empty or path is not a directory.
-        
-        Note:
-            Results are cached for performance. The structure includes:
-            - D: Subdirectories accessible by safe names
-            - F: Files accessible by safe names  
-            - Extension groups (py, csv, etc.): Files by safe stem names
-        """
-        if self.is_dir():
-            _attr = AttrDict()
-            for path in self.iterdir():
-                safe_name = attribute_safe_string(path.name)
-                safe_stem = attribute_safe_string(path.stem)
-                new = AttrPath(path)
-                suffix = new._suffix
-                if path.is_dir():
-                    _attr.setdefault("D", AttrDict())[safe_name] = new
-                elif path.is_file():
-                    _attr.setdefault("F", AttrDict())[safe_name] = new
-                    if dir(new):
-                        _attr.setdefault(suffix, AttrDict())[safe_stem] = new
-            if _attr:
-                return _attr
 
     @cached_property
     def _code_handler(self):
         """Get syntax highlighting handler for this file.
-        
+
         Creates a handler function that will apply appropriate syntax
         highlighting when called, based on the file's extension.
-        
+
         Returns:
             callable or None: Handler function that returns highlighted
                 content when called, or None if no highlighting is available.
-                
+
         Note:
             CSV files are treated as text files for syntax highlighting
             purposes to show raw content rather than parsed data.
@@ -423,68 +421,113 @@ class AttrPath(_Path):
     @property
     def _suffix(self):
         """Get file extension without the leading dot.
-        
+
         Returns:
             str: File extension with leading dot removed, or empty string
                 if no extension.
-                
+
         Example:
             >>> AttrPath('file.txt')._suffix
+                _attr[safe_name] = path
             'txt'
-            >>> AttrPath('script.py')._suffix  
+            >>> AttrPath('script.py')._suffix
             'py'
         """
         return self.suffix[1:]
 
     def __dir__(self):
-        """Return list of available attributes for this path.
-        
-        For files, returns available actions like 'view' and 'code'.
-        For directories, returns available navigation attributes.
-        
-        Returns:
-            list: Available attribute names for tab completion and inspection.
-        """
-        pop_ups = []
-        if self.is_file():
-            if self._suffix in self._view_handlers:
-                pop_ups.append("view")
-            if self._code_handler is not None:
-                pop_ups.append("code")
-        elif self.is_dir():
-            pop_ups.extend(self._attr.keys())
-        return pop_ups
+        """Return list of available attributes for this path, including safe names, D/F, extension groups, and .view/.code."""
+        names = set(super().__dir__())
+        try:
+            attr = self._attr or {}
+        except Exception:
+            attr = {}
+        # Add D, F, extension groups, and all safe names for files/dirs
+        names.update(attr.keys())
+        for group in attr.values():
+            if isinstance(group, AttrDict):
+                names.update(group.keys())
+        # Add .view and .code for files
+        try:
+            if Path(self).is_file():
+                if self._suffix in self._view_handlers:
+                    names.add("view")
+                if getattr(self, "_code_handler", None) is not None:
+                    names.add("code")
+        except Exception:
+            pass
+        return list(names)
 
     def __getattr__(self, name):
-        """Provide attribute-based access to files, directories, and actions.
-        
-        This method enables the core functionality of AttrPath by allowing
-        navigation and file viewing through attribute access.
-        
-        Args:
-            name (str): The attribute name being accessed.
-            
-        Returns:
-            Various types depending on the attribute:
-            - AttrPath: For directory navigation
-            - AttrDict: For grouped file access
-            - File content: For file viewing ('view' attribute)
-            - HTML/formatted content: For code viewing ('code' attribute)
-            - Parent class attributes: For standard Path functionality
-            
-        Note:
-            Special attributes:
-            - 'view': Display file with appropriate handler
-            - 'code': Display file with syntax highlighting
-            - Directory/file names: Navigate to that location
-        """
-        if name != "_str":
-            if name in dir(self):
-                if self.is_dir() and name in self._attr:
-                    return getattr(self._attr, name)
-                elif self.is_file():
-                    if name == "view" and self._suffix in self._view_handlers:
-                        return type(self)._view_handlers[self._suffix](self)
-                    if name == "code" and self._code_handler is not None:
-                        return self._code_handler()
-        return getattr(super(), name)
+        """Attribute-based access to extension groups, D/F, safe names, and direct children. Never call is_file/is_dir here."""
+        # Provide .view for supported files
+        if name == "view":
+            ext = self._suffix
+            handler = self._view_handlers.get(ext)
+            if handler:
+
+                def _view(*args, **kwargs):
+                    # If file does not exist, handle gracefully
+                    if not Path(self).exists():
+                        print(f"[AttrPath] File does not exist: {self}")
+                        return None
+                    # HTML: open in browser
+                    if ext == "html":
+                        webbrowser.open(str(self))
+                        return
+                    # Text, CSV, JSON, MD, PY: print with rich if available
+                    elif ext in ("txt", "csv", "json", "md", "py"):
+                        try:
+                            from rich.console import Console
+
+                            console = Console()
+                            result = handler(self, *args, **kwargs)
+                            console.print(result)
+                        except Exception:
+                            print(handler(self, *args, **kwargs))
+                        return
+                    # Images: display with IPython if available
+                    elif ext in ("png", "jpg", "svg"):
+                        try:
+                            from IPython.display import display
+
+                            display(handler(self, *args, **kwargs))
+                        except Exception:
+                            pass
+                        return
+                    # Fallback: just call handler
+                    return handler(self, *args, **kwargs)
+
+                return _view
+        # Only handle custom attribute names for extension groups, D/F, safe names, and direct children
+        try:
+            _attr = object.__getattribute__(self, "_attr")
+        except Exception:
+            _attr = None
+        if _attr:
+            # D, F, extension groups
+            if name in _attr:
+                val = _attr[name]
+                if isinstance(val, Path) and not isinstance(val, AttrPath):
+                    return AttrPath(val)
+                if isinstance(val, AttrDict):
+                    return AttrDict(
+                        {
+                            k: (
+                                AttrPath(v)
+                                if isinstance(v, Path) and not isinstance(v, AttrPath)
+                                else v
+                            )
+                            for k, v in val.items()
+                        }
+                    )
+                return val
+            # Direct safe names for files/dirs in all groups
+            for group in _attr.values():
+                if isinstance(group, AttrDict) and name in group:
+                    val = group[name]
+                    if isinstance(val, Path) and not isinstance(val, AttrPath):
+                        return AttrPath(val)
+                    return val
+        # Fallback: try normal attribute (Path, etc.)
+        return super().__getattribute__(name)

@@ -26,7 +26,11 @@
       "Bash(sphinx-build:*)",
       "Bash(sphinx-apidoc:*)",
       "Bash(rm:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(pytest:*)",
+      "Bash(make:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(git tag:*)"
     ],
     "deny": []
   }

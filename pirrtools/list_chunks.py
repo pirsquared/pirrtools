@@ -10,12 +10,13 @@ number of sublists, with optional sorting to balance element characteristics.
 Example:
     >>> chunk([1, 2, 3, 4, 5, 6], 2)
     [[1, 4], [2, 5], [3, 6]]
-    
+
     >>> chunk(['a', 'bb', 'ccc', 'dddd'], 2, equalize=True)
     [['a', 'ccc'], ['bb', 'dddd']]  # Sorted by length first
 """
 
-from typing import List, Iterable, Union, Optional
+from typing import Iterable, List, Optional, Union
+
 import numpy as np
 
 
@@ -47,7 +48,7 @@ def chunk(
             [[1, 4], [2, 5], [3, 6]]
 
         With equalization (sorted by string length first):
-            >>> chunk(['a', 'bb', 'ccc', 'dddd'], 2, equalize=True) 
+            >>> chunk(['a', 'bb', 'ccc', 'dddd'], 2, equalize=True)
             [['a', 'ccc'], ['bb', 'dddd']]
 
         Handling uneven division:
@@ -63,13 +64,13 @@ def chunk(
     # Ensure chunk size is at least 1 to avoid division by zero
     chunk_size = max(1, chunk_size)
     iterable = list(iterable)
-    
+
     # Sort by string length if equalization is requested
     if equalize:
         iterable.sort(key=lambda x: len(str(x)))
-    
+
     # Calculate step size for distribution
     n = int(np.ceil(len(iterable) / chunk_size))
-    
+
     # Create sublists by taking every nth element starting from each position
     return [iterable[i::n] for i in range(n)]

@@ -4,7 +4,7 @@ Research demonstration for pandas Styler to Rich Table conversion.
 
 This script demonstrates:
 1. How pandas Styler works internally - particularly CSS style extraction
-2. Rich Table styling capabilities for individual cells and columns  
+2. Rich Table styling capabilities for individual cells and columns
 3. CSS color format conversion to Rich color formats
 4. Methods to extract generated CSS from pandas Styler and map to Rich styling
 
@@ -15,13 +15,14 @@ Key findings from research:
 - Extraction possible through Styler._compute() and self.ctx access
 """
 
-import pandas as pd
-from rich.console import Console
-from rich.table import Table
-from rich import box
 import re
 from collections import defaultdict
-from typing import Dict, Tuple, Any, Optional
+from typing import Any, Dict, Optional, Tuple
+
+import pandas as pd
+from rich import box
+from rich.console import Console
+from rich.table import Table
 
 
 def demonstrate_pandas_styler_internals():

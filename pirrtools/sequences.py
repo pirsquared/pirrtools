@@ -44,10 +44,11 @@ Note:
     This module relies on the pandas and numpy libraries.
 """
 
-from typing import Generator, List, Union, Dict
-from itertools import product, count, islice
-from math import gcd
 from functools import reduce
+from itertools import count, islice, product
+from math import gcd
+from typing import Dict, Generator, List, Union
+
 import pandas as pd
 from numpy import prod
 

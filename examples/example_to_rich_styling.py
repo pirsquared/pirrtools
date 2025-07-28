@@ -6,9 +6,10 @@ This example shows how to use the `.pirr.to_rich()` accessor method
 with a background gradient styled DataFrame.
 """
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from rich.console import Console
+
 import pirrtools
 
 # Create sample data
