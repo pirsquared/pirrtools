@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples Gallery &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=71c180b9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="to_rich Method Tutorial" href="to_rich_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#interactive-tutorial">Interactive Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-files">Example Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core-examples">Core Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#research-and-technical">Research and Technical</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-examples">Quick Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-rich-table">Basic Rich Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#background-gradients">Background Gradients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#professional-styling">Professional Styling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pandas-caching">Pandas Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#save-and-load-dataframes">Save and Load DataFrames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-pirr-accessor">Using the .pirr Accessor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#attrpath-navigation">AttrPath Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file-system-exploration">File System Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intelligent-file-viewing">Intelligent File Viewing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#attrdict-usage">AttrDict Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dictionary-with-attribute-access">Dictionary with Attribute Access</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#development-utilities">Development Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#path-management">Path Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-reloading">Module Reloading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tips-for-examples">Tips for Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pirrtools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples Gallery</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples-gallery">
+<h1>Examples Gallery<a class="headerlink" href="#examples-gallery" title="Link to this heading"></a></h1>
+<p>This section showcases various ways to use pirrtools features through practical examples.</p>
+<section id="interactive-tutorial">
+<h2>Interactive Tutorial<a class="headerlink" href="#interactive-tutorial" title="Link to this heading"></a></h2>
+<p>The best way to learn pirrtools is through the interactive tutorial:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/
+python<span class="w"> </span>tutor.py
+</pre></div>
+</div>
+<p>This script provides hands-on, step-by-step guidance through all <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> features.</p>
+</section>
+<section id="example-files">
+<h2>Example Files<a class="headerlink" href="#example-files" title="Link to this heading"></a></h2>
+<p>All examples are located in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory:</p>
+<section id="core-examples">
+<h3>Core Examples<a class="headerlink" href="#core-examples" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt><strong>tutor.py</strong></dt><dd><p>Interactive tutorial with guided lessons covering all <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> features. Recommended starting point for new users.</p>
+</dd>
+<dt><strong>to_rich_examples.py</strong></dt><dd><p>Comprehensive demonstration of all styling options and combinations. Shows every parameter and feature available.</p>
+</dd>
+<dt><strong>example_to_rich_styling.py</strong></dt><dd><p>Focused examples of background gradient styling with various colormaps and configurations.</p>
+</dd>
+<dt><strong>gradient_example.py</strong></dt><dd><p>Simple, clean examples showing basic gradient applications for quick reference.</p>
+</dd>
+<dt><strong>to_rich_demo.py</strong></dt><dd><p>Basic demonstrations with multiple gradient types and comparison views.</p>
+</dd>
+</dl>
+</section>
+<section id="research-and-technical">
+<h3>Research and Technical<a class="headerlink" href="#research-and-technical" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt><strong>pandas_rich_styling_research.py</strong></dt><dd><p>Technical deep-dive into how pandas Styler integration works internally. Useful for understanding implementation details.</p>
+</dd>
+<dt><strong>test_full_width_backgrounds.py</strong></dt><dd><p>Demonstrates full-width background color functionality and optimization for styled tables.</p>
+</dd>
+<dt><strong>test_padding.py</strong></dt><dd><p>Shows enhanced background padding behavior with varied text lengths.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="quick-examples">
+<h2>Quick Examples<a class="headerlink" href="#quick-examples" title="Link to this heading"></a></h2>
+<section id="basic-rich-table">
+<h3>Basic Rich Table<a class="headerlink" href="#basic-rich-table" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Product&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Widget A&#39;</span><span class="p">,</span> <span class="s1">&#39;Widget B&#39;</span><span class="p">,</span> <span class="s1">&#39;Widget C&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Sales&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
+    <span class="s1">&#39;Profit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sales Report&quot;</span><span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="background-gradients">
+<h3>Background Gradients<a class="headerlink" href="#background-gradients" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Viridis colormap gradient</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Gradient Table&quot;</span><span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<span class="c1"># Row-wise gradient</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
+    <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Row-wise Gradient&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="professional-styling">
+<h3>Professional Styling<a class="headerlink" href="#professional-styling" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on dark_blue&quot;</span><span class="p">,</span>
+    <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold yellow on dark_red&quot;</span><span class="p">,</span>
+    <span class="n">alternating_rows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">alternating_row_colors</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;on grey11&quot;</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📊 Professional Report&quot;</span><span class="p">,</span>
+    <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pandas-caching">
+<h2>Pandas Caching<a class="headerlink" href="#pandas-caching" title="Link to this heading"></a></h2>
+<section id="save-and-load-dataframes">
+<h3>Save and Load DataFrames<a class="headerlink" href="#save-and-load-dataframes" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pirrtools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cache_and_load</span>
+
+<span class="c1"># Create expensive-to-compute DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span>
+    <span class="s1">&#39;computed&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)]</span>
+<span class="p">})</span>
+
+<span class="c1"># Cache and load (saves time on subsequent runs)</span>
+<span class="n">cached_df</span> <span class="o">=</span> <span class="n">cache_and_load</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;my_cache_dir&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-the-pirr-accessor">
+<h3>Using the .pirr Accessor<a class="headerlink" href="#using-the-pirr-accessor" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save cache using accessor</span>
+<span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">save_cache</span><span class="p">(</span><span class="s1">&#39;cache_directory&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pirrtools</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_cache</span>
+<span class="n">loaded_df</span> <span class="o">=</span> <span class="n">load_cache</span><span class="p">(</span><span class="s1">&#39;cache_directory&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="attrpath-navigation">
+<h2>AttrPath Navigation<a class="headerlink" href="#attrpath-navigation" title="Link to this heading"></a></h2>
+<section id="file-system-exploration">
+<h3>File System Exploration<a class="headerlink" href="#file-system-exploration" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pirrtools.structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttrPath</span>
+
+<span class="c1"># Navigate using dot notation</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">AttrPath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+<span class="c1"># Access subdirectories</span>
+<span class="n">examples</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">examples</span>
+
+<span class="c1"># View files by extension</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">examples</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">py</span><span class="p">)</span>  <span class="c1"># All .py files</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">examples</span><span class="o">.</span><span class="n">D</span><span class="p">)</span>     <span class="c1"># All directories</span>
+
+<span class="c1"># View file contents with syntax highlighting</span>
+<span class="n">examples</span><span class="o">.</span><span class="n">tutor_py</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="intelligent-file-viewing">
+<h3>Intelligent File Viewing<a class="headerlink" href="#intelligent-file-viewing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># AttrPath automatically handles different file types:</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">AttrPath</span><span class="p">(</span><span class="s1">&#39;/path/to/files&#39;</span><span class="p">)</span>
+
+<span class="c1"># Images display inline (in Jupyter)</span>
+<span class="n">path</span><span class="o">.</span><span class="n">image_jpg</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+
+<span class="c1"># CSV files show as formatted tables</span>
+<span class="n">path</span><span class="o">.</span><span class="n">data_csv</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+
+<span class="c1"># Code files get syntax highlighting</span>
+<span class="n">path</span><span class="o">.</span><span class="n">script_py</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+
+<span class="c1"># HTML files render in browser</span>
+<span class="n">path</span><span class="o">.</span><span class="n">report_html</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="attrdict-usage">
+<h2>AttrDict Usage<a class="headerlink" href="#attrdict-usage" title="Link to this heading"></a></h2>
+<section id="dictionary-with-attribute-access">
+<h3>Dictionary with Attribute Access<a class="headerlink" href="#dictionary-with-attribute-access" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pirrtools.structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttrDict</span>
+
+<span class="c1"># Create AttrDict</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">({</span>
+    <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;debug&#39;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="p">})</span>
+
+<span class="c1"># Access using attributes or keys</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>  <span class="c1"># &#39;localhost&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;database&#39;</span><span class="p">][</span><span class="s1">&#39;port&#39;</span><span class="p">])</span>  <span class="c1"># 5432</span>
+
+<span class="c1"># Nested access</span>
+<span class="n">config</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">endpoints</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="s1">&#39;/api/v1/users&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="development-utilities">
+<h2>Development Utilities<a class="headerlink" href="#development-utilities" title="Link to this heading"></a></h2>
+<section id="path-management">
+<h3>Path Management<a class="headerlink" href="#path-management" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pirrtools</span><span class="w"> </span><span class="kn">import</span> <span class="n">addpath</span>
+
+<span class="c1"># Add development paths</span>
+<span class="n">addpath</span><span class="p">(</span><span class="s1">&#39;/path/to/my/modules&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">addpath</span><span class="p">(</span><span class="s1">&#39;~/development/utils&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="module-reloading">
+<h3>Module Reloading<a class="headerlink" href="#module-reloading" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pirrtools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reload_entity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">my_module</span>
+
+<span class="c1"># Reload module during development</span>
+<span class="n">my_module</span> <span class="o">=</span> <span class="n">reload_entity</span><span class="p">(</span><span class="n">my_module</span><span class="p">)</span>
+
+<span class="c1"># Reload class</span>
+<span class="n">MyClass</span> <span class="o">=</span> <span class="n">reload_entity</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-examples">
+<h2>Running Examples<a class="headerlink" href="#running-examples" title="Link to this heading"></a></h2>
+<p>To run any example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Interactive tutorial</span>
+<span class="nb">cd</span><span class="w"> </span>examples/
+python<span class="w"> </span>tutor.py
+
+<span class="c1"># Comprehensive examples</span>
+python<span class="w"> </span>to_rich_examples.py
+
+<span class="c1"># Specific feature demos</span>
+python<span class="w"> </span>example_to_rich_styling.py
+python<span class="w"> </span>gradient_example.py
+</pre></div>
+</div>
+</section>
+<section id="tips-for-examples">
+<h2>Tips for Examples<a class="headerlink" href="#tips-for-examples" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Start with tutor.py</strong> - It provides the best learning experience</p></li>
+<li><p><strong>Experiment</strong> - Modify examples to see how different parameters work</p></li>
+<li><p><strong>Check source code</strong> - Examples show implementation patterns</p></li>
+<li><p><strong>Use Rich Console</strong> - Always create a Console() instance for proper display</p></li>
+<li><p><strong>Try your data</strong> - Apply techniques to your own DataFrames for practical learning</p></li>
+</ol>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>After exploring examples:</p>
+<ul class="simple">
+<li><p>Read the <a class="reference internal" href="to_rich_tutorial.html"><span class="doc">to_rich Method Tutorial</span></a> for comprehensive parameter reference</p></li>
+<li><p>Check the <a class="reference internal" href="api_reference.html"><span class="doc">API Reference</span></a> for detailed function documentation</p></li>
+<li><p>Contribute examples via GitHub issues or pull requests</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="to_rich_tutorial.html" class="btn btn-neutral float-left" title="to_rich Method Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

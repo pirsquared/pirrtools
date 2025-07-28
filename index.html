@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pirrtools Documentation &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=71c180b9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="to_rich Method Tutorial" href="to_rich_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pirrtools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pirrtools Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pirrtools-documentation">
+<h1>pirrtools Documentation<a class="headerlink" href="#pirrtools-documentation" title="Link to this heading"></a></h1>
+<p>A powerful collection of tools for data analysis, featuring enhanced pandas functionality, Rich table styling, and intelligent file system navigation.</p>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/pirrtools"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/pirrtools.svg" />
+</a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/pirrtools"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/pirrtools.svg" />
+</a>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<p>Install pirrtools via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p>Basic usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
+<span class="c1"># Create a DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Sales&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">340</span><span class="p">],</span>
+    <span class="s1">&#39;Profit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">68</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="c1"># Convert to styled Rich table</span>
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sales Report&quot;</span><span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>🎨 <strong>Rich Table Styling</strong></dt><dd><p>Convert pandas DataFrames and Series to beautifully styled Rich tables with gradients, custom headers, and professional theming.</p>
+</dd>
+<dt>💾 <strong>Pandas Caching</strong></dt><dd><p>Efficient caching system for pandas objects using feather format, perfect for large datasets and complex preprocessing.</p>
+</dd>
+<dt>📁 <strong>AttrPath Navigation</strong></dt><dd><p>Navigate file systems using dot notation with intelligent file viewing and organized directory structures.</p>
+</dd>
+<dt>🔧 <strong>Development Utilities</strong></dt><dd><p>Module reloading, path management, and development workflow enhancements.</p>
+</dd>
+</dl>
+</section>
+<section id="documentation-contents">
+<h2>Documentation Contents<a class="headerlink" href="#documentation-contents" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#interactive-tutorial">Interactive Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#background-gradients">Background Gradients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#text-gradients">Text Gradients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#header-and-index-styling">Header and Index Styling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#alternating-rows">Alternating Rows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#advanced-styling">Advanced Styling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#pandas-styler-integration">Pandas Styler Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#complete-parameter-reference">Complete Parameter Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#color-reference">Color Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#interactive-tutorial">Interactive Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-files">Example Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#quick-examples">Quick Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#pandas-caching">Pandas Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#attrpath-navigation">AttrPath Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#attrdict-usage">AttrDict Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#development-utilities">Development Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#tips-for-examples">Tips for Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#quick-installation">Quick Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#development-installation">Development Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#docker-development-environment">Docker Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#virtual-environment-setup">Virtual Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verification">Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#getting-help">Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrading">Upgrading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#uninstalling">Uninstalling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#core-modules">Core Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#data-structures">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#utility-functions">Utility Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pirrtools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pirrtools.html">pirrtools package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+</div>
+</section>
+<section id="interactive-tutorial">
+<h2>Interactive Tutorial<a class="headerlink" href="#interactive-tutorial" title="Link to this heading"></a></h2>
+<p>Get started quickly with the interactive tutorial:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/
+python<span class="w"> </span>tutor.py
+</pre></div>
+</div>
+<p>This hands-on tutorial walks through all <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> features with live examples and step-by-step guidance.</p>
+</section>
+<section id="examples-directory">
+<h2>Examples Directory<a class="headerlink" href="#examples-directory" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory contains comprehensive demonstrations:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tutor.py</span></code> - Interactive tutorial (recommended starting point)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_rich_examples.py</span></code> - All styling features demonstrated</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">example_to_rich_styling.py</span></code> - Focus on gradient styling</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient_example.py</span></code> - Simple gradient examples</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas_rich_styling_research.py</span></code> - Technical implementation details</p></li>
+</ul>
+</section>
+<section id="core-modules">
+<h2>Core Modules<a class="headerlink" href="#core-modules" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>pirrtools.pandas</strong></dt><dd><p>Enhanced pandas functionality with caching and Rich table conversion via the <code class="docutils literal notranslate"><span class="pre">.pirr</span></code> accessor.</p>
+</dd>
+<dt><strong>pirrtools.structures.attrpath</strong></dt><dd><p>File system navigation using attribute access with intelligent file viewing.</p>
+</dd>
+<dt><strong>pirrtools.structures.attrdict</strong></dt><dd><p>Dictionary with attribute access capabilities.</p>
+</dd>
+<dt><strong>pirrtools utilities</strong></dt><dd><p>Path management, module reloading, and development helpers.</p>
+</dd>
+</dl>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Python 3.8+</p></li>
+<li><p>pandas</p></li>
+<li><p>numpy</p></li>
+<li><p>rich</p></li>
+<li><p>feather-format</p></li>
+<li><p>ipython</p></li>
+<li><p>pygments</p></li>
+<li><p>jinja2</p></li>
+<li><p>matplotlib</p></li>
+</ul>
+</section>
+<section id="development-installation">
+<h3>Development Installation<a class="headerlink" href="#development-installation" title="Link to this heading"></a></h3>
+<p>For development work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/pirsquared/pirrtools.git
+<span class="nb">cd</span><span class="w"> </span>pirrtools
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
+<p>This installs development dependencies including pytest, black, pylint, and documentation tools.</p>
+</section>
+<section id="docker-development">
+<h3>Docker Development<a class="headerlink" href="#docker-development" title="Link to this heading"></a></h3>
+<p>Use the provided Docker environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>pirrtools-dev<span class="w"> </span>bash
+</pre></div>
+</div>
+<p>Or with VS Code Dev Containers - open the project and select “Reopen in Container”.</p>
+</section>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h2>
+<p>Contributions are welcome! Please see the contributing guidelines for development setup, testing procedures, and code style requirements.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p>This project is licensed under the MIT License. See the LICENSE file for details.</p>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>GitHub Issues: <a class="reference external" href="https://github.com/pirsquared/pirrtools/issues">https://github.com/pirsquared/pirrtools/issues</a></p></li>
+<li><p>PyPI Package: <a class="reference external" href="https://pypi.org/project/pirrtools/">https://pypi.org/project/pirrtools/</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://pirrtools.readthedocs.io/">https://pirrtools.readthedocs.io/</a> (coming soon)</p></li>
+</ul>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="to_rich_tutorial.html" class="btn btn-neutral float-right" title="to_rich Method Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

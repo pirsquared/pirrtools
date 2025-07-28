@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pirrtools &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=71c180b9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pirrtools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pirrtools</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pirrtools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Main entry point for the pirrtools package.</span>
+
+<span class="sd">This module provides core utility functions for path management, module reloading,</span>
+<span class="sd">and environment setup. It automatically loads configuration from `.pirc` files</span>
+<span class="sd">and sets up matplotlib inline mode for IPython environments.</span>
+
+<span class="sd">The module exposes key functionality from submodules and provides utilities for:</span>
+<span class="sd">- System path manipulation</span>
+<span class="sd">- Module and class reloading</span>
+<span class="sd">- Configuration file loading</span>
+<span class="sd">- IPython environment setup</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from pirrtools import addpath, reload_entity</span>
+<span class="sd">    &gt;&gt;&gt; addpath(&#39;/my/custom/path&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; reloaded_module = reload_entity(my_module)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">__importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">__importlib_util</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">__pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">__sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">__types</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ipython</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_cache</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttrDict</span><span class="p">,</span> <span class="n">AttrPath</span>  <span class="c1"># noqa: F401</span>
+
+<span class="n">__HOME</span> <span class="o">=</span> <span class="n">__pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="addpath">
+<a class="viewcode-back" href="../pirrtools.html#pirrtools.addpath">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">addpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a path to the system path at the specified position.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The path to add to sys.path.</span>
+<span class="sd">        position (int, optional): The position in sys.path where the path should</span>
+<span class="sd">            be inserted. Defaults to 0 (beginning of path).</span>
+<span class="sd">        verbose (bool, optional): Whether to print a confirmation message when</span>
+<span class="sd">            the path is added. Defaults to False.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The path is expanded and converted to absolute form before adding.</span>
+<span class="sd">        Duplicate paths are not added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">__pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+    <span class="n">path_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="c1"># Remove all existing occurrences of the path</span>
+    <span class="n">__sys</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">__sys</span><span class="o">.</span><span class="n">path</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">path_str</span><span class="p">]</span>
+    <span class="n">__sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">path_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;added &quot;</span><span class="si">{</span><span class="n">path_str</span><span class="si">}</span><span class="s1">&quot; into system path at position </span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="reload_entity">
+<a class="viewcode-back" href="../pirrtools.html#pirrtools.reload_entity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reload_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reload a module or class.</span>
+
+<span class="sd">    If a class is provided, its module is reloaded and the class is</span>
+<span class="sd">    re-imported from the reloaded module.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        entity (module or class): The module or class to reload.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        module or class: The reloaded module or class.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import my_module</span>
+<span class="sd">        &gt;&gt;&gt; reloaded_module = reload_entity(my_module)</span>
+<span class="sd">        &gt;&gt;&gt; reloaded_class = reload_entity(MyClass)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">__types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
+        <span class="c1"># It&#39;s a module, reload directly</span>
+        <span class="k">return</span> <span class="n">__importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+    <span class="c1"># It&#39;s assumed to be a class, get its module</span>
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="vm">__module__</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">__importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="c1"># Reload the module</span>
+    <span class="n">reloaded_module</span> <span class="o">=</span> <span class="n">__importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="c1"># Re-import and return the class from the reloaded module</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">reloaded_module</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">__get_pirc_file</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look for a `.pirc.py` file in the home directory.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pathlib.Path or None: The path to the `.pirc.py` file if it exists,</span>
+<span class="sd">            None otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pirc_file</span> <span class="o">=</span> <span class="n">__HOME</span> <span class="o">/</span> <span class="s2">&quot;.pirc.py&quot;</span>
+    <span class="k">if</span> <span class="n">pirc_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">pirc_file</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="load_pirc_file">
+<a class="viewcode-back" href="../pirrtools.html#pirrtools.load_pirc_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_pirc_file</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the `.pirc` module from the home directory and add specified paths.</span>
+
+<span class="sd">    This function loads the `.pirc.py` file from the home directory and</span>
+<span class="sd">    automatically adds any paths specified in the `mypaths` variable to</span>
+<span class="sd">    the system path.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        verbose (bool, optional): Whether to print status messages.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pirc_file</span> <span class="o">=</span> <span class="n">__get_pirc_file</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">pirc_file</span><span class="p">:</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">__importlib_util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;pirc&quot;</span><span class="p">,</span> <span class="n">pirc_file</span><span class="p">)</span>
+        <span class="n">pirc</span> <span class="o">=</span> <span class="n">__importlib_util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">pirc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="n">pirc_file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2"> module from </span><span class="si">{</span><span class="n">pirc_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pirc</span><span class="p">,</span> <span class="s2">&quot;mypaths&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">pirc</span><span class="o">.</span><span class="n">mypaths</span><span class="p">:</span>
+                <span class="n">addpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="load_matplotlib_inline">
+<a class="viewcode-back" href="../pirrtools.html#pirrtools.load_matplotlib_inline">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_matplotlib_inline</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the &#39;%matplotlib inline&#39; magic command in IPython if available.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        verbose (bool, optional): Whether to print status messages.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ipython</span> <span class="o">=</span> <span class="n">get_ipython</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ipython</span><span class="p">:</span>
+            <span class="n">ipython</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s2">&quot;matplotlib&quot;</span><span class="p">,</span> <span class="s2">&quot;inline&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loaded &#39;%matplotlib inline&#39;&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+
+<span class="c1">################################################################################</span>
+<span class="c1"># Bespoke functions ############################################################</span>
+<span class="c1">################################################################################</span>
+
+
+<div class="viewcode-block" id="get_base_package">
+<a class="viewcode-back" href="../pirrtools.html#pirrtools.get_base_package">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_base_package</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the base package name of a module.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        module (module): The module to get the base package of.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The name of the base package (first component of module.__name__).</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy.linalg</span>
+<span class="sd">        &gt;&gt;&gt; get_base_package(numpy.linalg)</span>
+<span class="sd">        &#39;numpy&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="find_instances">
+<a class="viewcode-back" href="../pirrtools.html#pirrtools.find_instances">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_instances</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">tracker_type</span><span class="o">=</span><span class="n">AttrDict</span><span class="p">,</span> <span class="n">filter_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all instances of a class in a module and its submodules.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cls (type): The class type to search for instances of.</span>
+<span class="sd">        module (module): The module to search in.</span>
+<span class="sd">        tracker_type (type, optional): The container type to use for results.</span>
+<span class="sd">            Defaults to AttrDict.</span>
+<span class="sd">        filter_func (callable, optional): A function to filter results.</span>
+<span class="sd">            Should accept (name, obj) and return bool. If None, no filtering</span>
+<span class="sd">            is applied.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tracker_type: A nested structure containing found instances,</span>
+<span class="sd">            organized by module hierarchy.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; instances = find_instances(MyClass, my_module)</span>
+<span class="sd">        &gt;&gt;&gt; print(instances.submodule.instance_name)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filter_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">filter_func</span><span class="p">(</span><span class="o">*</span><span class="n">_</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">base_package</span> <span class="o">=</span> <span class="n">get_base_package</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="n">tracker</span> <span class="o">=</span> <span class="n">tracker_type</span><span class="p">()</span>
+    <span class="n">ModuleType</span> <span class="o">=</span> <span class="n">__types</span><span class="o">.</span><span class="n">ModuleType</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+                <span class="n">tracker</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ModuleType</span><span class="p">)</span> <span class="ow">and</span> <span class="n">get_base_package</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">==</span> <span class="n">base_package</span><span class="p">:</span>
+                <span class="n">subtracker</span> <span class="o">=</span> <span class="n">find_instances</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">tracker_type</span><span class="p">,</span> <span class="n">filter_func</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">subtracker</span><span class="p">:</span>
+                    <span class="n">tracker</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">subtracker</span>
+    <span class="k">return</span> <span class="n">tracker</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

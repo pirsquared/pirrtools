@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pirrtools.sequences &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=71c180b9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">pirrtools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../pirrtools.html">pirrtools</a></li>
+      <li class="breadcrumb-item active">pirrtools.sequences</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pirrtools.sequences</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utility functions for mathematical operations and computations,</span>
+<span class="sd">including Fibonacci number calculation, prime number generation, prime factorization,</span>
+<span class="sd">divisor calculation, and least common multiple (LCM) calculation.</span>
+
+<span class="sd">Classes:</span>
+<span class="sd">    - FibCalculator: A class for calculating Fibonacci numbers using memoization and the</span>
+<span class="sd">      fast doubling algorithm.</span>
+
+<span class="sd">Functions:</span>
+<span class="sd">    - get_prime_generator: Generate an infinite sequence of prime numbers.</span>
+<span class="sd">    - get_prime_factorization_generator: Generate the prime factorization of a number.</span>
+<span class="sd">    - count_prime_factors: Count the prime factors of a number and return a pandas</span>
+<span class="sd">      Series.</span>
+<span class="sd">    - get_divisors: Get the divisors of a number.</span>
+<span class="sd">    - lcm: Calculate the Least Common Multiple (LCM) of a set of numbers.</span>
+
+<span class="sd">Examples:</span>
+<span class="sd">    &gt;&gt;&gt; fib = FibCalculator()</span>
+<span class="sd">    &gt;&gt;&gt; fib(10)</span>
+<span class="sd">    55</span>
+
+<span class="sd">    &gt;&gt;&gt; primes = get_prime_generator()</span>
+<span class="sd">    &gt;&gt;&gt; next(primes)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; next(primes)</span>
+<span class="sd">    3</span>
+
+<span class="sd">    &gt;&gt;&gt; list(get_prime_factorization_generator(28))</span>
+<span class="sd">    [2, 2, 7]</span>
+
+<span class="sd">    &gt;&gt;&gt; count_prime_factors(28)</span>
+<span class="sd">    2    2</span>
+<span class="sd">    7    1</span>
+<span class="sd">    dtype: int64</span>
+
+<span class="sd">    &gt;&gt;&gt; get_divisors(28)</span>
+<span class="sd">    [1, 2, 4, 7, 14]</span>
+
+<span class="sd">    &gt;&gt;&gt; lcm(12, 15)</span>
+<span class="sd">    60</span>
+
+<span class="sd">Note:</span>
+<span class="sd">    This module relies on the pandas and numpy libraries.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">count</span><span class="p">,</span> <span class="n">islice</span><span class="p">,</span> <span class="n">product</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">gcd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">prod</span>
+
+
+<div class="viewcode-block" id="FibCalculator">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.FibCalculator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FibCalculator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for calculating Fibonacci numbers using memoization and the fast doubling</span>
+<span class="sd">    algorithm.</span>
+
+<span class="sd">    The `FibCalculator` class provides a method to compute the nth Fibonacci number</span>
+<span class="sd">    efficiently by caching previously computed values and using the fast doubling</span>
+<span class="sd">    algorithm. This method is particularly efficient for large Fibonacci numbers.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        - __init__: Initialize the FibCalculator with a base cache.</span>
+<span class="sd">        - __call__: Calculate the nth Fibonacci number.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; fib = FibCalculator()</span>
+<span class="sd">        &gt;&gt;&gt; fib(10)</span>
+<span class="sd">        55</span>
+
+<span class="sd">    Reference:</span>
+<span class="sd">        Fast Doubling Algorithm for Fibonacci Numbers:</span>
+<span class="sd">        https://www.nayuki.io/page/fast-fibonacci-algorithms</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _cache (Dict[int, int]): A cache to store previously computed Fibonacci numbers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FibCalculator.__init__">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.FibCalculator.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the FibCalculator with a base cache.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="FibCalculator.__call__">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.FibCalculator.__call__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the nth Fibonacci number using memoization and the fast doubling</span>
+<span class="sd">        algorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n (int): The index of the Fibonacci number to calculate. Must be</span>
+<span class="sd">              non-negative.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The nth Fibonacci number.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If n is a negative integer.</span>
+
+<span class="sd">        Reference:</span>
+<span class="sd">            Fast Doubling Algorithm for Fibonacci Numbers:</span>
+<span class="sd">            https://www.nayuki.io/page/fast-fibonacci-algorithms</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Index must be a non-negative integer&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+        <span class="n">k0</span><span class="p">,</span> <span class="n">k1</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">fk0</span><span class="p">,</span> <span class="n">fk1</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">k0</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">k1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fk0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fk1</span> <span class="o">-</span> <span class="n">fk0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fk0</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">fk1</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">n</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="get_prime_generator">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.get_prime_generator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_prime_generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate prime numbers.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        The next prime number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prime_lookup</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">yield</span> <span class="mi">2</span>
+
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">islice</span><span class="p">(</span><span class="n">count</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">prime_lookup</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">q</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">p</span>
+            <span class="k">while</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prime_lookup</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">p</span>
+            <span class="n">prime_lookup</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prime_lookup</span><span class="p">[</span><span class="n">q</span> <span class="o">*</span> <span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span>
+            <span class="k">yield</span> <span class="n">q</span></div>
+
+
+
+<div class="viewcode-block" id="get_prime_factorization_generator">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.get_prime_factorization_generator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_prime_factorization_generator</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate the prime factorization of a number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n: The number to factorize.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        The next prime factor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">primes</span> <span class="o">=</span> <span class="n">get_prime_generator</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prime</span> <span class="o">*</span> <span class="n">prime</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="n">prime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">prime</span>
+            <span class="n">n</span> <span class="o">//=</span> <span class="n">prime</span>
+
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">n</span></div>
+
+
+
+<div class="viewcode-block" id="count_prime_factors">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.count_prime_factors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_prime_factors</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the prime factors of a number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n: The number to factorize.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A pandas Series of counts of the prime factors of n.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prime_factors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_prime_factorization_generator</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">prime_factors</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_divisors">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.get_divisors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_divisors</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the divisors of a number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n: The number to find divisors for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A sorted list of divisors of n.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prime_factors</span> <span class="o">=</span> <span class="n">count_prime_factors</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="n">prod</span><span class="p">,</span>
+            <span class="n">product</span><span class="p">(</span>
+                <span class="o">*</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">prime</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count_prime</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+                    <span class="k">for</span> <span class="n">prime</span><span class="p">,</span> <span class="n">count_prime</span> <span class="ow">in</span> <span class="n">prime_factors</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)[</span>
+        <span class="p">:</span><span class="o">-</span><span class="mi">1</span>
+    <span class="p">]</span>  <span class="c1"># Return all divisors except n itself (proper divisors)</span></div>
+
+
+
+<div class="viewcode-block" id="lcm">
+<a class="viewcode-back" href="../../pirrtools.html#pirrtools.sequences.lcm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">lcm</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the Least Common Multiple of a set of numbers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a: The numbers to find the LCM of.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The LCM of the numbers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">gcd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)),</span> <span class="n">a</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

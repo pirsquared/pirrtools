@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing &mdash; pirrtools 0.2.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=71c180b9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="pirrtools.structures package" href="pirrtools.structures.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pirrtools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">pirrtools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-workflow">Development Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#types-of-contributions">Types of Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-guidelines">Code Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request-process">Pull Request Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-structure">Project Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#areas-for-contribution">Areas for Contribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-tips">Development Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-process">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#questions">Questions?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pirrtools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contributing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contributing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h1>
+<p>We welcome contributions to pirrtools! This guide covers how to set up your development environment and contribute to the project.</p>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<p><strong>Fork and Clone</strong></p>
+<ol class="arabic simple">
+<li><p>Fork the repository on GitHub</p></li>
+<li><p>Clone your fork locally:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yourusername/pirrtools.git
+<span class="nb">cd</span><span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p><strong>Development Setup</strong></p>
+<p>Install in development mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
+<p>This installs pirrtools in editable mode with all development dependencies.</p>
+<p><strong>Docker Development</strong> (Optional)</p>
+<p>Use the provided Docker environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>pirrtools-dev<span class="w"> </span>bash
+</pre></div>
+</div>
+</section>
+<section id="development-workflow">
+<h2>Development Workflow<a class="headerlink" href="#development-workflow" title="Link to this heading"></a></h2>
+<p><strong>Code Style</strong></p>
+<p>We use Black for code formatting:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>black<span class="w"> </span>pirrtools<span class="w"> </span>tests
+</pre></div>
+</div>
+<p><strong>Linting</strong></p>
+<p>Run pylint to check code quality:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylint<span class="w"> </span>pirrtools
+</pre></div>
+</div>
+<p><strong>Pre-commit Hooks</strong></p>
+<p>Set up pre-commit hooks to automatically format code:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>install
+pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+<p><strong>Testing</strong></p>
+<p>Run tests with pytest:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
+pytest
+
+<span class="c1"># Run with coverage</span>
+pytest<span class="w"> </span>--cov<span class="o">=</span>pirrtools
+
+<span class="c1"># Run specific test</span>
+pytest<span class="w"> </span>tests/test_pandas.py::test_simple_dataframe
+</pre></div>
+</div>
+<p><strong>Building Documentation</strong></p>
+<p>Build Sphinx documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+make<span class="w"> </span>html
+</pre></div>
+</div>
+</section>
+<section id="types-of-contributions">
+<h2>Types of Contributions<a class="headerlink" href="#types-of-contributions" title="Link to this heading"></a></h2>
+<p><strong>Bug Reports</strong></p>
+<p>When reporting bugs, please include:</p>
+<ul class="simple">
+<li><p>Operating system and Python version</p></li>
+<li><p>Complete error traceback</p></li>
+<li><p>Minimal example to reproduce the issue</p></li>
+<li><p>Expected vs actual behavior</p></li>
+</ul>
+<p><strong>Feature Requests</strong></p>
+<p>For new features:</p>
+<ul class="simple">
+<li><p>Describe the use case</p></li>
+<li><p>Provide examples of how it would work</p></li>
+<li><p>Consider implementation complexity</p></li>
+<li><p>Check if it fits the project scope</p></li>
+</ul>
+<p><strong>Code Contributions</strong></p>
+<ul class="simple">
+<li><p>Fix bugs or implement features</p></li>
+<li><p>Add tests for new functionality</p></li>
+<li><p>Update documentation</p></li>
+<li><p>Follow existing code patterns</p></li>
+</ul>
+<p><strong>Documentation</strong></p>
+<ul class="simple">
+<li><p>Fix typos or improve clarity</p></li>
+<li><p>Add missing docstrings</p></li>
+<li><p>Create new examples</p></li>
+<li><p>Improve existing tutorials</p></li>
+</ul>
+</section>
+<section id="code-guidelines">
+<h2>Code Guidelines<a class="headerlink" href="#code-guidelines" title="Link to this heading"></a></h2>
+<p><strong>Style</strong></p>
+<ul class="simple">
+<li><p>Follow PEP 8 conventions</p></li>
+<li><p>Use Black for code formatting (88 character line length)</p></li>
+<li><p>Use Google/NumPy style docstrings</p></li>
+<li><p>Add type hints where helpful</p></li>
+</ul>
+<p><strong>Testing</strong></p>
+<ul class="simple">
+<li><p>Write tests for new functionality</p></li>
+<li><p>Use pytest fixtures for test setup</p></li>
+<li><p>Test both success and failure cases</p></li>
+<li><p>Maintain or improve code coverage</p></li>
+</ul>
+<p><strong>Documentation</strong></p>
+<ul class="simple">
+<li><p>Add docstrings to all public functions and classes</p></li>
+<li><p>Update relevant documentation files</p></li>
+<li><p>Include examples in docstrings</p></li>
+<li><p>Keep documentation current with code changes</p></li>
+</ul>
+<p><strong>Git Commits</strong></p>
+<ul class="simple">
+<li><p>Use clear, descriptive commit messages</p></li>
+<li><p>Keep commits focused on single changes</p></li>
+<li><p>Reference issues when applicable</p></li>
+<li><p>Follow conventional commit format when possible</p></li>
+</ul>
+</section>
+<section id="pull-request-process">
+<h2>Pull Request Process<a class="headerlink" href="#pull-request-process" title="Link to this heading"></a></h2>
+<p><strong>Before Submitting</strong></p>
+<ol class="arabic simple">
+<li><p>Ensure tests pass: <code class="docutils literal notranslate"><span class="pre">pytest</span></code></p></li>
+<li><p>Format code: <code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">pirrtools</span> <span class="pre">tests</span></code></p></li>
+<li><p>Run linting: <code class="docutils literal notranslate"><span class="pre">pylint</span> <span class="pre">pirrtools</span></code></p></li>
+<li><p>Update documentation if needed</p></li>
+<li><p>Add entry to changelog if significant</p></li>
+</ol>
+<p><strong>Submitting</strong></p>
+<ol class="arabic simple">
+<li><p>Create a branch for your changes:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/your-feature-name
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Make your changes and commit:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add feature: description of changes&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Push to your fork:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature/your-feature-name
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Create a pull request on GitHub</p></li>
+</ol>
+<p><strong>Pull Request Template</strong></p>
+<p>Include in your PR:</p>
+<ul class="simple">
+<li><p>Clear description of changes</p></li>
+<li><p>Motivation and context</p></li>
+<li><p>Type of change (bug fix, feature, etc.)</p></li>
+<li><p>Testing performed</p></li>
+<li><p>Screenshots if applicable</p></li>
+</ul>
+</section>
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading"></a></h2>
+<p>Understanding the codebase:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pirrtools/
+├── __init__.py          # Main package with utilities
+├── pandas.py            # Enhanced pandas functionality
+├── list_chunks.py       # List chunking utilities
+├── load.py              # Module loading helpers
+├── sequences.py         # Sequence manipulation
+└── structures/          # Data structures
+    ├── __init__.py
+    ├── attrdict.py      # Dictionary with attribute access
+    └── attrpath.py      # File system navigation
+
+tests/                   # Test suite
+├── test_pandas.py       # Pandas functionality tests
+├── test_list_chunks.py  # List chunking tests
+└── test_sequences.py    # Sequence tests
+
+examples/                # Usage examples
+├── tutor.py            # Interactive tutorial
+├── to_rich_examples.py # Comprehensive examples
+└── ...                 # Other example files
+
+docs/                   # Sphinx documentation
+├── conf.py            # Sphinx configuration
+├── index.rst          # Main documentation page
+└── ...                # Other documentation files
+</pre></div>
+</div>
+</section>
+<section id="areas-for-contribution">
+<h2>Areas for Contribution<a class="headerlink" href="#areas-for-contribution" title="Link to this heading"></a></h2>
+<p><strong>High Priority</strong></p>
+<ul class="simple">
+<li><p>Bug fixes in existing functionality</p></li>
+<li><p>Performance improvements</p></li>
+<li><p>Better error messages and handling</p></li>
+<li><p>Additional test coverage</p></li>
+</ul>
+<p><strong>Medium Priority</strong></p>
+<ul class="simple">
+<li><p>New styling options for <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> method</p></li>
+<li><p>Additional pandas accessor methods</p></li>
+<li><p>New utility functions</p></li>
+<li><p>Documentation improvements</p></li>
+</ul>
+<p><strong>Low Priority</strong></p>
+<ul class="simple">
+<li><p>Code cleanup and refactoring</p></li>
+<li><p>New examples and tutorials</p></li>
+<li><p>IDE integrations</p></li>
+<li><p>Performance benchmarks</p></li>
+</ul>
+</section>
+<section id="development-tips">
+<h2>Development Tips<a class="headerlink" href="#development-tips" title="Link to this heading"></a></h2>
+<p><strong>Local Testing</strong></p>
+<p>Test your changes thoroughly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run full test suite</span>
+pytest
+
+<span class="c1"># Test specific functionality</span>
+python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">import pandas as pd</span>
+<span class="s2">import pirrtools</span>
+<span class="s2">df = pd.DataFrame({&#39;A&#39;: [1,2,3]})</span>
+<span class="s2">print(df.pirr.to_rich())</span>
+<span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p><strong>Debugging</strong></p>
+<p>Use the examples directory for testing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples
+python<span class="w"> </span>tutor.py<span class="w">  </span><span class="c1"># Test to_rich functionality</span>
+python<span class="w"> </span>to_rich_examples.py<span class="w">  </span><span class="c1"># Test comprehensive features</span>
+</pre></div>
+</div>
+<p><strong>Documentation Testing</strong></p>
+<p>Build and check documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+make<span class="w"> </span>html
+open<span class="w"> </span>_build/html/index.html<span class="w">  </span><span class="c1"># Check rendered docs</span>
+</pre></div>
+</div>
+</section>
+<section id="release-process">
+<h2>Release Process<a class="headerlink" href="#release-process" title="Link to this heading"></a></h2>
+<p>(For maintainers)</p>
+<ol class="arabic simple">
+<li><p>Update version in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code></p></li>
+<li><p>Create git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v0.x.x</span></code></p></li>
+<li><p>Push tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">v0.x.x</span></code></p></li>
+<li><p>GitHub Actions will automatically publish to PyPI</p></li>
+</ol>
+</section>
+<section id="questions">
+<h2>Questions?<a class="headerlink" href="#questions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Open an issue for questions about contributing</p></li>
+<li><p>Review existing issues and PRs for context</p></li>
+<li><p>Check the documentation for implementation details</p></li>
+<li><p>Ask questions in pull request discussions</p></li>
+</ul>
+<p>Thank you for contributing to pirrtools! 🎉</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pirrtools.structures.html" class="btn btn-neutral float-left" title="pirrtools.structures package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Sean Smith.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
