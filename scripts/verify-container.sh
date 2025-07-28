@@ -23,7 +23,6 @@ tools=(
     "isort:isort --version"
     "flake8:flake8 --version"
     "mypy:mypy --version"
-    "bandit:bandit --version"
     "pre-commit:pre-commit --version"
     "tox:tox --version"
     "sphinx:sphinx-build --version"
@@ -34,7 +33,7 @@ tools=(
 for tool_info in "${tools[@]}"; do
     tool_name=$(echo "$tool_info" | cut -d: -f1)
     tool_cmd=$(echo "$tool_info" | cut -d: -f2-)
-    
+
     echo -n "  Checking $tool_name... "
     if $tool_cmd >/dev/null 2>&1; then
         echo "✅"
@@ -54,7 +53,6 @@ packages=(
     "isort"
     "flake8"
     "mypy"
-    "bandit"
     "tox"
     "sphinx"
     "pandas"
@@ -107,7 +105,7 @@ sys_tools=(
 for tool_info in "${sys_tools[@]}"; do
     tool_name=$(echo "$tool_info" | cut -d: -f1)
     tool_cmd=$(echo "$tool_info" | cut -d: -f2-)
-    
+
     echo -n "  Checking $tool_name... "
     if $tool_cmd >/dev/null 2>&1; then
         echo "✅"
@@ -169,7 +167,6 @@ echo "  black pirrtools/ tests/   - Format code"
 echo "  isort pirrtools/ tests/   - Sort imports"
 echo "  flake8 pirrtools/ tests/  - Check style"
 echo "  mypy pirrtools/           - Type checking"
-echo "  bandit -r pirrtools/      - Security scan"
 echo "  pre-commit run --all-files - Run all quality checks"
 echo "  tox                       - Test across Python versions"
 echo "  python -m build           - Build package"

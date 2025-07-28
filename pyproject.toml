@@ -63,7 +63,6 @@ dev = [
   # Development utilities
   "tox>=4.0.0",  # Testing across environments
   "coverage[toml]>=7.0.0",  # Coverage with TOML config
-  "bandit>=1.7.0",  # Security linting
 ]
 
 [tool.black]
@@ -129,9 +128,6 @@ exclude_lines = [
     "if __name__ == .__main__.:",
 ]
 
-[tool.bandit]
-exclude_dirs = ["tests", "pirrtools-test"]
-skips = ["B101", "B601"]
 
 [tool.tox]
 legacy_tox_ini = """

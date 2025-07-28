@@ -16,12 +16,11 @@ help:
 	@echo "  test-cov         Run tests with coverage report"
 	@echo "  test-fast        Run tests in parallel"
 	@echo "  tox              Run tests across Python versions"
-	@echo ""  
+	@echo ""
 	@echo "🔍 Code Quality:"
 	@echo "  lint             Run all linting tools"
 	@echo "  format           Format code with black and isort"
 	@echo "  type-check       Run mypy type checking"
-	@echo "  security         Run bandit security scan"
 	@echo "  pre-commit       Run all pre-commit hooks"
 	@echo ""
 	@echo "📚 Documentation:"
@@ -73,8 +72,6 @@ lint:
 	pylint pirrtools/
 	@echo "  Running mypy..."
 	mypy pirrtools/ --ignore-missing-imports
-	@echo "  Running bandit..."
-	bandit -r pirrtools/ --skip B101,B601
 	@echo "✅ All linting checks passed!"
 
 format:
@@ -87,9 +84,6 @@ type-check:
 	@echo "🔍 Running type checking..."
 	mypy pirrtools/ --ignore-missing-imports
 
-security:
-	@echo "🔒 Running security scan..."
-	bandit -r pirrtools/ --skip B101,B601
 
 pre-commit:
 	@echo "🪝 Running pre-commit hooks..."

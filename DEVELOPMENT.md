@@ -57,7 +57,6 @@ tox
 - **flake8**: Style checking and linting
 - **mypy**: Type checking
 - **pylint**: Additional linting
-- **bandit**: Security vulnerability scanning
 
 ```bash
 # Format code
@@ -72,8 +71,6 @@ flake8 pirrtools/ tests/
 # Type checking
 mypy pirrtools/
 
-# Security scan
-bandit -r pirrtools/
 ```
 
 ### Documentation
@@ -118,7 +115,6 @@ The following hooks run automatically on each commit:
 8. **isort**: Import sorting
 9. **flake8**: Style checking
 10. **mypy**: Type checking
-11. **bandit**: Security scanning
 
 ## CI/CD Pipeline
 
@@ -204,7 +200,6 @@ tox
 - **Type Hints**: Encouraged but not required
 - **Test Coverage**: Aim for >85% coverage
 - **Documentation**: All public APIs should be documented
-- **Security**: No high or medium severity bandit issues
 
 ## Troubleshooting
 

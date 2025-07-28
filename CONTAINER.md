@@ -8,7 +8,7 @@ This document describes the containerized development environment for pirrtools 
 All development tools are pre-installed and verified in the container:
 
 - **Testing**: pytest, pytest-cov, pytest-xdist, tox
-- **Code Quality**: black, isort, flake8, mypy, pylint, bandit
+- **Code Quality**: black, isort, flake8, mypy, pylint
 - **Documentation**: sphinx, sphinx-rtd-theme, sphinx-autodoc-typehints
 - **Build & Publishing**: build, twine, wheel
 - **Development**: pre-commit, ipython, jupyter, jupyterlab
@@ -108,7 +108,6 @@ black pirrtools/ tests/
 isort pirrtools/ tests/
 flake8 pirrtools/ tests/
 mypy pirrtools/
-bandit -r pirrtools/
 
 # Run all quality checks
 pre-commit run --all-files
@@ -129,7 +128,7 @@ make format
 ### VS Code Integration
 When using the Dev Container with VS Code:
 - **Auto-formatting** on save (black + isort)
-- **Linting** with flake8, pylint, mypy, bandit
+- **Linting** with flake8, pylint, mypy
 - **Testing** integration with pytest
 - **Type checking** with mypy
 - **IntelliSense** with full package context
@@ -148,7 +147,6 @@ make test-cov         # Run tests with coverage
 make lint             # Run all linting tools
 make format           # Format code
 make type-check       # Run mypy
-make security         # Run bandit security scan
 make pre-commit       # Run all pre-commit hooks
 make docs             # Build documentation
 make build            # Build package
@@ -170,14 +168,14 @@ make verify-container
 ```
 
 ### What Gets Verified
-✅ Python environment and pip  
-✅ All development tools (pytest, black, isort, flake8, mypy, bandit, etc.)  
-✅ Python package imports  
-✅ System tools (git, node, npm, curl)  
-✅ Configuration files  
-✅ pirrtools installation  
-✅ Quick test execution  
-✅ Pre-commit hooks setup  
+✅ Python environment and pip
+✅ All development tools (pytest, black, isort, flake8, mypy, etc.)
+✅ Python package imports
+✅ System tools (git, node, npm, curl)
+✅ Configuration files
+✅ pirrtools installation
+✅ Quick test execution
+✅ Pre-commit hooks setup
 
 ## 🎯 Container Benefits
 

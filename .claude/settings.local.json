@@ -35,7 +35,8 @@
       "Bash(flake8:*)",
       "Bash(black:*)",
       "Bash(sed:*)",
-      "Bash(mypy:*)"
+      "Bash(mypy:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
