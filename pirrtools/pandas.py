@@ -47,6 +47,8 @@ from rich.table import Table
 from rich.console import Console
 from rich import box
 from rich.text import Text
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 PandasObject = Union[DataFrame, Series]
 
@@ -280,6 +282,50 @@ def _extract_index_styles(styles: dict, is_series: bool = False) -> dict:
         pass
 
     return index_styles
+
+
+def _create_index_gradient_styles(index_values, colormap="viridis", **kwargs):
+    """Create background gradient styles for index values.
+    
+    Args:
+        index_values: List of index values
+        colormap: Matplotlib colormap name
+        **kwargs: Additional arguments for colormap
+        
+    Returns:
+        List of Rich style strings for each index value
+    """
+    if not index_values:
+        return []
+    
+    try:
+        # Get the colormap
+        if colormap == "gradient":
+            cmap = plt.cm.viridis
+        else:
+            cmap = plt.cm.get_cmap(colormap)
+        
+        # Create color values normalized to [0, 1]
+        n_values = len(index_values)
+        if n_values == 1:
+            colors = [cmap(0.5)]
+        else:
+            colors = [cmap(i / (n_values - 1)) for i in range(n_values)]
+        
+        # Convert to hex colors and create Rich style strings
+        styles = []
+        for color in colors:
+            # Convert RGBA to hex
+            hex_color = mcolors.to_hex(color)
+            # Create Rich background style
+            style = f"on {hex_color}"
+            styles.append(style)
+        
+        return styles
+    
+    except:
+        # If gradient creation fails, return empty styles
+        return [""] * len(index_values)
 
 
 def _measure_column_widths(df, show_index: bool = True) -> dict:
@@ -737,28 +783,8 @@ class UtilsAccessor:
                 else:
                     styler = styler.text_gradient(cmap=tg, **tg_kwargs)
             
-            # Apply index background gradient (only works with numeric data)
-            if index_bg and show_index:
-                index_bg_kwargs = index_bg_kwargs or {}
-                try:
-                    # Only apply to numeric columns if it's a DataFrame
-                    if isinstance(self._obj, pd.DataFrame):
-                        numeric_cols = self._obj.select_dtypes(include=[np.number]).columns
-                        if len(numeric_cols) > 0:
-                            if index_bg == "gradient":
-                                styler = styler.background_gradient(subset=numeric_cols, **index_bg_kwargs)
-                            else:
-                                styler = styler.background_gradient(subset=numeric_cols, cmap=index_bg, **index_bg_kwargs)
-                    else:
-                        # For Series, check if it's numeric
-                        if pd.api.types.is_numeric_dtype(self._obj):
-                            if index_bg == "gradient":
-                                styler = styler.background_gradient(**index_bg_kwargs)
-                            else:
-                                styler = styler.background_gradient(cmap=index_bg, **index_bg_kwargs)
-                except:
-                    # Skip if gradient fails
-                    pass
+            # Note: index_bg will be handled in Rich rendering stage since
+            # pandas styler doesn't support index background styling directly
             
             # Note: Alternating row colors will be handled in Rich rendering stage
             # since pandas styler expects CSS format, not Rich format
@@ -788,6 +814,16 @@ class UtilsAccessor:
         table = Table(**final_table_kwargs)
 
         if isinstance(self._obj, DataFrame):
+            # Generate index gradient styles if requested
+            index_gradient_styles = []
+            if index_bg and show_index:
+                index_bg_kwargs_clean = index_bg_kwargs or {}
+                index_values = [_format_multiindex_value(idx) if isinstance(self._obj.index, MultiIndex) 
+                               else _format_index_value(idx) for idx in self._obj.index]
+                index_gradient_styles = _create_index_gradient_styles(
+                    index_values, index_bg, **index_bg_kwargs_clean
+                )
+            
             # Add index column if requested
             if show_index:
                 index_header = _get_index_header_name(self._obj.index)
@@ -818,12 +854,21 @@ class UtilsAccessor:
                         index_value = _format_multiindex_value(idx)
                     else:
                         index_value = _format_index_value(idx)
+                    
+                    # Apply index background gradient if requested
+                    index_bg_style = ""
+                    if index_gradient_styles and i < len(index_gradient_styles):
+                        index_bg_style = index_gradient_styles[i]
+                    
                     # Apply padding to index if backgrounds are present
-                    if has_backgrounds:
+                    if has_backgrounds or index_bg_style:
                         index_width = column_widths.get('__index__', None)
                         index_text = Text(str(index_value))
                         if index_width and len(str(index_value)) < index_width:
                             index_text.pad_right(index_width - len(str(index_value)))
+                        # Apply index background style
+                        if index_bg_style:
+                            index_text.style = index_bg_style
                         styled_row.append(index_text)
                     else:
                         styled_row.append(index_value)
@@ -848,6 +893,16 @@ class UtilsAccessor:
                 table.add_row(*styled_row)
 
         elif isinstance(self._obj, Series):
+            # Generate index gradient styles if requested
+            index_gradient_styles = []
+            if index_bg and show_index:
+                index_bg_kwargs_clean = index_bg_kwargs or {}
+                index_values = [_format_multiindex_value(idx) if isinstance(self._obj.index, MultiIndex) 
+                               else _format_index_value(idx) for idx in self._obj.index]
+                index_gradient_styles = _create_index_gradient_styles(
+                    index_values, index_bg, **index_bg_kwargs_clean
+                )
+            
             # For Series, always show index (it's the main identifier)
             if show_index:
                 index_header = _get_index_header_name(self._obj.index)
@@ -876,12 +931,21 @@ class UtilsAccessor:
                         index_value = _format_multiindex_value(idx)
                     else:
                         index_value = _format_index_value(idx)
+                    
+                    # Apply index background gradient if requested
+                    index_bg_style = ""
+                    if index_gradient_styles and i < len(index_gradient_styles):
+                        index_bg_style = index_gradient_styles[i]
+                    
                     # Apply padding to index if backgrounds are present
-                    if has_backgrounds:
+                    if has_backgrounds or index_bg_style:
                         index_width = column_widths.get('__index__', None)
                         index_text = Text(str(index_value))
                         if index_width and len(str(index_value)) < index_width:
                             index_text.pad_right(index_width - len(str(index_value)))
+                        # Apply index background style
+                        if index_bg_style:
+                            index_text.style = index_bg_style
                         styled_row.append(index_text)
                     else:
                         styled_row.append(index_value)

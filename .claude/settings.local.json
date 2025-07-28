@@ -25,7 +25,8 @@
       "Bash(mv:*)",
       "Bash(sphinx-build:*)",
       "Bash(sphinx-apidoc:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }
