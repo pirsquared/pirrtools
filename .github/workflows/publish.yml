@@ -3,22 +3,13 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
-  workflow_dispatch:
-    inputs:
-      target:
-        description: 'Target (testpypi or pypi)'
-        required: true
-        default: 'testpypi'
-        type: choice
-        options:
-          - testpypi
-          - pypi
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event.inputs.target || 'pypi' }}
+      name: pypi
+      url: https://pypi.org/p/pirrtools
     permissions:
       id-token: write  # For trusted publishing
       contents: read
@@ -42,15 +33,7 @@ jobs:
     - name: Check package
       run: twine check dist/*
 
-    - name: Publish to Test PyPI
-      if: github.event.inputs.target == 'testpypi' || github.event_name == 'workflow_dispatch'
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-
     - name: Publish to PyPI
-      if: github.event_name == 'release' || github.event.inputs.target == 'pypi'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
