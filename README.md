@@ -4,16 +4,24 @@
 
 ## Description
 
-`pirrtools` is a set of bespoke tools I wanted preserved in a library. It provides various utilities, with a key feature being a pandas accessor that enables caching of usually non-conforming datasets.
+`pirrtools` is a set of bespoke tools I wanted preserved in a library. It provides various utilities, with key features including a pandas accessor for caching non-conforming datasets and beautiful Rich table formatting.
+
+## Documentation
+
+📚 **[Full Documentation](https://pirsquared.github.io/pirrtools/)** - Complete guides, examples, and API reference
 
 ## Features
 
-- **Pandas Accessor**: Easily cache and load pandas DataFrames and Series, even those with non-conforming datasets.
+- **Rich Table Formatting**: Transform pandas DataFrames into beautiful, styled terminal tables with gradients, colors, and professional formatting
+- **Pandas Caching**: Easily cache and load pandas DataFrames and Series, even those with non-conforming datasets using feather format
+- **Interactive Tutorial**: Launch an interactive tutorial with `pirrtools-tutorial` command
+- **Development Utilities**: Path management, module reloading, and instance finding tools
 
 ## Requirements
 
-- Python 3.6 or greater
+- Python 3.9 or greater
 - pandas
+- rich
 - feather-format
 
 ## Installation
@@ -24,7 +32,35 @@ Install `pirrtools` using pip:
 pip install pirrtools
 ```
 
-## Usage
+## Quick Start
+
+### Beautiful Rich Tables
+
+```python
+import pandas as pd
+import pirrtools
+from rich.console import Console
+
+# Create sample data
+df = pd.DataFrame({
+    'Product': ['Widget A', 'Widget B', 'Widget C'],
+    'Q1': [100, 150, 200],
+    'Q2': [120, 180, 220], 
+    'Q3': [140, 200, 180],
+    'Q4': [160, 170, 240]
+})
+
+# Create beautiful table with gradient background
+console = Console()
+table = df.pirr.to_rich(
+    bg="viridis",  # Gradient colormap
+    title="📊 Quarterly Sales Report",
+    format="${:.0f}K"  # Format numbers
+)
+console.print(table)
+```
+
+### Pandas Caching
 
 ```python
 import pirrtools as pirr
@@ -38,6 +74,13 @@ df.pirr.to_cache('name_of_cache_path')
 
 # Load the cached DataFrame
 loaded_df = pirr.load_cache('name_of_cache_path')
+```
+
+### Interactive Tutorial
+
+```bash
+# Launch interactive tutorial
+pirrtools-tutorial
 ```
 
 ## License
