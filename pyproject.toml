@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pirrtools"
-version = "0.2.17"  # Update this version number before you upload a new version to PyPI
+version = "0.2.18"  # Update this version number before you upload a new version to PyPI
 description = "Collection of tools I use in my projects"
 readme = "README.md"
 license = "MIT"
@@ -61,7 +61,17 @@ dev = [
   "wheel>=0.44.0",
   "hatch>=1.12.0",  # Modern Python project manager
 
-  # Documentation
+  # Development utilities
+  "tox>=4.21.0",  # Testing across environments
+  "coverage[toml]>=7.6.0",  # Coverage with TOML config
+  "nox>=2024.4.15",  # Alternative to tox with Python-based config
+  "rich-cli>=1.8.0",  # Rich CLI tools for better terminal output
+  "ipykernel>=6.29.0",  # Jupyter kernel for development
+  "notebook>=7.2.0",  # Jupyter notebook for interactive development
+]
+
+docs = [
+  # Documentation (requires Python >=3.10 for Sphinx 8.0+)
   "sphinx>=8.0.0",
   "sphinx-rtd-theme>=2.0.0",
   "sphinx-autodoc-typehints>=2.0.0",
@@ -70,14 +80,6 @@ dev = [
   "sphinx-design>=0.6.0",  # Modern design components
   "nbsphinx>=0.9.0",  # Jupyter notebook support for Sphinx
   # Note: pandoc system package required for nbsphinx (install via apt-get install pandoc)
-
-  # Development utilities
-  "tox>=4.21.0",  # Testing across environments
-  "coverage[toml]>=7.6.0",  # Coverage with TOML config
-  "nox>=2024.4.15",  # Alternative to tox with Python-based config
-  "rich-cli>=1.8.0",  # Rich CLI tools for better terminal output
-  "ipykernel>=6.29.0",  # Jupyter kernel for development
-  "notebook>=7.2.0",  # Jupyter notebook for interactive development
 ]
 
 [tool.black]
@@ -240,10 +242,8 @@ deps = bandit>=1.7.0
 commands = bandit -r pirrtools -f json -o bandit-report.json
 
 [testenv:docs]
-deps =
-    sphinx>=8.0.0
-    sphinx-rtd-theme>=2.0.0
-    sphinx-copybutton>=0.5.2
+deps = 
+    -e.[docs]
 changedir = docs
 commands = sphinx-build -b html . _build/html
 """
