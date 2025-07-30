@@ -15,7 +15,8 @@ Example:
     [['a', 'ccc'], ['bb', 'dddd']]  # Sorted by length first
 """
 
-from typing import Iterable, List, Optional, Union
+from collections.abc import Iterable
+from typing import List, Optional, Union
 
 import numpy as np
 

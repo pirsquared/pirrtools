@@ -29,6 +29,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_copybutton",  # Add copy buttons to code blocks
     "rich_directive",  # Custom directive for Rich tables
+    "nbsphinx",  # Jupyter notebook support
 ]
 
 templates_path = ["_templates"]
@@ -104,3 +105,22 @@ copybutton_only_copy_prompt_lines = True
 copybutton_remove_prompts = True
 copybutton_copy_empty_lines = False
 copybutton_line_continuation_character = "\\"
+
+# -- nbsphinx configuration --------------------------------------------------
+
+# Execute notebooks during build (enabled now that pandoc is installed)
+nbsphinx_execute = 'auto'
+
+# Notebook execution timeout (in seconds)
+nbsphinx_execute_timeout = 60
+
+# Allow errors in notebook execution (set to False for stricter checking)
+nbsphinx_allow_errors = True
+
+# Custom CSS for notebooks (removed problematic CustomNotebookLoader)
+# nbsphinx_custom_formats = {
+#     '.ipynb': ['nbsphinx.CustomNotebookLoader', {}],
+# }
+
+# Configure kernel for notebook execution
+nbsphinx_kernel_name = 'python3'

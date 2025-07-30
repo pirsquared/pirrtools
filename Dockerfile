@@ -39,6 +39,7 @@ RUN apt-get update && apt-get install -y \
     netcat-openbsd \
     telnet \
     iproute2 \
+    pandoc \
     && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
@@ -84,6 +85,8 @@ RUN pip install --user \
     ipython \
     jupyter \
     jupyterlab \
+    nbsphinx \
+    ipykernel \
     rich \
     httpie
 
@@ -103,6 +106,28 @@ else\n\
 fi\n\
 ' > /home/developer/.local/bin/serve-docs && \
     chmod +x /home/developer/.local/bin/serve-docs
+
+# Create a convenience script for starting Jupyter Lab
+RUN echo '#!/bin/bash\n\
+echo "🚀 Starting Jupyter Lab on port 8888..."\n\
+echo "📁 Working directory: /workspace"\n\
+echo "🔗 Access at: http://localhost:8888"\n\
+echo ""\n\
+# Create notebooks directory if it doesnt exist\n\
+mkdir -p /workspace/notebooks\n\
+# Start Jupyter Lab with configuration for container use\n\
+jupyter lab \\\n\
+    --ip=0.0.0.0 \\\n\
+    --port=8888 \\\n\
+    --no-browser \\\n\
+    --allow-root \\\n\
+    --NotebookApp.token=\"\" \\\n\
+    --NotebookApp.password=\"\" \\\n\
+    --NotebookApp.allow_origin=\"*\" \\\n\
+    --NotebookApp.disable_check_xsrf=True \\\n\
+    --notebook-dir=/workspace\n\
+' > /home/developer/.local/bin/start-jupyter && \
+    chmod +x /home/developer/.local/bin/start-jupyter
 
 # Set up pre-commit hooks (this will be run when the container starts with a mounted volume)
 RUN echo '#!/bin/bash\nif [ -f .pre-commit-config.yaml ]; then pre-commit install; fi' > /home/developer/.setup-hooks.sh && \
@@ -168,8 +193,11 @@ echo "    python -m build           - Build package (traditional)"\n\
 echo "    hatch build               - Build package (modern)"\n\
 echo "    twine upload dist/*       - Upload to PyPI"\n\
 echo "\n📖 Documentation:"\n\
-echo "  make -C docs html         - Build Sphinx docs"\n\
+echo "  make -C docs html         - Build Sphinx docs (includes notebooks)"\n\
 echo "  serve-docs                - Start docs server on port 8080"\n\
+echo "\n🎮 Interactive Development:"\n\
+echo "  start-jupyter             - Start Jupyter Lab on port 8888"\n\
+echo "  ipython                   - Start IPython REPL"\n\
 echo "\n🎯 Ready for development!"\n\
 ' > /home/developer/.setup-dev.sh && \
     chmod +x /home/developer/.setup-dev.sh

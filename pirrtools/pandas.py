@@ -138,6 +138,42 @@ def _css_to_rich_text(css_styles: list, text: str, column_width: int = None) -> 
     return text_obj
 
 
+def _extract_styler_formats(styler) -> dict:
+    """Extract formatting functions from pandas Styler.
+
+    Args:
+        styler: pandas Styler object
+
+    Returns:
+        Dictionary mapping (row, col) positions to format functions
+    """
+    format_funcs = {}
+    if hasattr(styler, "_display_funcs") and styler._display_funcs:
+        format_funcs = styler._display_funcs.copy()
+    return format_funcs
+
+
+def _apply_styler_formatting(value, row_idx, col_idx, format_funcs):
+    """Apply styler formatting function to a cell value.
+
+    Args:
+        value: Cell value to format
+        row_idx: Row index
+        col_idx: Column index
+        format_funcs: Dictionary of format functions from styler
+
+    Returns:
+        Formatted string value
+    """
+    if format_funcs and (row_idx, col_idx) in format_funcs:
+        try:
+            return format_funcs[(row_idx, col_idx)](value)
+        except Exception:
+            # Fallback to string conversion if formatting fails
+            pass
+    return str(value)
+
+
 def _extract_styler_styles(styler) -> dict:
     """Extract CSS styles from pandas Styler object.
 
@@ -194,7 +230,7 @@ def _optimize_table_for_backgrounds(
     """
     if has_backgrounds or minimize_gaps:
         return {
-            "box": box.MINIMAL,  # Minimal borders to reduce gaps
+            "box": box.ROUNDED,  # Rounded borders for better appearance
             "padding": (0, 0),  # Minimal padding
             "collapse_padding": True,  # Merge adjacent cell padding
             "show_edge": True,  # Keep outer border for structure
@@ -436,7 +472,7 @@ def _load_index(path: Path, name: str) -> Index:
         Automatically detects and returns single-level Index from MultiIndex
         when appropriate.
     """
-    with open(path / f"{name}_index.json", "r", encoding="utf-8") as f:
+    with open(path / f"{name}_index.json", encoding="utf-8") as f:
         level_names = json.load(f)
 
     index_df = pd.read_feather(path / f"{name}_index.feather").set_axis(
@@ -565,7 +601,7 @@ def load_cache(path: Union[str, Path]) -> PandasObject:
     else:
         index = _load_index(path, "index")
         values = _load_values(path).squeeze()
-        with open(path / "series.json", "r", encoding="utf-8") as f:
+        with open(path / "series.json", encoding="utf-8") as f:
             name = json.load(f)
             if isinstance(name, list):
                 name = tuple(name)
@@ -682,6 +718,17 @@ class UtilsAccessor:
         alternating_rows=False,
         alternating_row_colors=("", "on grey11"),
         table_style=None,
+        # Table optimization controls (override automatic detection)
+        auto_optimize=True,
+        box=None,
+        padding=None,
+        collapse_padding=None,
+        show_edge=None,
+        pad_edge=None,
+        expand=None,
+        # String formatting support
+        format=None,
+        na_rep=None,
         **table_kwargs,
     ):
         """Create a Rich table from pandas DataFrame or Series with advanced styling.
@@ -724,6 +771,25 @@ class UtilsAccessor:
             alternating_row_colors (tuple, optional): Tuple of (even_style, odd_style)
                 for alternating rows. Defaults to ("", "on grey11").
             table_style (str, optional): Rich style string applied to entire table.
+
+            auto_optimize (bool, optional): Whether to automatically optimize table
+                settings when background colors are detected. Defaults to True.
+            box (Box, optional): Rich Box style for table borders. Overrides auto_optimize.
+            padding (tuple, optional): Padding around cell content (vertical, horizontal).
+                Overrides auto_optimize.
+            collapse_padding (bool, optional): Whether to collapse adjacent cell padding.
+                Overrides auto_optimize.
+            show_edge (bool, optional): Whether to show table outer border.
+                Overrides auto_optimize.
+            pad_edge (bool, optional): Whether to add padding around table edges.
+                Overrides auto_optimize.
+            expand (bool, optional): Whether table should expand to fill console width.
+                Overrides auto_optimize.
+
+            format (dict or str, optional): Format specifiers for columns. Can be a
+                dictionary mapping column names to format strings, or a single format
+                string applied to all columns. Uses pandas Styler.format() internally.
+            na_rep (str, optional): String representation of NaN values. Defaults to "".
             **table_kwargs: Additional keyword arguments passed to Rich Table
                 constructor.
 
@@ -732,26 +798,39 @@ class UtilsAccessor:
 
         Examples:
             Basic usage:
-                >>> df.pirr.to_rich()
+                >>> from rich.console import Console
+                >>> console = Console()
+                >>> table = df.pirr.to_rich()
+                >>> console.print(table)
 
             Background gradients:
-                >>> df.pirr.to_rich(bg="gradient")
-                >>> df.pirr.to_rich(bg="viridis", bg_kwargs={"axis": 0})
+                >>> table = df.pirr.to_rich(bg="gradient")
+                >>> table = df.pirr.to_rich(bg="viridis", bg_kwargs={"axis": 0})
 
             Text gradients:
-                >>> df.pirr.to_rich(tg="gradient")
+                >>> table = df.pirr.to_rich(tg="gradient")
 
             Header styling:
-                >>> df.pirr.to_rich(column_header_style="bold blue on white")
+                >>> table = df.pirr.to_rich(column_header_style="bold blue on white")
 
             Alternating rows:
-                >>> df.pirr.to_rich(alternating_rows=True)
-                >>> df.pirr.to_rich(alternating_rows=True,
-                ...                 alternating_row_colors=("", "on blue"))
+                >>> table = df.pirr.to_rich(alternating_rows=True)
+                >>> table = df.pirr.to_rich(alternating_rows=True,
+                ...                         alternating_row_colors=("", "on blue"))
+
+            Manual table optimization control:
+                >>> from rich import box
+                >>> table = df.pirr.to_rich(auto_optimize=False, box=box.ROUNDED,
+                ...                         padding=(1, 2), show_edge=True)
+
+            String formatting:
+                >>> table = df.pirr.to_rich(format={"Sales": "${:.0f}", "Growth": "{:.1%}"})
+                >>> table = df.pirr.to_rich(format="{:.2f}", na_rep="N/A")
 
             Combined styling:
-                >>> df.pirr.to_rich(bg="viridis", tg="plasma", alternating_rows=True,
-                ...                 table_style="bold", title="My Data")
+                >>> table = df.pirr.to_rich(bg="viridis", tg="plasma", alternating_rows=True,
+                ...                         table_style="bold", title="My Data")
+                >>> console.print(table)
 
         Note:
             The method automatically optimizes table settings when background colors
@@ -766,6 +845,8 @@ class UtilsAccessor:
             or tg
             or index_bg
             or alternating_rows
+            or format is not None
+            or na_rep is not None
             or any([bg, tg, column_header_style, index_bg, alternating_rows])
         ):
             # Start with existing styler or create new one
@@ -800,34 +881,76 @@ class UtilsAccessor:
                     import warnings
 
                     warnings.warn(f"Colormap error in to_rich (text): {e}")
+            # Apply formatting if specified
+            if format is not None:
+                if isinstance(format, str):
+                    # Apply same format to all columns
+                    styler = styler.format(
+                        format, na_rep=na_rep if na_rep is not None else ""
+                    )
+                elif isinstance(format, dict):
+                    # Apply specific formats to specific columns
+                    styler = styler.format(
+                        format, na_rep=na_rep if na_rep is not None else ""
+                    )
+                else:
+                    import warnings
+
+                    warnings.warn("format parameter must be string or dict")
+            elif na_rep is not None:
+                # Just apply na_rep without formatting
+                styler = styler.format(na_rep=na_rep)
+
             # Note: index_bg will be handled in Rich rendering stage since
             # pandas styler doesn't support index background styling directly
             # Note: Alternating row colors will be handled in Rich rendering stage
             # since pandas styler expects CSS format, not Rich format
-        # Extract styles if styler is provided
+        # Extract styles and formatting functions if styler is provided
         styles = {}
+        format_funcs = {}
         if styler is not None:
             try:
                 styles = _extract_styler_styles(styler)
+                format_funcs = _extract_styler_formats(styler)
             except Exception as e:
                 import warnings
 
                 warnings.warn(f"Styler extraction error in to_rich: {e}")
                 styles = {}
+                format_funcs = {}
 
-        # Auto-detect backgrounds and optimize table settings
-        has_backgrounds = _has_background_styles(styles)
-        optimized_settings = _optimize_table_for_backgrounds(
-            has_backgrounds, minimize_gaps
-        )
+        # Auto-detect backgrounds and optimize table settings (if auto_optimize is enabled)
+        if auto_optimize:
+            has_backgrounds = _has_background_styles(styles)
+            optimized_settings = _optimize_table_for_backgrounds(
+                has_backgrounds, minimize_gaps
+            )
+        else:
+            has_backgrounds = False
+            optimized_settings = {}
+
+        # Apply manual table setting overrides
+        manual_overrides = {}
+        if box is not None:
+            manual_overrides["box"] = box
+        if padding is not None:
+            manual_overrides["padding"] = padding
+        if collapse_padding is not None:
+            manual_overrides["collapse_padding"] = collapse_padding
+        if show_edge is not None:
+            manual_overrides["show_edge"] = show_edge
+        if pad_edge is not None:
+            manual_overrides["pad_edge"] = pad_edge
+        if expand is not None:
+            manual_overrides["expand"] = expand
 
         # Measure column widths for dynamic padding when backgrounds are present
         column_widths = (
             _measure_column_widths(self._obj, show_index) if has_backgrounds else {}
         )
 
-        # Merge optimized settings with user-provided kwargs (user kwargs take priority)
-        final_table_kwargs = {**optimized_settings, **table_kwargs}
+        # Merge settings: optimized < manual overrides < user kwargs (user kwargs take priority)
+        final_table_kwargs = {**optimized_settings, **manual_overrides, **table_kwargs}
 
         # Apply table-wide style if specified
         if table_style:
@@ -907,11 +1030,19 @@ class UtilsAccessor:
                 # Add data values with styling
                 for j, (col, value) in enumerate(row.items()):
                     cell_styles = styles.get((i, j), [])
+
+                    # Apply styler formatting if available
+                    formatted_value = _apply_styler_formatting(
+                        value, i, j, format_funcs
+                    )
+
                     # Use dynamic column width for background padding
                     column_width = (
                         column_widths.get(col, None) if has_backgrounds else None
                     )
-                    styled_text = _css_to_rich_text(cell_styles, value, column_width)
+                    styled_text = _css_to_rich_text(
+                        cell_styles, formatted_value, column_width
+                    )
 
                     # Apply alternating row colors if enabled
                     if alternating_rows and styled_text is not None:
@@ -993,11 +1124,17 @@ class UtilsAccessor:
 
                 # Series styler uses (row, 0) for indexing
                 cell_styles = styles.get((i, 0), [])
+
+                # Apply styler formatting if available (Series uses column 0)
+                formatted_value = _apply_styler_formatting(value, i, 0, format_funcs)
+
                 # Use dynamic column width for background padding
                 column_width = (
                     column_widths.get("__value__", None) if has_backgrounds else None
                 )
-                styled_value = _css_to_rich_text(cell_styles, value, column_width)
+                styled_value = _css_to_rich_text(
+                    cell_styles, formatted_value, column_width
+                )
                 styled_row.append(styled_value)
 
                 table.add_row(*styled_row)
