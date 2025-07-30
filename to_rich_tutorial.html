@@ -6,10 +6,11 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>to_rich Method Tutorial &mdash; pirrtools 0.2.14 documentation</title>
+  <title>Pirrtools to_rich Tutorial &mdash; pirrtools 0.2.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -19,10 +20,13 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="_static/copybutton.js?v=3a36b171"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples Gallery" href="examples.html" />
+    <link rel="next" title="Pirrtools Interactive Tutorial" href="jupyter_example.html" />
     <link rel="prev" title="pirrtools Documentation" href="index.html" /> 
 </head>
 
@@ -47,57 +51,24 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">to_rich Method Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#interactive-tutorial">Interactive Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#converting-dataframes">Converting DataFrames</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#converting-series">Converting Series</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pirrtools to_rich Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Basic-Usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Background-Gradients">Background Gradients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Text-Gradients">Text Gradients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#String-Formatting">String Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Pandas-Styler-Integration">Pandas Styler Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Format-Override">Format Override</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Alternating-Rows">Alternating Rows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Manual-Table-Control">Manual Table Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Series-Support">Series Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Professional-Report-Style">Professional Report Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Large-Dataset-Example">Large Dataset Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#CLI-Tutorial-Command">CLI Tutorial Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#background-gradients">Background Gradients</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#basic-gradients">Basic Gradients</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gradient-direction">Gradient Direction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#subset-styling">Subset Styling</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#text-gradients">Text Gradients</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#header-and-index-styling">Header and Index Styling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#column-headers">Column Headers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#index-styling">Index Styling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#index-background-gradients">Index Background Gradients</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#alternating-rows">Alternating Rows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#advanced-styling">Advanced Styling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#professional-report-style">Professional Report Style</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#high-contrast-theme">High Contrast Theme</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#pandas-styler-integration">Pandas Styler Integration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#basic-integration">Basic Integration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#style-override">Style Override</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#complete-parameter-reference">Complete Parameter Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#core-parameters">Core Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#background-styling">Background Styling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#text-styling">Text Styling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#header-and-index">Header and Index</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#row-styling">Row Styling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#table-appearance">Table Appearance</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#color-reference">Color Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rich-color-formats">Rich Color Formats</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gradient-colormaps">Gradient Colormaps</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
@@ -126,9 +97,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">to_rich Method Tutorial</li>
+      <li class="breadcrumb-item active">Pirrtools to_rich Tutorial</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/to_rich_tutorial.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/to_rich_tutorial.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -136,659 +107,557 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="to-rich-method-tutorial">
-<h1>to_rich Method Tutorial<a class="headerlink" href="#to-rich-method-tutorial" title="Link to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> method is pirrtools’ flagship feature for converting pandas DataFrames and Series into beautifully styled Rich tables. This tutorial covers all styling options and provides examples for each feature.</p>
-<nav class="contents local" id="contents">
-<ul class="simple">
-<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
-<li><p><a class="reference internal" href="#quick-start" id="id2">Quick Start</a></p></li>
-<li><p><a class="reference internal" href="#interactive-tutorial" id="id3">Interactive Tutorial</a></p></li>
-<li><p><a class="reference internal" href="#basic-usage" id="id4">Basic Usage</a></p>
-<ul>
-<li><p><a class="reference internal" href="#converting-dataframes" id="id5">Converting DataFrames</a></p></li>
-<li><p><a class="reference internal" href="#converting-series" id="id6">Converting Series</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#background-gradients" id="id7">Background Gradients</a></p>
-<ul>
-<li><p><a class="reference internal" href="#basic-gradients" id="id8">Basic Gradients</a></p></li>
-<li><p><a class="reference internal" href="#gradient-direction" id="id9">Gradient Direction</a></p></li>
-<li><p><a class="reference internal" href="#subset-styling" id="id10">Subset Styling</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#text-gradients" id="id11">Text Gradients</a></p></li>
-<li><p><a class="reference internal" href="#header-and-index-styling" id="id12">Header and Index Styling</a></p>
-<ul>
-<li><p><a class="reference internal" href="#column-headers" id="id13">Column Headers</a></p></li>
-<li><p><a class="reference internal" href="#index-styling" id="id14">Index Styling</a></p></li>
-<li><p><a class="reference internal" href="#index-background-gradients" id="id15">Index Background Gradients</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#alternating-rows" id="id16">Alternating Rows</a></p></li>
-<li><p><a class="reference internal" href="#advanced-styling" id="id17">Advanced Styling</a></p>
-<ul>
-<li><p><a class="reference internal" href="#professional-report-style" id="id18">Professional Report Style</a></p></li>
-<li><p><a class="reference internal" href="#high-contrast-theme" id="id19">High Contrast Theme</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#pandas-styler-integration" id="id20">Pandas Styler Integration</a></p>
-<ul>
-<li><p><a class="reference internal" href="#basic-integration" id="id21">Basic Integration</a></p></li>
-<li><p><a class="reference internal" href="#style-override" id="id22">Style Override</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#complete-parameter-reference" id="id23">Complete Parameter Reference</a></p>
-<ul>
-<li><p><a class="reference internal" href="#core-parameters" id="id24">Core Parameters</a></p></li>
-<li><p><a class="reference internal" href="#background-styling" id="id25">Background Styling</a></p></li>
-<li><p><a class="reference internal" href="#text-styling" id="id26">Text Styling</a></p></li>
-<li><p><a class="reference internal" href="#header-and-index" id="id27">Header and Index</a></p></li>
-<li><p><a class="reference internal" href="#row-styling" id="id28">Row Styling</a></p></li>
-<li><p><a class="reference internal" href="#table-appearance" id="id29">Table Appearance</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#examples" id="id30">Examples</a></p></li>
-<li><p><a class="reference internal" href="#color-reference" id="id31">Color Reference</a></p>
-<ul>
-<li><p><a class="reference internal" href="#rich-color-formats" id="id32">Rich Color Formats</a></p></li>
-<li><p><a class="reference internal" href="#gradient-colormaps" id="id33">Gradient Colormaps</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#see-also" id="id34">See Also</a></p></li>
-</ul>
-</nav>
-<section id="overview">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">.pirr.to_rich()</span></code> accessor method extends pandas DataFrames and Series with Rich table styling capabilities. It supports:</p>
-<ul class="simple">
-<li><p>Background and text color gradients</p></li>
-<li><p>Custom header and index styling</p></li>
-<li><p>Alternating row colors</p></li>
-<li><p>Integration with existing pandas Styler objects</p></li>
-<li><p>Professional table theming</p></li>
-</ul>
-</section>
-<section id="quick-start">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Quick Start</a><a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
-<p>Basic usage is simple:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+  <section id="Pirrtools-to_rich-Tutorial">
+<h1>Pirrtools to_rich Tutorial<a class="headerlink" href="#Pirrtools-to_rich-Tutorial" title="Link to this heading"></a></h1>
+<p>This notebook demonstrates all features of the <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> method for creating beautiful Rich tables from pandas DataFrames and Series.</p>
+<section id="Setup">
+<h2>Setup<a class="headerlink" href="#Setup" title="Link to this heading"></a></h2>
+<p>First, let’s import the required libraries and create sample data:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># Create sample data</span>
+<span class="c1"># Create console for output</span>
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+<span class="c1"># Create sample DataFrame</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;Sales&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
-    <span class="s1">&#39;Profit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
-<span class="p">})</span>
+    <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">100.123</span><span class="p">,</span> <span class="mf">150.456</span><span class="p">,</span> <span class="mf">200.789</span><span class="p">],</span>
+    <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">120.50</span><span class="p">,</span> <span class="mf">180.75</span><span class="p">,</span> <span class="mf">220.25</span><span class="p">],</span>
+    <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">140.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">],</span>
+    <span class="s1">&#39;Q4&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">160.555</span><span class="p">,</span> <span class="mf">170.333</span><span class="p">,</span> <span class="mf">240.111</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Product A&#39;</span><span class="p">,</span> <span class="s1">&#39;Product B&#39;</span><span class="p">,</span> <span class="s1">&#39;Product C&#39;</span><span class="p">])</span>
 
-<span class="c1"># Convert to Rich table</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sales Report&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample DataFrame:&quot;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Sample DataFrame:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Q1</th>
+      <th>Q2</th>
+      <th>Q3</th>
+      <th>Q4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Product A</th>
+      <td>100.123</td>
+      <td>120.50</td>
+      <td>140.0</td>
+      <td>160.555</td>
+    </tr>
+    <tr>
+      <th>Product B</th>
+      <td>150.456</td>
+      <td>180.75</td>
+      <td>200.0</td>
+      <td>170.333</td>
+    </tr>
+    <tr>
+      <th>Product C</th>
+      <td>200.789</td>
+      <td>220.25</td>
+      <td>180.0</td>
+      <td>240.111</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Basic-Usage">
+<h2>Basic Usage<a class="headerlink" href="#Basic-Usage" title="Link to this heading"></a></h2>
+<p>The simplest way to create a Rich table:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic conversion</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Basic Rich Table&quot;</span><span class="p">)</span>
 <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
-
-            <div class="rich-table-example" style="width: 600px; height: auto; overflow: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa;">
-                <style>
-                .rich-table-example pre {
-                    white-space: pre !important;
-                    overflow-x: auto !important;
-                    font-family: 'Courier New', Consolas, Monaco, monospace !important;
-                    line-height: 1.2 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .rich-table-example code {
-                    white-space: pre !important;
-                    font-family: inherit !important;
-                    background: transparent !important;
-                    padding: 0 !important;
-                    border: none !important;
-                }
-                </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">       Sales Report       </span>
-╭───────┬───────┬────────╮
-│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index </span>│<span style="font-weight: bold"> Sales </span>│<span style="font-weight: bold"> Profit </span>│
-├───────┼───────┼────────┤
-│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> 0     </span>│ 150   │ 25     │
-│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> 1     </span>│ 230   │ 45     │
-│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> 2     </span>│ 180   │ 32     │
-╰───────┴───────┴────────╯
-</pre>
-    </code>
-            </div>
-            </section>
-<section id="interactive-tutorial">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Interactive Tutorial</a><a class="headerlink" href="#interactive-tutorial" title="Link to this heading"></a></h2>
-<p>For hands-on learning, run the interactive tutorial:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/
-python<span class="w"> </span>tutor.py
-</pre></div>
 </div>
-<p>This script provides step-by-step guidance through all <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> features with live examples.</p>
-</section>
-<section id="basic-usage">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Basic Usage</a><a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
-<section id="converting-dataframes">
-<h3><a class="toc-backref" href="#id5" role="doc-backlink">Converting DataFrames</a><a class="headerlink" href="#converting-dataframes" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic conversion</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">()</span>
-
-<span class="c1"># With title</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Report&quot;</span><span class="p">)</span>
-
-<span class="c1"># Hide index</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">show_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                 Basic Rich Table                 </span>
+╭───────────┬─────────┬────────┬───────┬─────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Q1      </span>│<span style="font-weight: bold"> Q2     </span>│<span style="font-weight: bold"> Q3    </span>│<span style="font-weight: bold"> Q4      </span>│
+├───────────┼─────────┼────────┼───────┼─────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product A </span>│ 100.123 │ 120.5  │ 140.0 │ 160.555 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product B </span>│ 150.456 │ 180.75 │ 200.0 │ 170.333 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product C </span>│ 200.789 │ 220.25 │ 180.0 │ 240.111 │
+╰───────────┴─────────┴────────┴───────┴─────────╯
 </pre></div>
 </div>
 </section>
-<section id="converting-series">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">Converting Series</a><a class="headerlink" href="#converting-series" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">85</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">78</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Scores&#39;</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">()</span>
+<section id="Background-Gradients">
+<h2>Background Gradients<a class="headerlink" href="#Background-Gradients" title="Link to this heading"></a></h2>
+<p>Apply color gradients to highlight data patterns:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-</section>
-</section>
-<section id="background-gradients">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Background Gradients</a><a class="headerlink" href="#background-gradients" title="Link to this heading"></a></h2>
-<p>Apply color gradients to table backgrounds for enhanced data visualization.</p>
-<section id="basic-gradients">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Basic Gradients</a><a class="headerlink" href="#basic-gradients" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
-
-<span class="c1"># Create sample data with quarterly performance</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
-    <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span>
-    <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
-    <span class="s1">&#39;Q4&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">160</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">240</span><span class="p">]</span>
-<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Product A&#39;</span><span class="p">,</span> <span class="s1">&#39;Product B&#39;</span><span class="p">,</span> <span class="s1">&#39;Product C&#39;</span><span class="p">])</span>
-
-<span class="c1"># Convert to Rich table with gradient background</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Background gradient with viridis colormap</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📊 Quarterly Performance&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📊 Background Gradient (Viridis)&quot;</span><span class="p">,</span>
     <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on blue&quot;</span>
 <span class="p">)</span>
 <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
-
-            <div class="rich-table-example" style="width: 600px; height: auto; overflow: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa;">
-                <style>
-                .rich-table-example pre {
-                    white-space: pre !important;
-                    overflow-x: auto !important;
-                    font-family: 'Courier New', Consolas, Monaco, monospace !important;
-                    line-height: 1.2 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .rich-table-example code {
-                    white-space: pre !important;
-                    font-family: inherit !important;
-                    background: transparent !important;
-                    padding: 0 !important;
-                    border: none !important;
-                }
-                </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">           📊 Quarterly Performance            </span>
-          ╷        ╷        ╷        ╷         
- <span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">Index    </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q1      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q2      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q3      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q4      </span> 
-╶─────────┼────────┼────────┼────────┼────────╴
- <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product A</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">100</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">120</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">140</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">160</span>      
- <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product B</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21918c">150</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #22a884">180</span>     │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472d7b">170</span>      
- <span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product C</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span>     │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">220</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #35b779">180</span>     │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">240</span>      
-          ╵        ╵        ╵        ╵         
-</pre>
-    </code>
-            </div>
-            <p>Available colormaps include: <code class="docutils literal notranslate"><span class="pre">viridis</span></code>, <code class="docutils literal notranslate"><span class="pre">plasma</span></code>, <code class="docutils literal notranslate"><span class="pre">inferno</span></code>, <code class="docutils literal notranslate"><span class="pre">magma</span></code>, <code class="docutils literal notranslate"><span class="pre">cividis</span></code>, <code class="docutils literal notranslate"><span class="pre">coolwarm</span></code>, <code class="docutils literal notranslate"><span class="pre">RdYlBu</span></code>, <code class="docutils literal notranslate"><span class="pre">RdYlGn</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral</span></code>, and more.</p>
-</section>
-<section id="gradient-direction">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">Gradient Direction</a><a class="headerlink" href="#gradient-direction" title="Link to this heading"></a></h3>
-<p>Control gradient application direction:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Column-wise gradient (default)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-
-<span class="c1"># Row-wise gradient</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-
-<span class="c1"># Both directions</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">       📊 Background Gradient (Viridis)        </span>
+╭─────────┬────────┬────────┬────────┬────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">Index    </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q1      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q2      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q3      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q4      </span>│
+├─────────┼────────┼────────┼────────┼────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product A</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">100.123</span> │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">120.5 </span>  │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">140.0</span>   │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">160.555</span> │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product B</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21908d">150.456</span> │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #23a983">180.75</span>  │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200.0</span>   │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472c7a">170.333</span> │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product C</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200.789</span> │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">220.25</span>  │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #35b779">180.0</span>   │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">240.111</span> │
+╰─────────┴────────┴────────┴────────┴────────╯
 </pre></div>
 </div>
-</section>
-<section id="subset-styling">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">Subset Styling</a><a class="headerlink" href="#subset-styling" title="Link to this heading"></a></h3>
-<p>Apply gradients to specific columns:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
-    <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;subset&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Sales&quot;</span><span class="p">,</span> <span class="s2">&quot;Profit&quot;</span><span class="p">]}</span>
-<span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-</section>
-</section>
-<section id="text-gradients">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Text Gradients</a><a class="headerlink" href="#text-gradients" title="Link to this heading"></a></h2>
-<p>Apply color gradients to text for enhanced readability.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
-
-<span class="c1"># Create weather data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;Temperature&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">32.1</span><span class="p">,</span> <span class="mf">28.7</span><span class="p">,</span> <span class="mf">35.4</span><span class="p">,</span> <span class="mf">29.8</span><span class="p">,</span> <span class="mf">33.2</span><span class="p">],</span>
-    <span class="s1">&#39;Humidity&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">69</span><span class="p">],</span>
-    <span class="s1">&#39;Pressure&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1013.2</span><span class="p">,</span> <span class="mf">1009.8</span><span class="p">,</span> <span class="mf">1015.6</span><span class="p">,</span> <span class="mf">1007.3</span><span class="p">,</span> <span class="mf">1011.9</span><span class="p">]</span>
-<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Mon&#39;</span><span class="p">,</span> <span class="s1">&#39;Tue&#39;</span><span class="p">,</span> <span class="s1">&#39;Wed&#39;</span><span class="p">,</span> <span class="s1">&#39;Thu&#39;</span><span class="p">,</span> <span class="s1">&#39;Fri&#39;</span><span class="p">])</span>
-
-<span class="c1"># Convert to Rich table with text gradient</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Different colormap with axis control</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">tg</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🌡️ Weather Data&quot;</span><span class="p">,</span>
+    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
+    <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>  <span class="c1"># Column-wise gradient</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🌈 Plasma Gradient (Column-wise)&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">       🌈 Plasma Gradient (Column-wise)        </span>
+╭─────────┬────────┬────────┬────────┬────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">Index    </span>│<span style="font-weight: bold">Q1      </span>│<span style="font-weight: bold">Q2      </span>│<span style="font-weight: bold">Q3      </span>│<span style="font-weight: bold">Q4      </span>│
+├─────────┼────────┼────────┼────────┼────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product A</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">100.123</span> │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">120.5 </span>  │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">140.0</span>   │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">160.555</span> │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product B</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #cb4679">150.456</span> │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #e26561">180.75</span>  │<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">200.0</span>   │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #4b03a1">170.333</span> │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product C</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">200.789</span> │<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">220.25</span>  │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #ed7953">180.0</span>   │<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">240.111</span> │
+╰─────────┴────────┴────────┴────────┴────────╯
+</pre></div>
+</div>
+</section>
+<section id="Text-Gradients">
+<h2>Text Gradients<a class="headerlink" href="#Text-Gradients" title="Link to this heading"></a></h2>
+<p>Apply gradients to the text itself:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Text gradient</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">tg</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🎨 Text Gradient (Coolwarm)&quot;</span><span class="p">,</span>
     <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;bold cyan&quot;</span>
 <span class="p">)</span>
 <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
-
-            <div class="rich-table-example" style="width: 700px; height: auto; overflow: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa;">
-                <style>
-                .rich-table-example pre {
-                    white-space: pre !important;
-                    overflow-x: auto !important;
-                    font-family: 'Courier New', Consolas, Monaco, monospace !important;
-                    line-height: 1.2 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .rich-table-example code {
-                    white-space: pre !important;
-                    font-family: inherit !important;
-                    background: transparent !important;
-                    padding: 0 !important;
-                    border: none !important;
-                }
-                </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">               🌡️ Weather Data                </span>
-╭───────┬─────────────┬──────────┬──────────╮
-│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index </span>│<span style="font-weight: bold"> Temperature </span>│<span style="font-weight: bold"> Humidity </span>│<span style="font-weight: bold"> Pressure </span>│
-├───────┼─────────────┼──────────┼──────────┤
-│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Mon   </span>│ <span style="color: #cc4977; text-decoration-color: #cc4977">32.1</span>        │ <span style="color: #910ea3; text-decoration-color: #910ea3">65.0</span>     │ <span style="color: #f3874a; text-decoration-color: #f3874a">1013.2</span>   │
-│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Tue   </span>│ <span style="color: #0d0887; text-decoration-color: #0d0887">28.7</span>        │ <span style="color: #e26660; text-decoration-color: #e26660">72.0</span>     │ <span style="color: #910ea3; text-decoration-color: #910ea3">1009.8</span>   │
-│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Wed   </span>│ <span style="color: #f0f921; text-decoration-color: #f0f921">35.4</span>        │ <span style="color: #0d0887; text-decoration-color: #0d0887">58.0</span>     │ <span style="color: #f0f921; text-decoration-color: #f0f921">1015.6</span>   │
-│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Thu   </span>│ <span style="color: #5c01a6; text-decoration-color: #5c01a6">29.8</span>        │ <span style="color: #f0f921; text-decoration-color: #f0f921">81.0</span>     │ <span style="color: #0d0887; text-decoration-color: #0d0887">1007.3</span>   │
-│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Fri   </span>│ <span style="color: #ed7a52; text-decoration-color: #ed7a52">33.2</span>        │ <span style="color: #c6417d; text-decoration-color: #c6417d">69.0</span>     │ <span style="color: #d7566c; text-decoration-color: #d7566c">1011.9</span>   │
-╰───────┴─────────────┴──────────┴──────────╯
-</pre>
-    </code>
-            </div>
-            </section>
-<section id="header-and-index-styling">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Header and Index Styling</a><a class="headerlink" href="#header-and-index-styling" title="Link to this heading"></a></h2>
-<p>Customize headers and index appearance.</p>
-<section id="column-headers">
-<h3><a class="toc-backref" href="#id13" role="doc-backlink">Column Headers</a><a class="headerlink" href="#column-headers" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on blue&quot;</span>
-<span class="p">)</span>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">           🎨 Text Gradient (Coolwarm)            </span>
+╭───────────┬─────────┬────────┬───────┬─────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Q1      </span>│<span style="font-weight: bold"> Q2     </span>│<span style="font-weight: bold"> Q3    </span>│<span style="font-weight: bold"> Q4      </span>│
+├───────────┼─────────┼────────┼───────┼─────────┤
+│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Product A </span>│ <span style="color: #3b4cc0; text-decoration-color: #3b4cc0">100.123</span> │ <span style="color: #3b4cc0; text-decoration-color: #3b4cc0">120.5</span>  │ <span style="color: #3b4cc0; text-decoration-color: #3b4cc0">140.0</span> │ <span style="color: #3b4cc0; text-decoration-color: #3b4cc0">160.555</span> │
+│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Product B </span>│ <span style="color: #dcdddd; text-decoration-color: #dcdddd">150.456</span> │ <span style="color: #f2cab5; text-decoration-color: #f2cab5">180.75</span> │ <span style="color: #b40426; text-decoration-color: #b40426">200.0</span> │ <span style="color: #6180e9; text-decoration-color: #6180e9">170.333</span> │
+│<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Product C </span>│ <span style="color: #b40426; text-decoration-color: #b40426">200.789</span> │ <span style="color: #b40426; text-decoration-color: #b40426">220.25</span> │ <span style="color: #f7b89c; text-decoration-color: #f7b89c">180.0</span> │ <span style="color: #b40426; text-decoration-color: #b40426">240.111</span> │
+╰───────────┴─────────┴────────┴───────┴─────────╯
 </pre></div>
 </div>
 </section>
-<section id="index-styling">
-<h3><a class="toc-backref" href="#id14" role="doc-backlink">Index Styling</a><a class="headerlink" href="#index-styling" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;italic green&quot;</span><span class="p">,</span>
-    <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold yellow on red&quot;</span>
+<section id="String-Formatting">
+<h2>String Formatting<a class="headerlink" href="#String-Formatting" title="Link to this heading"></a></h2>
+<p>Format numbers and strings using the enhanced format parameter:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Different formats for different columns</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>      <span class="c1"># Currency format</span>
+        <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">M&#39;</span><span class="p">,</span>      <span class="c1"># Millions format</span>
+        <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span>       <span class="c1"># Integer format</span>
+        <span class="s1">&#39;Q4&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">%&#39;</span>       <span class="c1"># Percentage format</span>
+    <span class="p">},</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;💰 Custom Number Formatting&quot;</span>
 <span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">         💰 Custom Number Formatting         </span>
+╭───────────┬──────┬────────┬─────┬─────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Q1   </span>│<span style="font-weight: bold"> Q2     </span>│<span style="font-weight: bold"> Q3  </span>│<span style="font-weight: bold"> Q4      </span>│
+├───────────┼──────┼────────┼─────┼─────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product A </span>│ $100 │ 120.5M │ 140 │ 160.56% │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product B </span>│ $150 │ 180.8M │ 200 │ 170.33% │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product C </span>│ $201 │ 220.2M │ 180 │ 240.11% │
+╰───────────┴──────┴────────┴─────┴─────────╯
 </pre></div>
 </div>
 </section>
-<section id="index-background-gradients">
-<h3><a class="toc-backref" href="#id15" role="doc-backlink">Index Background Gradients</a><a class="headerlink" href="#index-background-gradients" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">index_bg</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>
-    <span class="n">index_bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="s2">&quot;plasma&quot;</span><span class="p">}</span>
-<span class="p">)</span>
+<section id="Pandas-Styler-Integration">
+<h2>Pandas Styler Integration<a class="headerlink" href="#Pandas-Styler-Integration" title="Link to this heading"></a></h2>
+<p>Use existing pandas Styler objects with enhanced to_rich features:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-</section>
-</section>
-<section id="alternating-rows">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink">Alternating Rows</a><a class="headerlink" href="#alternating-rows" title="Link to this heading"></a></h2>
-<p>Improve readability with alternating row colors.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
-
-<span class="c1"># Create student grades data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;Diana&#39;</span><span class="p">,</span> <span class="s1">&#39;Eve&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">94</span><span class="p">],</span>
-    <span class="s1">&#39;Grade&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B+&#39;</span><span class="p">,</span> <span class="s1">&#39;A-&#39;</span><span class="p">,</span> <span class="s1">&#39;B+&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create pandas styler with custom formatting</span>
+<span class="n">styler</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span>
+    <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="s1">&#39;Product: </span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="s1">&#39;Sales: $</span><span class="si">{:.0f}</span><span class="s1">K&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1"> units&#39;</span>
 <span class="p">})</span>
 
-<span class="c1"># Convert to Rich table with alternating rows</span>
+<span class="c1"># Use styler with to_rich</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">alternating_rows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">alternating_row_colors</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;on dark_blue&quot;</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🎓 Student Grades&quot;</span><span class="p">,</span>
-    <span class="n">show_index</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">styler</span><span class="o">=</span><span class="n">styler</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🏭 Pandas Styler Integration&quot;</span>
 <span class="p">)</span>
 <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                     🏭 Pandas Styler Integration                     </span>
+╭───────────┬────────────────┬──────────────┬───────────┬────────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Q1             </span>│<span style="font-weight: bold"> Q2           </span>│<span style="font-weight: bold"> Q3        </span>│<span style="font-weight: bold"> Q4         </span>│
+├───────────┼────────────────┼──────────────┼───────────┼────────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product A </span>│ Product: 100.1 │ Sales: $120K │ 140 units │ 160.555000 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product B </span>│ Product: 150.5 │ Sales: $181K │ 200 units │ 170.333000 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product C </span>│ Product: 200.8 │ Sales: $220K │ 180 units │ 240.111000 │
+╰───────────┴────────────────┴──────────────┴───────────┴────────────╯
+</pre></div>
+</div>
+</section>
+<section id="Format-Override">
+<h2>Format Override<a class="headerlink" href="#Format-Override" title="Link to this heading"></a></h2>
+<p>Override styler formats with the format parameter:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original styler format</span>
+<span class="n">original_styler</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="s1">&#39;OLD: </span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="s1">&#39;KEEP: </span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">})</span>
 
-            <div class="rich-table-example" style="width: 500px; height: auto; overflow: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa;">
-                <style>
-                .rich-table-example pre {
-                    white-space: pre !important;
-                    overflow-x: auto !important;
-                    font-family: 'Courier New', Consolas, Monaco, monospace !important;
-                    line-height: 1.2 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .rich-table-example code {
-                    white-space: pre !important;
-                    font-family: inherit !important;
-                    background: transparent !important;
-                    padding: 0 !important;
-                    border: none !important;
-                }
-                </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">     🎓 Student Grades     </span>
-╭─────────┬───────┬───────╮
-│<span style="font-weight: bold"> Name    </span>│<span style="font-weight: bold"> Score </span>│<span style="font-weight: bold"> Grade </span>│
-├─────────┼───────┼───────┤
-│ Alice   │ 95    │ A     │
-│ <span style="background-color: #000087">Bob    </span> │ <span style="background-color: #000087">87   </span> │ <span style="background-color: #000087">B+   </span> │
-│ Charlie │ 92    │ A-    │
-│ <span style="background-color: #000087">Diana  </span> │ <span style="background-color: #000087">89   </span> │ <span style="background-color: #000087">B+   </span> │
-│ Eve     │ 94    │ A     │
-╰─────────┴───────┴───────╯
-</pre>
-    </code>
-            </div>
-            </section>
-<section id="advanced-styling">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink">Advanced Styling</a><a class="headerlink" href="#advanced-styling" title="Link to this heading"></a></h2>
-<section id="professional-report-style">
-<h3><a class="toc-backref" href="#id18" role="doc-backlink">Professional Report Style</a><a class="headerlink" href="#professional-report-style" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+<span class="c1"># Override some formats</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">styler</span><span class="o">=</span><span class="n">original_styler</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="s1">&#39;NEW: $</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="s1">&#39;ADDED: </span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="p">},</span>  <span class="c1"># Overrides Q1, adds Q3</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🔄 Format Override Demo&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                     🔄 Format Override Demo                      </span>
+╭───────────┬───────────┬────────────┬──────────────┬────────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Q1        </span>│<span style="font-weight: bold"> Q2         </span>│<span style="font-weight: bold"> Q3           </span>│<span style="font-weight: bold"> Q4         </span>│
+├───────────┼───────────┼────────────┼──────────────┼────────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product A </span>│ NEW: $100 │ 120.500000 │ ADDED: 140.0 │ 160.555000 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product B </span>│ NEW: $150 │ 180.750000 │ ADDED: 200.0 │ 170.333000 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product C </span>│ NEW: $201 │ 220.250000 │ ADDED: 180.0 │ 240.111000 │
+╰───────────┴───────────┴────────────┴──────────────┴────────────╯
+</pre></div>
+</div>
+</section>
+<section id="Alternating-Rows">
+<h2>Alternating Rows<a class="headerlink" href="#Alternating-Rows" title="Link to this heading"></a></h2>
+<p>Improve readability with alternating row colors:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alternating row colors</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">alternating_rows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">alternating_row_colors</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;on grey11&quot;</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📋 Alternating Row Colors&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">            📋 Alternating Row Colors             </span>
+╭───────────┬─────────┬────────┬───────┬─────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Q1      </span>│<span style="font-weight: bold"> Q2     </span>│<span style="font-weight: bold"> Q3    </span>│<span style="font-weight: bold"> Q4      </span>│
+├───────────┼─────────┼────────┼───────┼─────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product A </span>│ 100.123 │ 120.5  │ 140.0 │ 160.555 │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product B </span>│ <span style="background-color: #1c1c1c">150.456</span> │ <span style="background-color: #1c1c1c">180.75</span> │ <span style="background-color: #1c1c1c">200.0</span> │ <span style="background-color: #1c1c1c">170.333</span> │
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> Product C </span>│ 200.789 │ 220.25 │ 180.0 │ 240.111 │
+╰───────────┴─────────┴────────┴───────┴─────────╯
+</pre></div>
+</div>
+</section>
+<section id="Manual-Table-Control">
+<h2>Manual Table Control<a class="headerlink" href="#Manual-Table-Control" title="Link to this heading"></a></h2>
+<p>Override automatic table optimization for custom styling:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manual table settings</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">auto_optimize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">box</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+    <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="n">show_edge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;⚙️ Manual Table Control&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                   ⚙️ Manual Table Control                   </span>
+╔═════════════╦═══════════╦══════════╦═════════╦═══════════╗
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">             </span>║<span style="font-weight: bold">           </span>║<span style="font-weight: bold">          </span>║<span style="font-weight: bold">         </span>║<span style="font-weight: bold">           </span>║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">  Index      </span>║<span style="font-weight: bold">  Q1       </span>║<span style="font-weight: bold">  Q2      </span>║<span style="font-weight: bold">  Q3     </span>║<span style="font-weight: bold">  Q4       </span>║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">             </span>║<span style="font-weight: bold">           </span>║<span style="font-weight: bold">          </span>║<span style="font-weight: bold">         </span>║<span style="font-weight: bold">           </span>║
+╠═════════════╬═══════════╬══════════╬═════════╬═══════════╣
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">             </span>║           ║          ║         ║           ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  Product A  </span>║  100.123  ║  120.5   ║  140.0  ║  160.555  ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">             </span>║           ║          ║         ║           ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">             </span>║           ║          ║         ║           ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  Product B  </span>║  150.456  ║  180.75  ║  200.0  ║  170.333  ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">             </span>║           ║          ║         ║           ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">             </span>║           ║          ║         ║           ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">  Product C  </span>║  200.789  ║  220.25  ║  180.0  ║  240.111  ║
+║<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">             </span>║           ║          ║         ║           ║
+╚═════════════╩═══════════╩══════════╩═════════╩═══════════╝
+</pre></div>
+</div>
+</section>
+<section id="Series-Support">
+<h2>Series Support<a class="headerlink" href="#Series-Support" title="Link to this heading"></a></h2>
+<p>to_rich also works with pandas Series:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Series</span>
+<span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">0.123</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.789</span><span class="p">],</span>
+                  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Performance Metrics&#39;</span><span class="p">,</span>
+                  <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;Precision&#39;</span><span class="p">,</span> <span class="s1">&#39;Recall&#39;</span><span class="p">])</span>
+
+<span class="c1"># Format the Series</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:.1%}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📈 Series with Formatting&quot;</span><span class="p">,</span>
+    <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;bold blue&quot;</span>
+<span class="p">)</span>
+<span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">     📈 Series with Formatting     </span>
+╭───────────┬─────────────────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index     </span>│<span style="font-weight: bold"> Performance Metrics </span>│
+├───────────┼─────────────────────┤
+│<span style="color: #000080; text-decoration-color: #000080; font-weight: bold"> Accuracy  </span>│ 12.3%               │
+│<span style="color: #000080; text-decoration-color: #000080; font-weight: bold"> Precision </span>│ 45.6%               │
+│<span style="color: #000080; text-decoration-color: #000080; font-weight: bold"> Recall    </span>│ 78.9%               │
+╰───────────┴─────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="Professional-Report-Style">
+<h2>Professional Report Style<a class="headerlink" href="#Professional-Report-Style" title="Link to this heading"></a></h2>
+<p>Combine multiple features for professional-looking reports:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Professional styling combining multiple features</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:.0f}</span><span class="s1">K&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:.0f}</span><span class="s1">K&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:.0f}</span><span class="s1">K&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Q4&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:.0f}</span><span class="s1">K&#39;</span>
+    <span class="p">},</span>
     <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on dark_blue&quot;</span><span class="p">,</span>
     <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold yellow on dark_red&quot;</span><span class="p">,</span>
     <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;italic cyan&quot;</span><span class="p">,</span>
     <span class="n">alternating_rows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">alternating_row_colors</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;on grey11&quot;</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📊 Quarterly Sales Report&quot;</span><span class="p">,</span>
-    <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
-
-<span class="c1"># Create sample data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
-    <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span>
-    <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
-    <span class="s1">&#39;Q4&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">160</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">240</span><span class="p">]</span>
-<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Product A&#39;</span><span class="p">,</span> <span class="s1">&#39;Product B&#39;</span><span class="p">,</span> <span class="s1">&#39;Product C&#39;</span><span class="p">])</span>
-
-<span class="c1"># Professional styling example</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
-    <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on dark_blue&quot;</span><span class="p">,</span>
-    <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold yellow on dark_red&quot;</span><span class="p">,</span>
-    <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;italic cyan&quot;</span><span class="p">,</span>
-    <span class="n">alternating_rows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">alternating_row_colors</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;on grey11&quot;</span><span class="p">),</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📊 Quarterly Sales Report&quot;</span><span class="p">,</span>
-    <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;📊 Quarterly Sales Report - 2024&quot;</span>
 <span class="p">)</span>
 <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
-
-            <div class="rich-table-example" style="width: 700px; height: auto; overflow: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa;">
-                <style>
-                .rich-table-example pre {
-                    white-space: pre !important;
-                    overflow-x: auto !important;
-                    font-family: 'Courier New', Consolas, Monaco, monospace !important;
-                    line-height: 1.2 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .rich-table-example code {
-                    white-space: pre !important;
-                    font-family: inherit !important;
-                    background: transparent !important;
-                    padding: 0 !important;
-                    border: none !important;
-                }
-                </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">           📊 Quarterly Sales Report           </span>
-<span style="color: #000080; text-decoration-color: #000080">          ╷        ╷        ╷        ╷         </span>
-<span style="color: #000080; text-decoration-color: #000080"> </span><span style="color: #808000; text-decoration-color: #808000; background-color: #870000; font-weight: bold">Index    </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q1      </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q2      </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q3      </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q4      </span><span style="color: #000080; text-decoration-color: #000080"> </span>
-<span style="color: #000080; text-decoration-color: #000080">╶─────────┼────────┼────────┼────────┼────────╴</span>
-<span style="color: #000080; text-decoration-color: #000080"> </span><span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product A</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">100</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">120</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">140</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">160</span>     <span style="color: #000080; text-decoration-color: #000080"> </span>
-<span style="color: #000080; text-decoration-color: #000080"> </span><span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product B</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21918c">150</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #22a884">180</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472d7b">170</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080"> </span>
-<span style="color: #000080; text-decoration-color: #000080"> </span><span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product C</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">220</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #35b779">180</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">240</span>     <span style="color: #000080; text-decoration-color: #000080"> </span>
-<span style="color: #000080; text-decoration-color: #000080">          ╵        ╵        ╵        ╵         </span>
-</pre>
-    </code>
-            </div>
-            </section>
-<section id="high-contrast-theme">
-<h3><a class="toc-backref" href="#id19" role="doc-backlink">High Contrast Theme</a><a class="headerlink" href="#high-contrast-theme" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>
-    <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold black on bright_white&quot;</span><span class="p">,</span>
-    <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on bright_black&quot;</span><span class="p">,</span>
-    <span class="n">table_style</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;⚡ High Contrast Report&quot;</span><span class="p">,</span>
-    <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;bright_yellow&quot;</span>
-<span class="p">)</span>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">       📊 Quarterly Sales Report - 2024        </span>
+╭─────────┬────────┬────────┬────────┬────────╮
+│<span style="color: #808000; text-decoration-color: #808000; background-color: #870000; font-weight: bold">Index    </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q1      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q2      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q3      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q4      </span>│
+├─────────┼────────┼────────┼────────┼────────┤
+│<span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product A</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">$100K  </span> │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">$120K </span>  │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">$140K</span>   │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">$161K  </span> │
+│<span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product B</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21908d">$150K  </span><span style="background-color: #1c1c1c"> </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #23a983">$181K </span><span style="background-color: #1c1c1c">  </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">$200K</span><span style="background-color: #1c1c1c">   </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472c7a">$170K  </span><span style="background-color: #1c1c1c"> </span>│
+│<span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product C</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">$201K  </span> │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">$220K </span>  │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #35b779">$180K</span>   │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">$240K  </span> │
+╰─────────┴────────┴────────┴────────┴────────╯
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
+</section>
+<section id="Large-Dataset-Example">
+<h2>Large Dataset Example<a class="headerlink" href="#Large-Dataset-Example" title="Link to this heading"></a></h2>
+<p>Demonstrate with a larger dataset:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create larger dataset</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">large_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Revenue&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">200000</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s1">&#39;Profit&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s1">&#39;Growth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s1">&#39;Market_Share&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Region_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)])</span>
 
-<span class="c1"># Create sample data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
-    <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">220</span><span class="p">],</span>
-    <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
-    <span class="s1">&#39;Q4&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">160</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">240</span><span class="p">]</span>
-<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Product A&#39;</span><span class="p">,</span> <span class="s1">&#39;Product B&#39;</span><span class="p">,</span> <span class="s1">&#39;Product C&#39;</span><span class="p">])</span>
-
-<span class="c1"># High contrast theme example</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>
-    <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold black on bright_white&quot;</span><span class="p">,</span>
-    <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on bright_black&quot;</span><span class="p">,</span>
-    <span class="n">table_style</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;⚡ High Contrast Report&quot;</span><span class="p">,</span>
-    <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;bright_yellow&quot;</span>
+<span class="c1"># Display with comprehensive formatting</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">large_df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
+    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;Revenue&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:,.0f}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Profit&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:,.0f}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Growth&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:+.1%}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Market_Share&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.1%}</span><span class="s1">&#39;</span>
+    <span class="p">},</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;🌍 Regional Performance Dashboard&quot;</span><span class="p">,</span>
+    <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on purple&quot;</span><span class="p">,</span>
+    <span class="n">show_index</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
 </div>
-
-            <div class="rich-table-example" style="width: 700px; height: auto; overflow: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0; background: #fafafa;">
-                <style>
-                .rich-table-example pre {
-                    white-space: pre !important;
-                    overflow-x: auto !important;
-                    font-family: 'Courier New', Consolas, Monaco, monospace !important;
-                    line-height: 1.2 !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-                .rich-table-example code {
-                    white-space: pre !important;
-                    font-family: inherit !important;
-                    background: transparent !important;
-                    padding: 0 !important;
-                    border: none !important;
-                }
-                </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">            ⚡ High Contrast Report            </span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">          ╷        ╷        ╷        ╷         </span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #808080; font-weight: bold">Index    </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q1      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q2      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q3      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q4      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">╶─────────┼────────┼────────┼────────┼────────╴</span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product A</span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #3b4cc0">100</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #3b4cc0">120</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #3b4cc0">140</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #3b4cc0">160</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product B</span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #dddcdc">150</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #f2cbb7">180</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">200</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #6282ea">170</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product C</span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">200</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">220</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #f7b89c">180</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">240</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold"> </span>
-<span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">          ╵        ╵        ╵        ╵         </span>
-</pre>
-    </code>
-            </div>
-            </section>
-</section>
-<section id="pandas-styler-integration">
-<h2><a class="toc-backref" href="#id20" role="doc-backlink">Pandas Styler Integration</a><a class="headerlink" href="#pandas-styler-integration" title="Link to this heading"></a></h2>
-<p>Use existing pandas Styler objects with <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> enhancements.</p>
-<section id="basic-integration">
-<h3><a class="toc-backref" href="#id21" role="doc-backlink">Basic Integration</a><a class="headerlink" href="#basic-integration" title="Link to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create pandas styler</span>
-<span class="n">styled_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">highlight_max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightblue&#39;</span><span class="p">)</span>
-
-<span class="c1"># Use with to_rich</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">styler</span><span class="o">=</span><span class="n">styled_df</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Pandas Styler + to_rich&quot;</span>
-<span class="p">)</span>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                            🌍 Regional Performance Dashboard                            </span>
+╭────────┬──────────────────┬──────────────────┬────────────────────┬───────────────────╮
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">Index   </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #af00ff; font-weight: bold">Revenue           </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #af00ff; font-weight: bold">Profit            </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #af00ff; font-weight: bold">Growth              </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #af00ff; font-weight: bold">Market_Share       </span>│
+├────────┼──────────────────┼──────────────────┼────────────────────┼───────────────────┤
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_0</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #a21d9a">$106,181          </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #e3685f">$32,050           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #a11b9b">+2.2%               </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #d7566c">14.1%              </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_1</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">$192,607          </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #f58c46">$36,863           </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fdac33">+11.0%              </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">20.7%              </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_2</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f9973f">$159,799          </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">$5,926            </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #e56a5d">+7.3%               </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #6e00a8">9.0%               </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_3</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #e26660">$139,799          </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">$48,646           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #9814a0">+1.6%               </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #e76f5a">15.3%              </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_4</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #46039f">$73,403           </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #febb2b">$42,460           </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f0f921">+14.5%              </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #f79143">16.8%              </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_5</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #46039f">$73,399           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #6a00a8">$14,555           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">-4.4%               </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">5.9%               </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_6</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #0d0887">$58,713           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #5e01a6">$13,182           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #9814a0">+1.7%               </span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #f9983e">17.2%              </span>│
+│<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Region_7</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fcd025">$179,926          </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #5e01a6">$13,253           </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #c6417d">+4.7%               </span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #5c01a6">8.4%               </span>│
+╰────────┴──────────────────┴──────────────────┴────────────────────┴───────────────────╯
 </pre></div>
 </div>
 </section>
-<section id="style-override">
-<h3><a class="toc-backref" href="#id22" role="doc-backlink">Style Override</a><a class="headerlink" href="#style-override" title="Link to this heading"></a></h3>
-<p>Built-in <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> options override pandas styler:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">styled_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Reds&#39;</span><span class="p">)</span>
-
-<span class="c1"># Blues gradient overrides Reds from styler</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
-    <span class="n">styler</span><span class="o">=</span><span class="n">styled_df</span><span class="p">,</span>
-    <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Style Override&quot;</span>
-<span class="p">)</span>
+<section id="CLI-Tutorial-Command">
+<h2>CLI Tutorial Command<a class="headerlink" href="#CLI-Tutorial-Command" title="Link to this heading"></a></h2>
+<p>After installing pirrtools, you can also run an interactive tutorial from the command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pirrtools-tutorial
 </pre></div>
 </div>
+<p>This launches a comprehensive interactive tutorial covering all features.</p>
 </section>
-</section>
-<section id="complete-parameter-reference">
-<h2><a class="toc-backref" href="#id23" role="doc-backlink">Complete Parameter Reference</a><a class="headerlink" href="#complete-parameter-reference" title="Link to this heading"></a></h2>
-<section id="core-parameters">
-<h3><a class="toc-backref" href="#id24" role="doc-backlink">Core Parameters</a><a class="headerlink" href="#core-parameters" title="Link to this heading"></a></h3>
+<section id="Summary">
+<h2>Summary<a class="headerlink" href="#Summary" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> method provides powerful formatting capabilities:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> (str): Table title</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">show_index</span></code> (bool): Show DataFrame index (default: True)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">styler</span></code> (pandas.Styler): Existing pandas Styler object</p></li>
+<li><p>✅ <strong>Background &amp; text gradients</strong> for data visualization</p></li>
+<li><p>✅ <strong>String formatting</strong> with pandas Styler integration</p></li>
+<li><p>✅ <strong>Manual table control</strong> to override automatic optimization</p></li>
+<li><p>✅ <strong>Professional styling</strong> options for reports</p></li>
+<li><p>✅ <strong>Series support</strong> with all formatting features</p></li>
+<li><p>✅ <strong>Easy console output</strong> with Rich integration</p></li>
 </ul>
-</section>
-<section id="background-styling">
-<h3><a class="toc-backref" href="#id25" role="doc-backlink">Background Styling</a><a class="headerlink" href="#background-styling" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">bg</span></code> (str): Background gradient colormap</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bg_kwargs</span></code> (dict): Background gradient options</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">index_bg</span></code> (str): Index background gradient colormap</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">index_bg_kwargs</span></code> (dict): Index background gradient options</p></li>
-</ul>
-</section>
-<section id="text-styling">
-<h3><a class="toc-backref" href="#id26" role="doc-backlink">Text Styling</a><a class="headerlink" href="#text-styling" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tg</span></code> (str): Text gradient colormap</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tg_kwargs</span></code> (dict): Text gradient options</p></li>
-</ul>
-</section>
-<section id="header-and-index">
-<h3><a class="toc-backref" href="#id27" role="doc-backlink">Header and Index</a><a class="headerlink" href="#header-and-index" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">column_header_style</span></code> (str): Column header Rich style</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">index_header_style</span></code> (str): Index header Rich style</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">index_style</span></code> (str): Index values Rich style</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">index_justify</span></code> (str): Index text justification</p></li>
-</ul>
-</section>
-<section id="row-styling">
-<h3><a class="toc-backref" href="#id28" role="doc-backlink">Row Styling</a><a class="headerlink" href="#row-styling" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">alternating_rows</span></code> (bool): Enable alternating row colors</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">alternating_row_colors</span></code> (tuple): Custom row colors</p></li>
-</ul>
-</section>
-<section id="table-appearance">
-<h3><a class="toc-backref" href="#id29" role="doc-backlink">Table Appearance</a><a class="headerlink" href="#table-appearance" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">table_style</span></code> (str): Overall table Rich style</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">border_style</span></code> (str): Border color/style</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">title_style</span></code> (str): Title Rich style</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">minimize_gaps</span></code> (bool): Reduce cell padding</p></li>
-</ul>
-</section>
-</section>
-<section id="examples">
-<h2><a class="toc-backref" href="#id30" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<p>All examples are available in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tutor.py</span></code> - Interactive tutorial (recommended starting point)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">to_rich_examples.py</span></code> - Comprehensive examples of all features</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">example_to_rich_styling.py</span></code> - Gradient styling examples</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gradient_example.py</span></code> - Simple gradient demonstrations</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">to_rich_demo.py</span></code> - Basic demos with multiple gradients</p></li>
-</ul>
-<p>Run any example file to see the <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> method in action:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>examples/
-python<span class="w"> </span>tutor.py<span class="w">               </span><span class="c1"># Interactive learning</span>
-python<span class="w"> </span>to_rich_examples.py<span class="w">    </span><span class="c1"># All features demo</span>
-python<span class="w"> </span>example_to_rich_styling.py<span class="w">  </span><span class="c1"># Gradient focus</span>
-</pre></div>
-</div>
-</section>
-<section id="color-reference">
-<h2><a class="toc-backref" href="#id31" role="doc-backlink">Color Reference</a><a class="headerlink" href="#color-reference" title="Link to this heading"></a></h2>
-<section id="rich-color-formats">
-<h3><a class="toc-backref" href="#id32" role="doc-backlink">Rich Color Formats</a><a class="headerlink" href="#rich-color-formats" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">to_rich</span></code> supports all Rich color formats:</p>
-<ul class="simple">
-<li><p><strong>Named colors</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;red&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;blue&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;green&quot;</span></code></p></li>
-<li><p><strong>Hex colors</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;#ff0000&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;#00ff00&quot;</span></code></p></li>
-<li><p><strong>RGB colors</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;rgb(255,0,0)&quot;</span></code></p></li>
-<li><p><strong>Background</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;white</span> <span class="pre">on</span> <span class="pre">red&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;bold</span> <span class="pre">blue</span> <span class="pre">on</span> <span class="pre">yellow&quot;</span></code></p></li>
-<li><p><strong>Styles</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;bold&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;italic&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;dim&quot;</span></code></p></li>
-</ul>
-</section>
-<section id="gradient-colormaps">
-<h3><a class="toc-backref" href="#id33" role="doc-backlink">Gradient Colormaps</a><a class="headerlink" href="#gradient-colormaps" title="Link to this heading"></a></h3>
-<p>Popular matplotlib colormaps supported:</p>
-<ul class="simple">
-<li><p><strong>Sequential</strong>: <code class="docutils literal notranslate"><span class="pre">viridis</span></code>, <code class="docutils literal notranslate"><span class="pre">plasma</span></code>, <code class="docutils literal notranslate"><span class="pre">inferno</span></code>, <code class="docutils literal notranslate"><span class="pre">magma</span></code>, <code class="docutils literal notranslate"><span class="pre">cividis</span></code></p></li>
-<li><p><strong>Diverging</strong>: <code class="docutils literal notranslate"><span class="pre">coolwarm</span></code>, <code class="docutils literal notranslate"><span class="pre">RdYlBu</span></code>, <code class="docutils literal notranslate"><span class="pre">RdYlGn</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral</span></code></p></li>
-<li><p><strong>Qualitative</strong>: <code class="docutils literal notranslate"><span class="pre">tab10</span></code>, <code class="docutils literal notranslate"><span class="pre">tab20</span></code>, <code class="docutils literal notranslate"><span class="pre">set1</span></code>, <code class="docutils literal notranslate"><span class="pre">set2</span></code></p></li>
-</ul>
-</section>
-</section>
-<section id="see-also">
-<h2><a class="toc-backref" href="#id34" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="api_reference.html"><span class="doc">API Reference</span></a> - Complete API documentation</p></li>
-<li><p><a class="reference internal" href="examples.html"><span class="doc">Examples Gallery</span></a> - Additional usage examples</p></li>
-<li><p><a class="reference external" href="https://rich.readthedocs.io/">Rich Documentation</a> - Rich library reference</p></li>
-<li><p><a class="reference external" href="https://pandas.pydata.org/docs/user_guide/style.html">Pandas Styling</a> - Pandas styling guide</p></li>
-</ul>
+<p>For more details, see the <a class="reference external" href="https://pirrtools.readthedocs.io/">documentation</a> and <a class="reference external" href="https://pirrtools.readthedocs.io/en/latest/api_reference.html">API reference</a>.</p>
 </section>
 </section>
 
@@ -797,7 +666,7 @@ python<span class="w"> </span>example_to_rich_styling.py<span class="w">  </span
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="pirrtools Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples Gallery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter_example.html" class="btn btn-neutral float-right" title="Pirrtools Interactive Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

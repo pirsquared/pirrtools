@@ -65,6 +65,7 @@ Documentation Contents
    :caption: User Guide
    
    to_rich_tutorial
+   jupyter_example
    examples
    installation
    

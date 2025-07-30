@@ -76,33 +76,56 @@ Basic Rich Table
 Background Gradients
 -------------------
 
-.. code-block:: python
+.. rich-table::
+   :width: 600px
 
-   # Viridis colormap gradient
-   table = df.pirr.to_rich(bg="viridis", title="Gradient Table")
-   console.print(table)
+   import pandas as pd
+   import pirrtools
+   from rich.console import Console
    
-   # Row-wise gradient
-   table = df.pirr.to_rich(
-       bg="plasma", 
-       bg_kwargs={"axis": 1},
-       title="Row-wise Gradient"
-   )
+   console = Console()
+   
+   # Create sample data
+   df = pd.DataFrame({
+       'Q1': [100, 150, 200],
+       'Q2': [120, 180, 220], 
+       'Q3': [140, 200, 180],
+       'Q4': [160, 170, 240]
+   }, index=['Product A', 'Product B', 'Product C'])
+   
+   # Viridis colormap gradient
+   table = df.pirr.to_rich(bg="viridis", title="📊 Quarterly Performance")
    console.print(table)
 
 Professional Styling
 --------------------
 
-.. code-block:: python
+.. rich-table::
+   :width: 700px
 
+   import pandas as pd
+   import pirrtools
+   from rich.console import Console
+   
+   console = Console()
+   
+   # Create financial data
+   df = pd.DataFrame({
+       'Q1': [100.5, 150.3, 200.8],
+       'Q2': [120.2, 180.7, 220.1], 
+       'Q3': [140.9, 200.4, 180.6],
+       'Q4': [160.1, 170.8, 240.3]
+   }, index=['Revenue', 'Profit', 'Growth'])
+   
+   # Professional styling with format
    table = df.pirr.to_rich(
        bg="viridis",
+       format="${:.1f}K",
        column_header_style="bold white on dark_blue",
        index_header_style="bold yellow on dark_red",
        alternating_rows=True,
        alternating_row_colors=("", "on grey11"),
-       title="📊 Professional Report",
-       border_style="blue"
+       title="📊 Professional Financial Report"
    )
    console.print(table)
 
@@ -115,7 +138,7 @@ Save and Load DataFrames
 .. code-block:: python
 
    import pandas as pd
-   from pirrtools import cache_and_load
+   from pirrtools.pandas import cache_and_load
    
    # Create expensive-to-compute DataFrame
    df = pd.DataFrame({
@@ -132,81 +155,12 @@ Using the .pirr Accessor
 .. code-block:: python
 
    # Save cache using accessor
-   df.pirr.save_cache('cache_directory')
+   df.pirr.to_cache('cache_directory')
    
    # Load cache
-   from pirrtools import load_cache
+   from pirrtools.pandas import load_cache
    loaded_df = load_cache('cache_directory')
 
-AttrPath Navigation
-==================
-
-File System Exploration
------------------------
-
-.. code-block:: python
-
-   from pirrtools.structures import AttrPath
-   
-   # Navigate using dot notation
-   root = AttrPath('.')
-   
-   # Access subdirectories
-   examples = root.examples
-   
-   # View files by extension
-   print(examples.F.py)  # All .py files
-   print(examples.D)     # All directories
-   
-   # View file contents with syntax highlighting
-   examples.tutor_py.view()
-
-Intelligent File Viewing
-------------------------
-
-.. code-block:: python
-
-   # AttrPath automatically handles different file types:
-   
-   path = AttrPath('/path/to/files')
-   
-   # Images display inline (in Jupyter)
-   path.image_jpg.view()
-   
-   # CSV files show as formatted tables
-   path.data_csv.view()
-   
-   # Code files get syntax highlighting
-   path.script_py.view()
-   
-   # HTML files render in browser
-   path.report_html.view()
-
-AttrDict Usage
-==============
-
-Dictionary with Attribute Access
---------------------------------
-
-.. code-block:: python
-
-   from pirrtools.structures import AttrDict
-   
-   # Create AttrDict
-   config = AttrDict({
-       'database': {
-           'host': 'localhost',
-           'port': 5432
-       },
-       'debug': True
-   })
-   
-   # Access using attributes or keys
-   print(config.database.host)  # 'localhost'
-   print(config['database']['port'])  # 5432
-   
-   # Nested access
-   config.api.endpoints.users = '/api/v1/users'
 
 Development Utilities
 ====================
@@ -235,39 +189,3 @@ Module Reloading
    
    # Reload class
    MyClass = reload_entity(MyClass)
-
-Running Examples
-================
-
-To run any example:
-
-.. code-block:: bash
-
-   # Interactive tutorial
-   cd examples/
-   python tutor.py
-   
-   # Comprehensive examples
-   python to_rich_examples.py
-   
-   # Specific feature demos
-   python example_to_rich_styling.py
-   python gradient_example.py
-
-Tips for Examples
-=================
-
-1. **Start with tutor.py** - It provides the best learning experience
-2. **Experiment** - Modify examples to see how different parameters work
-3. **Check source code** - Examples show implementation patterns
-4. **Use Rich Console** - Always create a Console() instance for proper display
-5. **Try your data** - Apply techniques to your own DataFrames for practical learning
-
-Next Steps
-==========
-
-After exploring examples:
-
-- Read the :doc:`to_rich_tutorial` for comprehensive parameter reference
-- Check the :doc:`api_reference` for detailed function documentation  
-- Contribute examples via GitHub issues or pull requests
