@@ -8,6 +8,7 @@
   <title>pirrtools.structures.attrdict &mdash; pirrtools 0.2.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -15,6 +16,9 @@
       <script src="../../../_static/documentation_options.js?v=71c180b9"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=3a36b171"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -41,14 +45,15 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../to_rich_tutorial.html">Pirrtools to_rich Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pirrtools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
 <ul>
@@ -93,7 +98,7 @@
 
 
 <div class="viewcode-block" id="AttrDict">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AttrDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dictionary subclass that supports attribute-style access to keys.</span>
 
@@ -112,7 +117,7 @@
 <span class="sd">        &gt;&gt;&gt; d.c.d = &#39;nested&#39;  # Creates nested structure</span>
 <span class="sd">        &gt;&gt;&gt; d.c.d</span>
 <span class="sd">        &#39;nested&#39;</span>
-<span class="sd">        </span>
+
 <span class="sd">        &gt;&gt;&gt; nested = AttrDict({&#39;x&#39;: {&#39;y&#39;: {&#39;z&#39;: 42}}})</span>
 <span class="sd">        &gt;&gt;&gt; nested.x.y.z</span>
 <span class="sd">        42</span>
@@ -123,14 +128,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="AttrDict.__init__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize AttrDict with automatic nested conversion.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            *args: Positional arguments passed to dict constructor.</span>
 <span class="sd">            **kwargs: Keyword arguments passed to dict constructor.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Note:</span>
 <span class="sd">            Any nested dictionaries in the input are automatically</span>
 <span class="sd">            converted to AttrDict instances for consistent attribute access.</span>
@@ -143,16 +148,16 @@
 
 
 <div class="viewcode-block" id="AttrDict.__getattr__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__getattr__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__getattr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get dictionary value as attribute.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            item (str): The attribute/key name to access.</span>
-<span class="sd">            </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            The value associated with the key.</span>
-<span class="sd">            </span>
+
 <span class="sd">        Raises:</span>
 <span class="sd">            AttributeError: If the key doesn&#39;t exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -165,10 +170,10 @@
 
 
 <div class="viewcode-block" id="AttrDict.__setattr__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__setattr__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__setattr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set dictionary value as attribute.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            key (str): The attribute/key name to set.</span>
 <span class="sd">            value: The value to associate with the key.</span>
@@ -177,13 +182,13 @@
 
 
 <div class="viewcode-block" id="AttrDict.__delattr__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__delattr__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__delattr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete dictionary key as attribute.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            item (str): The attribute/key name to delete.</span>
-<span class="sd">            </span>
+
 <span class="sd">        Raises:</span>
 <span class="sd">            AttributeError: If the key doesn&#39;t exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -196,10 +201,10 @@
 
 
 <div class="viewcode-block" id="AttrDict.__dir__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__dir__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__dir__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of available attributes (dictionary keys).</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of dictionary keys available as attributes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -207,13 +212,13 @@
 
 
 <div class="viewcode-block" id="AttrDict.__getitem__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__getitem__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__getitem__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get item with automatic AttrDict creation for missing keys.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            key: The dictionary key to access.</span>
-<span class="sd">            </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            The value for the key, or a new empty AttrDict if key doesn&#39;t exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -221,10 +226,10 @@
 
 
 <div class="viewcode-block" id="AttrDict.__setitem__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrdict.AttrDict.__setitem__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrdict.AttrDict.__setitem__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set item with automatic dict-to-AttrDict conversion.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            key: The dictionary key to set.</span>
 <span class="sd">            value: The value to set. Plain dicts are converted to AttrDict.</span>

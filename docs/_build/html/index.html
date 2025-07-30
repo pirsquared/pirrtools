@@ -9,6 +9,7 @@
   <title>pirrtools Documentation &mdash; pirrtools 0.2.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -16,10 +17,15 @@
       <script src="_static/documentation_options.js?v=71c180b9"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=3a36b171"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="to_rich Method Tutorial" href="to_rich_tutorial.html" /> 
+    <link rel="next" title="Pirrtools to_rich Tutorial" href="to_rich_tutorial.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,7 +49,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">Pirrtools to_rich Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
@@ -131,21 +138,27 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#quick-start">Quick Start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#interactive-tutorial">Interactive Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#basic-usage">Basic Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#background-gradients">Background Gradients</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#text-gradients">Text Gradients</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#header-and-index-styling">Header and Index Styling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#alternating-rows">Alternating Rows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#advanced-styling">Advanced Styling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#pandas-styler-integration">Pandas Styler Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#complete-parameter-reference">Complete Parameter Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#examples">Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#color-reference">Color Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#see-also">See Also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">Pirrtools to_rich Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Basic-Usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Background-Gradients">Background Gradients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Text-Gradients">Text Gradients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#String-Formatting">String Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Pandas-Styler-Integration">Pandas Styler Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Format-Override">Format Override</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Alternating-Rows">Alternating Rows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Manual-Table-Control">Manual Table Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Series-Support">Series Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Professional-Report-Style">Professional Report Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Large-Dataset-Example">Large Dataset Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#CLI-Tutorial-Command">CLI Tutorial Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="to_rich_tutorial.html#Summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_example.html">Pirrtools Interactive Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jupyter_example.html#Pandas-Caching-with-Pirrtools">Pandas Caching with Pirrtools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jupyter_example.html#AttrPath---Attribute-based-File-Navigation">AttrPath - Attribute-based File Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jupyter_example.html#AttrDict---Dictionary-with-Attribute-Access">AttrDict - Dictionary with Attribute Access</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a><ul>
@@ -153,12 +166,7 @@
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-files">Example Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#quick-examples">Quick Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#pandas-caching">Pandas Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#attrpath-navigation">AttrPath Navigation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#attrdict-usage">AttrDict Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#development-utilities">Development Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#running-examples">Running Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#tips-for-examples">Tips for Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#next-steps">Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
@@ -299,7 +307,7 @@ docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="to_rich_tutorial.html" class="btn btn-neutral float-right" title="to_rich Method Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="to_rich_tutorial.html" class="btn btn-neutral float-right" title="Pirrtools to_rich Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

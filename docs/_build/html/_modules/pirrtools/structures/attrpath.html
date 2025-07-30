@@ -8,6 +8,7 @@
   <title>pirrtools.structures.attrpath &mdash; pirrtools 0.2.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
@@ -15,6 +16,9 @@
       <script src="../../../_static/documentation_options.js?v=71c180b9"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=3a36b171"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -41,14 +45,15 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../to_rich_tutorial.html">Pirrtools to_rich Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pirrtools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
 <ul>
@@ -104,20 +109,23 @@
 <span class="sd">    &gt;&gt;&gt; path.py.script  # Access script.py from .py extension group</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">dedent</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pygments</span><span class="w"> </span><span class="kn">import</span> <span class="n">highlight</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_lexer_for_filename</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassNotFound</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">webbrowser</span>  <span class="c1"># for test patching</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">dedent</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ipython</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">Markdown</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.attrdict</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttrDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments</span><span class="w"> </span><span class="kn">import</span> <span class="n">highlight</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlFormatter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.lexers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_lexer_for_filename</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pygments.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassNotFound</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">.attrdict</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttrDict</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AttrPath&quot;</span><span class="p">]</span>
 
@@ -379,15 +387,57 @@
 
 
 <div class="viewcode-block" id="AttrPath">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrpath.AttrPath">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrpath.AttrPath">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AttrPath</span><span class="p">(</span><span class="n">_Path</span><span class="p">):</span>
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds a dictionary of attribute-accessible children: D, F, extension</span>
+<span class="sd">        groups, and all safe names.&quot;&quot;&quot;</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">pself</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">is_dir</span> <span class="o">=</span> <span class="n">pself</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">is_dir</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dir</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">attr</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ext_groups</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pself</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+            <span class="n">safe</span> <span class="o">=</span> <span class="n">attribute_safe_string</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                    <span class="n">dirs</span><span class="p">[</span><span class="n">safe</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+                <span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                    <span class="n">files</span><span class="p">[</span><span class="n">safe</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+                    <span class="n">ext</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">suffix</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">suffix</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">ext</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ext_groups</span><span class="p">:</span>
+                            <span class="n">ext_groups</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="n">ext_groups</span><span class="p">[</span><span class="n">ext</span><span class="p">][</span><span class="n">safe</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">continue</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dirs</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">files</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="k">for</span> <span class="n">ext</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">ext_groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="c1"># Add all direct children by safe name</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">{</span><span class="o">**</span><span class="n">dirs</span><span class="p">,</span> <span class="o">**</span><span class="n">files</span><span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">attr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attr</span>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enhanced pathlib.Path with attribute-based navigation and file viewing.</span>
-<span class="sd">    </span>
+
 <span class="sd">    AttrPath extends pathlib.Path to provide intuitive attribute-based</span>
 <span class="sd">    navigation through file systems and intelligent viewing of different</span>
 <span class="sd">    file types. Files and directories become accessible as attributes,</span>
 <span class="sd">    with automatic safe naming and organized access patterns.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Key Features:</span>
 <span class="sd">        - Access files and directories as attributes</span>
 <span class="sd">        - Automatic file viewing based on extension</span>
@@ -395,17 +445,17 @@
 <span class="sd">        - Organized access by file type (.py, .csv, etc.)</span>
 <span class="sd">        - Safe attribute names for special characters</span>
 <span class="sd">        - Built-in handlers for common file formats</span>
-<span class="sd">    </span>
+
 <span class="sd">    Attributes:</span>
 <span class="sd">        _view_handlers (dict): Mapping of file extensions to view handlers.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; path = AttrPath(&#39;/project&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; path.src.main_py.view  # View with syntax highlighting</span>
 <span class="sd">        &gt;&gt;&gt; path.data.D.subdir    # Navigate to subdirectory</span>
 <span class="sd">        &gt;&gt;&gt; path.py.utils         # Access utils.py via extension group</span>
 <span class="sd">        &gt;&gt;&gt; path.csv.data         # Access data.csv via extension group</span>
-<span class="sd">    </span>
+
 <span class="sd">    Note:</span>
 <span class="sd">        All paths are automatically expanded and resolved to absolute paths.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -421,81 +471,36 @@
         <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="n">feather_handler</span><span class="p">,</span>
         <span class="s2">&quot;sas7bdat&quot;</span><span class="p">:</span> <span class="n">sas7bdat_handler</span><span class="p">,</span>
         <span class="s2">&quot;md&quot;</span><span class="p">:</span> <span class="n">markdown_handler</span><span class="p">,</span>
+        <span class="s2">&quot;py&quot;</span><span class="p">:</span> <span class="n">generalized_handler</span><span class="p">,</span>
     <span class="p">}</span>
 
 <div class="viewcode-block" id="AttrPath.__new__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrpath.AttrPath.__new__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrpath.AttrPath.__new__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create new AttrPath instance with expanded and resolved path.</span>
-<span class="sd">        </span>
-<span class="sd">        Args:</span>
-<span class="sd">            *args: Arguments passed to pathlib.Path constructor.</span>
-<span class="sd">            **kwargs: Keyword arguments passed to pathlib.Path constructor.</span>
-<span class="sd">            </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            AttrPath: New instance with expanded user path and resolved absolute path.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create new AttrPath instance with expanded user path (no resolve to</span>
+<span class="sd">        avoid recursion).&quot;&quot;&quot;</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="AttrPath.__init__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrpath.AttrPath.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrpath.AttrPath.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize AttrPath instance.</span>
-<span class="sd">        </span>
-<span class="sd">        Args:</span>
-<span class="sd">            *args: Arguments passed to parent Path constructor.</span>
-<span class="sd">            **kwargs: Keyword arguments passed to parent Path constructor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize AttrPath instance.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
 
     <span class="nd">@cached_property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute and cache attribute-based navigation structure.</span>
-<span class="sd">        </span>
-<span class="sd">        This property analyzes the directory contents and creates an</span>
-<span class="sd">        organized structure for attribute-based access. Directories</span>
-<span class="sd">        are grouped under &#39;D&#39;, files under &#39;F&#39;, and by extension.</span>
-<span class="sd">        </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            AttrDict or None: Organized structure of available attributes,</span>
-<span class="sd">                or None if directory is empty or path is not a directory.</span>
-<span class="sd">        </span>
-<span class="sd">        Note:</span>
-<span class="sd">            Results are cached for performance. The structure includes:</span>
-<span class="sd">            - D: Subdirectories accessible by safe names</span>
-<span class="sd">            - F: Files accessible by safe names  </span>
-<span class="sd">            - Extension groups (py, csv, etc.): Files by safe stem names</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="n">_attr</span> <span class="o">=</span> <span class="n">AttrDict</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
-                <span class="n">safe_name</span> <span class="o">=</span> <span class="n">attribute_safe_string</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                <span class="n">safe_stem</span> <span class="o">=</span> <span class="n">attribute_safe_string</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
-                <span class="n">new</span> <span class="o">=</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-                <span class="n">suffix</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">_suffix</span>
-                <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                    <span class="n">_attr</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">())[</span><span class="n">safe_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
-                <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                    <span class="n">_attr</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">())[</span><span class="n">safe_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
-                    <span class="k">if</span> <span class="nb">dir</span><span class="p">(</span><span class="n">new</span><span class="p">):</span>
-                        <span class="n">_attr</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">())[</span><span class="n">safe_stem</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
-            <span class="k">if</span> <span class="n">_attr</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_attr</span>
-
-    <span class="nd">@cached_property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_code_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get syntax highlighting handler for this file.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Creates a handler function that will apply appropriate syntax</span>
 <span class="sd">        highlighting when called, based on the file&#39;s extension.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            callable or None: Handler function that returns highlighted</span>
 <span class="sd">                content when called, or None if no highlighting is available.</span>
-<span class="sd">                </span>
+
 <span class="sd">        Note:</span>
 <span class="sd">            CSV files are treated as text files for syntax highlighting</span>
 <span class="sd">            purposes to show raw content rather than parsed data.</span>
@@ -515,76 +520,124 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get file extension without the leading dot.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            str: File extension with leading dot removed, or empty string</span>
 <span class="sd">                if no extension.</span>
-<span class="sd">                </span>
+
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; AttrPath(&#39;file.txt&#39;)._suffix</span>
+<span class="sd">                _attr[safe_name] = path</span>
 <span class="sd">            &#39;txt&#39;</span>
-<span class="sd">            &gt;&gt;&gt; AttrPath(&#39;script.py&#39;)._suffix  </span>
+<span class="sd">            &gt;&gt;&gt; AttrPath(&#39;script.py&#39;)._suffix</span>
 <span class="sd">            &#39;py&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <div class="viewcode-block" id="AttrPath.__dir__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrpath.AttrPath.__dir__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrpath.AttrPath.__dir__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of available attributes for this path.</span>
-<span class="sd">        </span>
-<span class="sd">        For files, returns available actions like &#39;view&#39; and &#39;code&#39;.</span>
-<span class="sd">        For directories, returns available navigation attributes.</span>
-<span class="sd">        </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            list: Available attribute names for tab completion and inspection.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pop_ups</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view_handlers</span><span class="p">:</span>
-                <span class="n">pop_ups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_handler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">pop_ups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="n">pop_ups</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">pop_ups</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return list of available attributes for this path, including safe</span>
+<span class="sd">        names, D/F, extension groups, and .view/.code.&quot;&quot;&quot;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">())</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Add D, F, extension groups, and all safe names for files/dirs</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">):</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="c1"># Add .view and .code for files</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view_handlers</span><span class="p">:</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_code_handler&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">names</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AttrPath.__getattr__">
-<a class="viewcode-back" href="../../../api_reference.html#pirrtools.structures.attrpath.AttrPath.__getattr__">[docs]</a>
+<a class="viewcode-back" href="../../../pirrtools.structures.html#pirrtools.structures.attrpath.AttrPath.__getattr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide attribute-based access to files, directories, and actions.</span>
-<span class="sd">        </span>
-<span class="sd">        This method enables the core functionality of AttrPath by allowing</span>
-<span class="sd">        navigation and file viewing through attribute access.</span>
-<span class="sd">        </span>
-<span class="sd">        Args:</span>
-<span class="sd">            name (str): The attribute name being accessed.</span>
-<span class="sd">            </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            Various types depending on the attribute:</span>
-<span class="sd">            - AttrPath: For directory navigation</span>
-<span class="sd">            - AttrDict: For grouped file access</span>
-<span class="sd">            - File content: For file viewing (&#39;view&#39; attribute)</span>
-<span class="sd">            - HTML/formatted content: For code viewing (&#39;code&#39; attribute)</span>
-<span class="sd">            - Parent class attributes: For standard Path functionality</span>
-<span class="sd">            </span>
-<span class="sd">        Note:</span>
-<span class="sd">            Special attributes:</span>
-<span class="sd">            - &#39;view&#39;: Display file with appropriate handler</span>
-<span class="sd">            - &#39;code&#39;: Display file with syntax highlighting</span>
-<span class="sd">            - Directory/file names: Navigate to that location</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;_str&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;view&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view_handlers</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_view_handlers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">](</span><span class="bp">self</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;code&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_handler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_handler</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">super</span><span class="p">(),</span> <span class="n">name</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attribute-based access to extension groups, D/F, safe names, and</span>
+<span class="sd">        direct children. Never call is_file/is_dir here.&quot;&quot;&quot;</span>
+        <span class="c1"># Provide .view for supported files</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;view&quot;</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view_handlers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">handler</span><span class="p">:</span>
+
+                <span class="k">def</span><span class="w"> </span><span class="nf">_view</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                    <span class="c1"># If file does not exist, handle gracefully</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[AttrPath] File does not exist: </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    <span class="c1"># HTML: open in browser</span>
+                    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;html&quot;</span><span class="p">:</span>
+                        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+                        <span class="k">return</span>
+                    <span class="c1"># Text, CSV, JSON, MD, PY: print with rich if available</span>
+                    <span class="k">elif</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;txt&quot;</span><span class="p">,</span> <span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;md&quot;</span><span class="p">,</span> <span class="s2">&quot;py&quot;</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+
+                            <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+                            <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="n">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+                        <span class="k">return</span>
+                    <span class="c1"># Images: display with IPython if available</span>
+                    <span class="k">elif</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;svg&quot;</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+                            <span class="n">display</span><span class="p">(</span><span class="n">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                            <span class="k">pass</span>
+                        <span class="k">return</span>
+                    <span class="c1"># Fallback: just call handler</span>
+                    <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">_view</span>
+        <span class="c1"># Only handle custom attribute names for extension groups, D/F, safe</span>
+        <span class="c1"># names, and direct children</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_attr</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_attr&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">_attr</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">_attr</span><span class="p">:</span>
+            <span class="c1"># D, F, extension groups</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_attr</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">_attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Path</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">AttrPath</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">AttrDict</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="n">k</span><span class="p">:</span> <span class="p">(</span>
+                                <span class="n">AttrPath</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Path</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">AttrPath</span><span class="p">)</span>
+                                <span class="k">else</span> <span class="n">v</span>
+                            <span class="p">)</span>
+                            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="n">val</span>
+            <span class="c1"># Direct safe names for files/dirs in all groups</span>
+            <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">_attr</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">AttrDict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Path</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">AttrPath</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">AttrPath</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">val</span>
+        <span class="c1"># Fallback: try normal attribute (Path, etc.)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

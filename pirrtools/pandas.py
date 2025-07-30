@@ -36,7 +36,7 @@ import json
 import re
 import shutil
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
@@ -93,7 +93,9 @@ def _parse_css_color(css_value: str) -> str:
     return css_value
 
 
-def _css_to_rich_text(css_styles: list, text: str, column_width: int = None) -> Text:
+def _css_to_rich_text(
+    css_styles: list, text: str, column_width: Optional[int] = None
+) -> Text:
     """Convert CSS styles to Rich Text object with styling applied.
 
     This function takes CSS styles from pandas Styler and converts them
@@ -295,7 +297,7 @@ def _get_index_header_name(index) -> str:
         return "Index"
 
 
-def _extract_index_styles(styles: dict, is_series: bool = False) -> dict:
+def _extract_index_styles(_styles: dict, is_series: bool = False) -> dict:
     """Extract styles that apply to index from pandas styler.
 
     Args:
@@ -319,7 +321,7 @@ def _extract_index_styles(styles: dict, is_series: bool = False) -> dict:
     return index_styles
 
 
-def _create_index_gradient_styles(index_values, colormap="viridis", **kwargs):
+def _create_index_gradient_styles(index_values, colormap="viridis", **_kwargs):
     """Create background gradient styles for index values.
 
     Args:
@@ -355,7 +357,9 @@ def _create_index_gradient_styles(index_values, colormap="viridis", **kwargs):
         # If gradient creation fails, return empty styles and print warning
         import warnings
 
-        warnings.warn(f"Colormap error in _create_index_gradient_styles: {e}")
+        warnings.warn(
+            f"Colormap error in _create_index_gradient_styles: {e}", stacklevel=2
+        )
         return [""] * len(index_values)
 
 
@@ -774,10 +778,13 @@ class UtilsAccessor:
 
             auto_optimize (bool, optional): Whether to automatically optimize table
                 settings when background colors are detected. Defaults to True.
-            box (Box, optional): Rich Box style for table borders. Overrides auto_optimize.
-            padding (tuple, optional): Padding around cell content (vertical, horizontal).
+            box (Box, optional): Rich Box style for table borders.
                 Overrides auto_optimize.
-            collapse_padding (bool, optional): Whether to collapse adjacent cell padding.
+            padding (tuple, optional): Padding around cell content
+                (vertical, horizontal).
+                Overrides auto_optimize.
+            collapse_padding (bool, optional): Whether to collapse adjacent
+                cell padding.
                 Overrides auto_optimize.
             show_edge (bool, optional): Whether to show table outer border.
                 Overrides auto_optimize.
@@ -820,16 +827,24 @@ class UtilsAccessor:
 
             Manual table optimization control:
                 >>> from rich import box
-                >>> table = df.pirr.to_rich(auto_optimize=False, box=box.ROUNDED,
-                ...                         padding=(1, 2), show_edge=True)
+                >>> table = df.pirr.to_rich(
+                ...     auto_optimize=False, box=box.ROUNDED,
+                ...     padding=(1, 2), show_edge=True
+                ... )
 
             String formatting:
-                >>> table = df.pirr.to_rich(format={"Sales": "${:.0f}", "Growth": "{:.1%}"})
-                >>> table = df.pirr.to_rich(format="{:.2f}", na_rep="N/A")
+                >>> table = df.pirr.to_rich(
+                ...     format={"Sales": "${:.0f}", "Growth": "{:.1%}"}
+                ... )
+                >>> table = df.pirr.to_rich(
+                ...     format="{:.2f}", na_rep="N/A"
+                ... )
 
             Combined styling:
-                >>> table = df.pirr.to_rich(bg="viridis", tg="plasma", alternating_rows=True,
-                ...                         table_style="bold", title="My Data")
+                >>> table = df.pirr.to_rich(
+                ...     bg="viridis", tg="plasma", alternating_rows=True,
+                ...     table_style="bold", title="My Data"
+                ... )
                 >>> console.print(table)
 
         Note:
@@ -868,7 +883,7 @@ class UtilsAccessor:
                 except Exception as e:
                     import warnings
 
-                    warnings.warn(f"Colormap error in to_rich: {e}")
+                    warnings.warn(f"Colormap error in to_rich: {e}", stacklevel=2)
             # Apply text gradient
             if tg:
                 tg_kwargs = tg_kwargs or {}
@@ -880,7 +895,9 @@ class UtilsAccessor:
                 except Exception as e:
                     import warnings
 
-                    warnings.warn(f"Colormap error in to_rich (text): {e}")
+                    warnings.warn(
+                        f"Colormap error in to_rich (text): {e}", stacklevel=2
+                    )
             # Apply formatting if specified
             if format is not None:
                 if isinstance(format, str):
@@ -896,7 +913,9 @@ class UtilsAccessor:
                 else:
                     import warnings
 
-                    warnings.warn("format parameter must be string or dict")
+                    warnings.warn(
+                        "format parameter must be string or dict", stacklevel=2
+                    )
             elif na_rep is not None:
                 # Just apply na_rep without formatting
                 styler = styler.format(na_rep=na_rep)
@@ -915,11 +934,12 @@ class UtilsAccessor:
             except Exception as e:
                 import warnings
 
-                warnings.warn(f"Styler extraction error in to_rich: {e}")
+                warnings.warn(f"Styler extraction error in to_rich: {e}", stacklevel=2)
                 styles = {}
                 format_funcs = {}
 
-        # Auto-detect backgrounds and optimize table settings (if auto_optimize is enabled)
+        # Auto-detect backgrounds and optimize table settings
+        # (if auto_optimize is enabled)
         if auto_optimize:
             has_backgrounds = _has_background_styles(styles)
             optimized_settings = _optimize_table_for_backgrounds(
@@ -949,7 +969,8 @@ class UtilsAccessor:
             _measure_column_widths(self._obj, show_index) if has_backgrounds else {}
         )
 
-        # Merge settings: optimized < manual overrides < user kwargs (user kwargs take priority)
+        # Merge settings: optimized < manual overrides < user kwargs
+        # (user kwargs take priority)
         final_table_kwargs = {**optimized_settings, **manual_overrides, **table_kwargs}
 
         # Apply table-wide style if specified

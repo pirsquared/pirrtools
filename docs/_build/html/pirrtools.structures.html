@@ -9,6 +9,7 @@
   <title>pirrtools.structures package &mdash; pirrtools 0.2.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -16,6 +17,9 @@
       <script src="_static/documentation_options.js?v=71c180b9"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=3a36b171"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -44,7 +48,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">to_rich Method Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">Pirrtools to_rich Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
@@ -113,7 +118,7 @@ Python dictionary to allow accessing keys as attributes, making it
 more convenient for interactive use and structured data access.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pirrtools.structures.attrdict.AttrDict">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pirrtools.structures.attrdict.</span></span><span class="sig-name descname"><span class="pre">AttrDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrdict.html#AttrDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrdict.AttrDict" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pirrtools.structures.attrdict.</span></span><span class="sig-name descname"><span class="pre">AttrDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrdict.html#AttrDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrdict.AttrDict" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <p>Dictionary subclass that supports attribute-style access to keys.</p>
 <p>This class extends the standard dict to allow accessing dictionary
@@ -277,128 +282,33 @@ and various file types are automatically displayed with appropriate formatting.<
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="pirrtools.structures.attrpath.AttrPath">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pirrtools.structures.attrpath.</span></span><span class="sig-name descname"><span class="pre">AttrPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pirrtools.structures.attrpath.</span></span><span class="sig-name descname"><span class="pre">AttrPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">PosixPath</span></code></a></p>
-<p>Enhanced pathlib.Path with attribute-based navigation and file viewing.</p>
-<p>AttrPath extends pathlib.Path to provide intuitive attribute-based
-navigation through file systems and intelligent viewing of different
-file types. Files and directories become accessible as attributes,
-with automatic safe naming and organized access patterns.</p>
-<dl class="simple">
-<dt>Key Features:</dt><dd><ul class="simple">
-<li><p>Access files and directories as attributes</p></li>
-<li><p>Automatic file viewing based on extension</p></li>
-<li><p>Syntax highlighting for code files</p></li>
-<li><p>Organized access by file type (.py, .csv, etc.)</p></li>
-<li><p>Safe attribute names for special characters</p></li>
-<li><p>Built-in handlers for common file formats</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pirrtools.structures.attrpath.AttrPath._view_handlers">
-<span class="sig-name descname"><span class="pre">_view_handlers</span></span><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath._view_handlers" title="Link to this definition"></a></dt>
-<dd><p>Mapping of file extensions to view handlers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">AttrPath</span><span class="p">(</span><span class="s1">&#39;/project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">main_py</span><span class="o">.</span><span class="n">view</span>  <span class="c1"># View with syntax highlighting</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">D</span><span class="o">.</span><span class="n">subdir</span>    <span class="c1"># Navigate to subdirectory</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">utils</span>         <span class="c1"># Access utils.py via extension group</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span><span class="n">data</span>         <span class="c1"># Access data.csv via extension group</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All paths are automatically expanded and resolved to absolute paths.</p>
-</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pirrtools.structures.attrpath.AttrPath.__new__">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath.__new__" title="Link to this definition"></a></dt>
-<dd><p>Create new AttrPath instance with expanded and resolved path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> – Arguments passed to pathlib.Path constructor.</p></li>
-<li><p><strong>**kwargs</strong> – Keyword arguments passed to pathlib.Path constructor.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New instance with expanded user path and resolved absolute path.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pirrtools.structures.attrpath.AttrPath" title="pirrtools.structures.attrpath.AttrPath">AttrPath</a></p>
-</dd>
-</dl>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath.__new__" title="Link to this definition"></a></dt>
+<dd><p>Create new AttrPath instance with expanded user path (no resolve to
+avoid recursion).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pirrtools.structures.attrpath.AttrPath.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize AttrPath instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> – Arguments passed to parent Path constructor.</p></li>
-<li><p><strong>**kwargs</strong> – Keyword arguments passed to parent Path constructor.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pirrtools.structures.attrpath.AttrPath.__dir__">
 <span class="sig-name descname"><span class="pre">__dir__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath.__dir__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath.__dir__" title="Link to this definition"></a></dt>
-<dd><p>Return list of available attributes for this path.</p>
-<p>For files, returns available actions like ‘view’ and ‘code’.
-For directories, returns available navigation attributes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Available attribute names for tab completion and inspection.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a></p>
-</dd>
-</dl>
+<dd><p>Return list of available attributes for this path, including safe
+names, D/F, extension groups, and .view/.code.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pirrtools.structures.attrpath.AttrPath.__getattr__">
 <span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pirrtools/structures/attrpath.html#AttrPath.__getattr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pirrtools.structures.attrpath.AttrPath.__getattr__" title="Link to this definition"></a></dt>
-<dd><p>Provide attribute-based access to files, directories, and actions.</p>
-<p>This method enables the core functionality of AttrPath by allowing
-navigation and file viewing through attribute access.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – The attribute name being accessed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>AttrPath: For directory navigation</p></li>
-<li><p>AttrDict: For grouped file access</p></li>
-<li><p>File content: For file viewing (‘view’ attribute)</p></li>
-<li><p>HTML/formatted content: For code viewing (‘code’ attribute)</p></li>
-<li><p>Parent class attributes: For standard Path functionality</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Various types depending on the attribute</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Special attributes:
-- ‘view’: Display file with appropriate handler
-- ‘code’: Display file with syntax highlighting
-- Directory/file names: Navigate to that location</p>
-</div>
+<dd><p>Attribute-based access to extension groups, D/F, safe names, and
+direct children. Never call is_file/is_dir here.</p>
 </dd></dl>
 
 </dd></dl>

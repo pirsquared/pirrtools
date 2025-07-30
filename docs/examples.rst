@@ -189,39 +189,3 @@ Module Reloading
    
    # Reload class
    MyClass = reload_entity(MyClass)
-
-Running Examples
-================
-
-To run any example:
-
-.. code-block:: bash
-
-   # Interactive tutorial
-   cd examples/
-   python tutor.py
-   
-   # Comprehensive examples
-   python to_rich_examples.py
-   
-   # Specific feature demos
-   python example_to_rich_styling.py
-   python gradient_example.py
-
-Tips for Examples
-=================
-
-1. **Start with tutor.py** - It provides the best learning experience
-2. **Experiment** - Modify examples to see how different parameters work
-3. **Check source code** - Examples show implementation patterns
-4. **Use Rich Console** - Always create a Console() instance for proper display
-5. **Try your data** - Apply techniques to your own DataFrames for practical learning
-
-Next Steps
-==========
-
-After exploring examples:
-
-- Read the :doc:`to_rich_tutorial` for comprehensive parameter reference
-- Check the :doc:`api_reference` for detailed function documentation  
-- Contribute examples via GitHub issues or pull requests

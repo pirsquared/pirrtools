@@ -37,7 +37,8 @@ def main():
             print("The tutorial should be located at examples/tutor.py")
             print("\nTo run the tutorial manually:")
             print(
-                "1. Clone the repository: git clone https://github.com/pirsquared/pirrtools"
+                "1. Clone the repository: "
+                "git clone https://github.com/pirsquared/pirrtools"
             )
             print("2. Navigate to examples: cd pirrtools/examples")
             print("3. Run: python tutor.py")

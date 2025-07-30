@@ -16,14 +16,14 @@ Example:
 """
 
 from collections.abc import Iterable
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import numpy as np
 
 
 def chunk(
     iterable: Iterable[Union[int, str, float]], chunk_size: int, equalize: bool = False
-) -> List[List[Optional[Union[int, str, float]]]]:
+) -> list[list[Optional[Union[int, str, float]]]]:
     """Split an iterable into chunks distributed across sublists.
 
     This function divides an iterable into a calculated number of sublists,

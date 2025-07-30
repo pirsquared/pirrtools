@@ -48,7 +48,7 @@ from collections.abc import Generator
 from functools import reduce
 from itertools import count, islice, product
 from math import gcd
-from typing import Dict, List, Union
+from typing import Union
 
 import pandas as pd
 from numpy import prod
@@ -82,7 +82,7 @@ class FibCalculator:
 
     def __init__(self):
         """Initialize the FibCalculator with a base cache."""
-        self._cache: Dict[int, int] = {0: 0, 1: 1, 2: 1}
+        self._cache: dict[int, int] = {0: 0, 1: 1, 2: 1}
 
     def __call__(self, n: int) -> int:
         """Calculate the nth Fibonacci number using memoization and the fast doubling
@@ -171,7 +171,7 @@ def count_prime_factors(n: int) -> pd.Series:
     return pd.Series(prime_factors).value_counts(sort=False)
 
 
-def get_divisors(n: int) -> List[int]:
+def get_divisors(n: int) -> list[int]:
     """Get the divisors of a number.
 
     Args:
@@ -197,7 +197,7 @@ def get_divisors(n: int) -> List[int]:
     ]  # Return all divisors except n itself (proper divisors)
 
 
-def lcm(*a: Union[int, List[int]]) -> int:
+def lcm(*a: Union[int, list[int]]) -> int:
     """Calculate the Least Common Multiple of a set of numbers.
 
     Args:

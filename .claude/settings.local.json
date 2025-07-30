@@ -36,7 +36,25 @@
       "Bash(black:*)",
       "Bash(sed:*)",
       "Bash(mypy:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(/dev/null)",
+      "Bash(git reset)",
+      "Bash(ruff check:*)",
+      "Bash(pylint:*)",
+      "Bash(docker compose:*)",
+      "Bash(ss:*)",
+      "Bash(ps:*)",
+      "Bash(jupyter lab:*)",
+      "Bash(jupyter server:*)",
+      "Bash(kill:*)",
+      "Bash(apt-get:*)",
+      "Bash(apt-get install:*)",
+      "Bash(sudo apt-get:*)",
+      "Bash(sudo apt-get install:*)",
+      "Bash(pandoc:*)",
+      "Bash(sudo chown:*)",
+      "Bash(sudo mkdir:*)",
+      "Bash(git config:*)"
     ],
     "deny": []
   }

@@ -80,18 +80,36 @@ class RichTableDirective(SphinxDirective):
             # Create a console that records output
             recording_console = rich.console.Console(record=True, width=80)
             
-            # Set up execution environment
+            # Set up execution environment - intercept all Rich imports
             exec_globals.update({
-                'Console': lambda *args, **kwargs: recording_console,  # Always return our recording console
-                'Table': rich.table.Table,
                 'pd': pd,
                 'pirrtools': pirrtools,
                 'console': recording_console,  # Provide pre-made console
+                'recording_console': recording_console,  # Also make available directly
                 '__builtins__': __builtins__,
             })
             
-            # Execute the code
-            exec(code, exec_globals)
+            # Mock the rich module entirely to ensure all imports use our console
+            import types
+            rich_mock = types.ModuleType('rich')
+            console_mock = types.ModuleType('rich.console')
+            console_mock.Console = lambda *args, **kwargs: recording_console
+            rich_mock.console = console_mock
+            
+            table_mock = types.ModuleType('rich.table')
+            table_mock.Table = rich.table.Table
+            rich_mock.table = table_mock
+            
+            exec_globals['rich'] = rich_mock
+            exec_globals['Console'] = lambda *args, **kwargs: recording_console
+            exec_globals['Table'] = rich.table.Table
+            
+            # Execute the code, but patch any console assignments
+            # Replace "console = Console()" with "console = recording_console"
+            patched_code = code.replace('console = Console()', 'console = recording_console')
+            patched_code = patched_code.replace('Console()', 'recording_console')
+            
+            exec(patched_code, exec_globals)
             
             # Export the Rich output to HTML  
             html_output = recording_console.export_html(inline_styles=True)

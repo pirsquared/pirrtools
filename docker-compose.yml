@@ -5,6 +5,7 @@ services:
     ports:
       - "8000:8000"  # General web server port
       - "8080:8080"  # Sphinx docs server port
+      - "8888:8888"  # Jupyter Lab server port
     volumes:
       - .:/workspace:cached
       - pirrtools-cache:/home/developer/.cache
