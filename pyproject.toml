@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pirrtools"
-version = "0.2.18"  # Update this version number before you upload a new version to PyPI
+version = "0.2.19"  # Update this version number before you upload a new version to PyPI
 description = "Collection of tools I use in my projects"
 readme = "README.md"
 license = "MIT"
@@ -73,7 +73,7 @@ dev = [
 docs = [
   # Documentation (requires Python >=3.10 for Sphinx 8.0+)
   "sphinx>=8.0.0",
-  "sphinx-rtd-theme>=2.0.0",
+  "sphinx-book-theme>=1.0.0",  # Modern book-style theme
   "sphinx-autodoc-typehints>=2.0.0",
   "sphinx-copybutton>=0.5.2",  # Copy buttons for code blocks
   "myst-parser>=3.0.0",  # Markdown support for Sphinx

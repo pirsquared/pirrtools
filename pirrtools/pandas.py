@@ -94,41 +94,41 @@ def _parse_css_color(css_value: str) -> str:
 
 
 def _css_to_rich_text(
-    css_styles: list, text: str, column_width: Optional[int] = None
+    css_styles: list, text: str, expand_background: bool = False
 ) -> Text:
     """Convert CSS styles to Rich Text object with styling applied.
 
     This function takes CSS styles from pandas Styler and converts them
-    to Rich Text styling, with optional padding for better background display.
+    to Rich Text styling. For background colors, Rich will handle width
+    automatically when used with proper table column settings.
 
     Args:
         css_styles (list): List of (property, value) tuples from pandas styler.
         text (str): The text content to style and wrap.
-        column_width (int, optional): Target width for padding to achieve
-            full-width background colors. If None, no padding is applied.
+        expand_background (bool): Whether this text has background styling.
+            Used to determine if special handling is needed.
 
     Returns:
         Text: Rich Text object with CSS styles converted to Rich formatting.
 
     Note:
         Supports background-color, color, font-weight (bold), and font-style
-        (italic) CSS properties.
+        (italic) CSS properties. Background colors will automatically expand
+        to fill available column width when table is properly configured.
     """
     text_content = str(text)
     text_obj = Text(text_content)
-
-    # Pad the text to fill the column width for better background display
-    if column_width is not None and len(text_content) < column_width:
-        text_obj.pad_right(column_width - len(text_content))
 
     if not css_styles:
         return text_obj
 
     # Apply styles to the Text object
+    has_background = False
     for prop, value in css_styles:
         if prop == "background-color":
             color = _parse_css_color(value)
             text_obj.stylize(f"on {color}")
+            has_background = True
         elif prop == "color":
             color = _parse_css_color(value)
             text_obj.stylize(color)
@@ -137,6 +137,8 @@ def _css_to_rich_text(
         elif prop == "font-style" and value == "italic":
             text_obj.stylize("italic")
 
+    # For backgrounds, let Rich handle the width expansion automatically
+    # through proper table column configuration
     return text_obj
 
 
@@ -237,7 +239,7 @@ def _optimize_table_for_backgrounds(
             "collapse_padding": True,  # Merge adjacent cell padding
             "show_edge": True,  # Keep outer border for structure
             "pad_edge": False,  # No padding around table edges
-            "expand": False,  # Keep table size to fit content
+            "expand": True,  # Allow table to expand for better background display
         }
     else:
         return {
@@ -964,10 +966,9 @@ class UtilsAccessor:
         if expand is not None:
             manual_overrides["expand"] = expand
 
-        # Measure column widths for dynamic padding when backgrounds are present
-        column_widths = (
-            _measure_column_widths(self._obj, show_index) if has_backgrounds else {}
-        )
+        # For Solution 2: Let Rich handle column widths automatically
+        # Remove manual width calculation - Rich auto-sizes based on actual content
+        column_widths = {}
 
         # Merge settings: optimized < manual overrides < user kwargs
         # (user kwargs take priority)
@@ -1037,10 +1038,7 @@ class UtilsAccessor:
 
                     # Apply padding to index if backgrounds are present
                     if has_backgrounds or index_bg_style:
-                        index_width = column_widths.get("__index__", None)
                         index_text = Text(str(index_value))
-                        if index_width and len(str(index_value)) < index_width:
-                            index_text.pad_right(index_width - len(str(index_value)))
                         # Apply index background style
                         if index_bg_style:
                             index_text.style = index_bg_style
@@ -1057,12 +1055,10 @@ class UtilsAccessor:
                         value, i, j, format_funcs
                     )
 
-                    # Use dynamic column width for background padding
-                    column_width = (
-                        column_widths.get(col, None) if has_backgrounds else None
-                    )
+                    # Create styled text (Rich will handle width automatically)
+                    has_cell_background = any(prop == "background-color" for prop, _ in cell_styles)
                     styled_text = _css_to_rich_text(
-                        cell_styles, formatted_value, column_width
+                        cell_styles, formatted_value, has_cell_background
                     )
 
                     # Apply alternating row colors if enabled
@@ -1132,10 +1128,7 @@ class UtilsAccessor:
 
                     # Apply padding to index if backgrounds are present
                     if has_backgrounds or index_bg_style:
-                        index_width = column_widths.get("__index__", None)
                         index_text = Text(str(index_value))
-                        if index_width and len(str(index_value)) < index_width:
-                            index_text.pad_right(index_width - len(str(index_value)))
                         # Apply index background style
                         if index_bg_style:
                             index_text.style = index_bg_style
@@ -1151,7 +1144,7 @@ class UtilsAccessor:
 
                 # Use dynamic column width for background padding
                 column_width = (
-                    column_widths.get("__value__", None) if has_backgrounds else None
+None
                 )
                 styled_value = _css_to_rich_text(
                     cell_styles, formatted_value, column_width

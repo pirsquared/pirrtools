@@ -38,8 +38,22 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
+
+# Book theme configuration
+html_theme_options = {
+    "repository_url": "https://github.com/pirsquared/pirrtools",
+    "use_repository_button": True,
+    "use_issues_button": True,
+    "use_download_button": True,
+    "path_to_docs": "docs/",
+    "repository_branch": "master",
+    "launch_buttons": {
+        "notebook_interface": "jupyterlab",
+    },
+    "show_toc_level": 2,
+}
 
 # -- Extension configuration -------------------------------------------------
 
