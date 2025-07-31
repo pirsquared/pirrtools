@@ -123,8 +123,8 @@ copybutton_line_continuation_character = "\\"
 
 # -- nbsphinx configuration --------------------------------------------------
 
-# Execute notebooks during build (enabled now that pandoc is installed)
-nbsphinx_execute = 'auto'
+# Execute notebooks during build (disabled for CI compatibility)
+nbsphinx_execute = 'never'
 
 # Notebook execution timeout (in seconds)
 nbsphinx_execute_timeout = 60
@@ -137,5 +137,5 @@ nbsphinx_allow_errors = True
 #     '.ipynb': ['nbsphinx.CustomNotebookLoader', {}],
 # }
 
-# Configure kernel for notebook execution
-nbsphinx_kernel_name = 'python3'
+# Configure kernel for notebook execution (auto-detect available kernel)
+# nbsphinx_kernel_name = 'python3'  # Disabled - let nbsphinx auto-detect
