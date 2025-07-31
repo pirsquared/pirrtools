@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pirrtools.pandas &#8212; pirrtools 0.2.14 documentation</title>
+    <title>pirrtools.pandas &#8212; pirrtools 0.2.15 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=9fd5c01c"></script>
+    <script src="../../_static/documentation_options.js?v=24294201"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -135,7 +135,7 @@
   
   
   
-    <p class="title logo__title">pirrtools 0.2.14 documentation</p>
+    <p class="title logo__title">pirrtools 0.2.15 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -154,6 +154,8 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../to_rich_tutorial.html">Pirrtools to_rich Tutorial</a></li>
+
+
 <li class="toctree-l1"><a class="reference internal" href="../../jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
@@ -562,7 +564,7 @@ document.write(`
             <span class="s2">&quot;collapse_padding&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Merge adjacent cell padding</span>
             <span class="s2">&quot;show_edge&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Keep outer border for structure</span>
             <span class="s2">&quot;pad_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># No padding around table edges</span>
-            <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Keep table size to fit content</span>
+            <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Allow table to expand for better background display</span>
         <span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -686,6 +688,107 @@ document.write(`
             <span class="sa">f</span><span class="s2">&quot;Colormap error in _create_index_gradient_styles: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">index_values</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_measure_formatted_column_widths</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">format_funcs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">show_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Measure column widths AFTER applying formatting functions.</span>
+
+<span class="sd">    This fixes the timing issue where widths were calculated on raw data</span>
+<span class="sd">    before formatting was applied.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df: DataFrame or Series to measure</span>
+<span class="sd">        format_funcs: Dictionary of formatting functions from styler</span>
+<span class="sd">        show_index: Whether index column will be shown</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary mapping column names/index to their measured widths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">widths</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
+        <span class="c1"># Measure index column width if showing index</span>
+        <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+            <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">index_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_multiindex_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_index_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+
+            <span class="n">max_index_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">index_header</span><span class="p">),</span>
+                <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">index_values</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">widths</span><span class="p">[</span><span class="s2">&quot;__index__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_index_width</span>
+
+        <span class="c1"># Measure data columns with formatting applied</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">col_header</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+            <span class="c1"># Apply formatting if available, otherwise use raw values</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">format_funcs</span><span class="p">:</span>
+                <span class="n">formatter</span> <span class="o">=</span> <span class="n">format_funcs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+                <span class="n">col_values</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">formatted_val</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                        <span class="n">col_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">formatted_val</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="n">col_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">col_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]]</span>
+
+            <span class="n">max_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">col_header</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">col_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">col_values</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="p">)</span>
+            <span class="n">widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_width</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Series</span><span class="p">):</span>
+        <span class="c1"># For Series, measure index and value columns with formatting</span>
+        <span class="k">if</span> <span class="n">show_index</span><span class="p">:</span>
+            <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">index_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">MultiIndex</span><span class="p">):</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_multiindex_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">index_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_index_value</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+
+            <span class="n">max_index_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">index_header</span><span class="p">),</span>
+                <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">index_values</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">widths</span><span class="p">[</span><span class="s2">&quot;__index__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_index_width</span>
+
+        <span class="c1"># Measure value column with formatting</span>
+        <span class="n">value_header</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;Value&quot;</span>
+
+        <span class="c1"># Apply formatting if available</span>
+        <span class="k">if</span> <span class="s2">&quot;__value__&quot;</span> <span class="ow">in</span> <span class="n">format_funcs</span><span class="p">:</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">format_funcs</span><span class="p">[</span><span class="s2">&quot;__value__&quot;</span><span class="p">]</span>
+            <span class="n">value_strs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">formatted_val</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                    <span class="n">value_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">formatted_val</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">value_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value_strs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+
+        <span class="n">max_value_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value_header</span><span class="p">)),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value_strs</span><span class="p">)</span> <span class="k">if</span> <span class="n">value_strs</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">widths</span><span class="p">[</span><span class="s2">&quot;__value__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_value_width</span>
+
+    <span class="k">return</span> <span class="n">widths</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_measure_column_widths</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">show_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -1193,7 +1296,8 @@ document.write(`
 <span class="sd">            are detected, minimizing gaps for better visual appearance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">console</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+            <span class="c1"># Force terminal support and colors for proper background rendering</span>
+            <span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">(</span><span class="n">force_terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color_system</span><span class="o">=</span><span class="s2">&quot;truecolor&quot;</span><span class="p">)</span>
 
         <span class="c1"># Create or modify styler with built-in styling options</span>
         <span class="k">if</span> <span class="p">(</span>
@@ -1305,9 +1409,13 @@ document.write(`
         <span class="k">if</span> <span class="n">expand</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">manual_overrides</span><span class="p">[</span><span class="s2">&quot;expand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expand</span>
 
-        <span class="c1"># Measure column widths for dynamic padding when backgrounds are present</span>
+        <span class="c1"># Calculate column widths AFTER formatting</span>
+        <span class="c1"># (Solution 1: Deferred Width Calculation)</span>
+        <span class="c1"># This fixes the timing issue where widths were calculated before formatting</span>
         <span class="n">column_widths</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">_measure_column_widths</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">show_index</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="p">{}</span>
+            <span class="n">_measure_formatted_column_widths</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">format_funcs</span><span class="p">,</span> <span class="n">show_index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">has_backgrounds</span>
+            <span class="k">else</span> <span class="p">{}</span>
         <span class="p">)</span>
 
         <span class="c1"># Merge settings: optimized &lt; manual overrides &lt; user kwargs</span>
@@ -1377,14 +1485,32 @@ document.write(`
                         <span class="n">index_bg_style</span> <span class="o">=</span> <span class="n">index_gradient_styles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
                     <span class="c1"># Apply padding to index if backgrounds are present</span>
-                    <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="ow">or</span> <span class="n">index_bg_style</span><span class="p">:</span>
-                        <span class="n">index_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__index__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="ow">or</span> <span class="n">index_bg_style</span> <span class="ow">or</span> <span class="n">alternating_rows</span><span class="p">:</span>
+                        <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                        <span class="n">index_width_calc</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index_header</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="mi">0</span>
+                        <span class="p">)</span>
                         <span class="n">index_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span>
-                        <span class="k">if</span> <span class="n">index_width</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">index_width</span><span class="p">:</span>
-                            <span class="n">index_text</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span><span class="n">index_width</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">)))</span>
+
+                        <span class="c1"># Apply padding for proper background display</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">index_width_calc</span>
+                            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">index_width_calc</span>
+                        <span class="p">):</span>
+                            <span class="n">index_text</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span>
+                                <span class="n">index_width_calc</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span>
+                            <span class="p">)</span>
+
                         <span class="c1"># Apply index background style</span>
                         <span class="k">if</span> <span class="n">index_bg_style</span><span class="p">:</span>
                             <span class="n">index_text</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">index_bg_style</span>
+
+                        <span class="c1"># Apply alternating row colors to index if enabled</span>
+                        <span class="k">if</span> <span class="n">alternating_rows</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">index_bg_style</span><span class="p">:</span>
+                            <span class="n">alt_style</span> <span class="o">=</span> <span class="n">alternating_row_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">alt_style</span><span class="p">:</span>
+                                <span class="n">index_text</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">alt_style</span>
+
                         <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_text</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_value</span><span class="p">)</span>
@@ -1398,12 +1524,10 @@ document.write(`
                         <span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">format_funcs</span>
                     <span class="p">)</span>
 
-                    <span class="c1"># Use dynamic column width for background padding</span>
-                    <span class="n">column_width</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="kc">None</span>
-                    <span class="p">)</span>
+                    <span class="c1"># Create styled text with proper width when backgrounds are present</span>
+                    <span class="n">col_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="kc">None</span>
                     <span class="n">styled_text</span> <span class="o">=</span> <span class="n">_css_to_rich_text</span><span class="p">(</span>
-                        <span class="n">cell_styles</span><span class="p">,</span> <span class="n">formatted_value</span><span class="p">,</span> <span class="n">column_width</span>
+                        <span class="n">cell_styles</span><span class="p">,</span> <span class="n">formatted_value</span><span class="p">,</span> <span class="n">col_width</span>
                     <span class="p">)</span>
 
                     <span class="c1"># Apply alternating row colors if enabled</span>
@@ -1472,14 +1596,32 @@ document.write(`
                         <span class="n">index_bg_style</span> <span class="o">=</span> <span class="n">index_gradient_styles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
                     <span class="c1"># Apply padding to index if backgrounds are present</span>
-                    <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="ow">or</span> <span class="n">index_bg_style</span><span class="p">:</span>
-                        <span class="n">index_width</span> <span class="o">=</span> <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__index__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="ow">or</span> <span class="n">index_bg_style</span> <span class="ow">or</span> <span class="n">alternating_rows</span><span class="p">:</span>
+                        <span class="n">index_header</span> <span class="o">=</span> <span class="n">_get_index_header_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                        <span class="n">index_width_calc</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index_header</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="mi">0</span>
+                        <span class="p">)</span>
                         <span class="n">index_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span>
-                        <span class="k">if</span> <span class="n">index_width</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">index_width</span><span class="p">:</span>
-                            <span class="n">index_text</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span><span class="n">index_width</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">)))</span>
+
+                        <span class="c1"># Apply padding for proper background display</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">index_width_calc</span>
+                            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">index_width_calc</span>
+                        <span class="p">):</span>
+                            <span class="n">index_text</span><span class="o">.</span><span class="n">pad_right</span><span class="p">(</span>
+                                <span class="n">index_width_calc</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index_value</span><span class="p">))</span>
+                            <span class="p">)</span>
+
                         <span class="c1"># Apply index background style</span>
                         <span class="k">if</span> <span class="n">index_bg_style</span><span class="p">:</span>
                             <span class="n">index_text</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">index_bg_style</span>
+
+                        <span class="c1"># Apply alternating row colors to index if enabled</span>
+                        <span class="k">if</span> <span class="n">alternating_rows</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">index_bg_style</span><span class="p">:</span>
+                            <span class="n">alt_style</span> <span class="o">=</span> <span class="n">alternating_row_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">alt_style</span><span class="p">:</span>
+                                <span class="n">index_text</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">alt_style</span>
+
                         <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_text</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">styled_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_value</span><span class="p">)</span>
@@ -1491,8 +1633,9 @@ document.write(`
                 <span class="n">formatted_value</span> <span class="o">=</span> <span class="n">_apply_styler_formatting</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">format_funcs</span><span class="p">)</span>
 
                 <span class="c1"># Use dynamic column width for background padding</span>
+                <span class="n">series_col</span> <span class="o">=</span> <span class="n">series_name</span> <span class="k">if</span> <span class="n">series_name</span> <span class="k">else</span> <span class="s2">&quot;Value&quot;</span>
                 <span class="n">column_width</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;__value__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">column_widths</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">series_col</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_backgrounds</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">)</span>
                 <span class="n">styled_value</span> <span class="o">=</span> <span class="n">_css_to_rich_text</span><span class="p">(</span>
                     <span class="n">cell_styles</span><span class="p">,</span> <span class="n">formatted_value</span><span class="p">,</span> <span class="n">column_width</span>
