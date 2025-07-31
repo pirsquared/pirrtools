@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath('.'))
 project = "pirrtools"
 copyright = "2024, Sean Smith"
 author = "Sean Smith"
-release = "0.2.14"
+release = "0.2.20"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -53,6 +53,7 @@ html_theme_options = {
         "notebook_interface": "jupyterlab",
     },
     "show_toc_level": 2,
+    # Note: sphinx-book-theme defaults to light mode by default
 }
 
 # -- Extension configuration -------------------------------------------------

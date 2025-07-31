@@ -106,3 +106,79 @@ Tests are located in `tests/` directory with pytest framework. Key test files:
 - `test_sequences.py`: Sequence manipulation functions
 
 Tests use temporary directories (`tmp_path` fixture) and pandas testing utilities for DataFrame/Series comparisons. Current test coverage: 88% with comprehensive parameter testing and edge case validation.
+
+## Pre-Commit/Push Checklist
+
+Before committing or pushing changes, follow this checklist to ensure code quality and consistency:
+
+### 1. Code Quality Checks
+```bash
+# Format code with Black
+black pirrtools tests
+
+# Sort imports with isort
+isort pirrtools tests
+
+# Run linter checks with flake8
+flake8 pirrtools tests
+
+# Run type checking
+mypy pirrtools
+```
+
+### 2. Testing
+```bash
+# Run all tests
+pytest
+
+# Run tests with coverage report
+pytest --cov=pirrtools
+
+# Verify no test failures or regressions
+```
+
+### 3. Documentation
+```bash
+# Build documentation (if docs were modified)
+make -C docs html
+
+# Verify no build errors or warnings
+# Check that Rich tables display properly in light theme
+```
+
+### 4. Pre-commit Hooks
+```bash
+# Run all pre-commit hooks
+pre-commit run --all-files
+
+# Fix any issues identified by hooks
+```
+
+### 5. Build Verification
+```bash
+# Build package to verify setup
+python -m build
+
+# Verify build completes without errors
+```
+
+### 6. Final Checks
+- [ ] All tests passing
+- [ ] Code formatted with Black
+- [ ] Imports sorted with isort
+- [ ] No linting errors from flake8
+- [ ] No type checking errors from mypy
+- [ ] Documentation builds successfully (if modified)
+- [ ] No debugging files or temporary code left in repository
+- [ ] Commit message follows conventional format
+- [ ] Version numbers updated if needed:
+  - [ ] `pyproject.toml` version field (line 7)
+  - [ ] `docs/conf.py` release field (line 18)
+
+### 7. Commit Standards
+- Use clear, descriptive commit messages
+- Include context about what changed and why
+- Reference any relevant issues or pull requests
+- Follow conventional commit format when applicable
+
+This checklist ensures consistent code quality and prevents common issues from reaching the main branch.

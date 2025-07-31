@@ -94,41 +94,41 @@ def _parse_css_color(css_value: str) -> str:
 
 
 def _css_to_rich_text(
-    css_styles: list, text: str, expand_background: bool = False
+    css_styles: list, text: str, column_width: Optional[int] = None
 ) -> Text:
     """Convert CSS styles to Rich Text object with styling applied.
 
     This function takes CSS styles from pandas Styler and converts them
-    to Rich Text styling. For background colors, Rich will handle width
-    automatically when used with proper table column settings.
+    to Rich Text styling, with optional padding for better background display.
 
     Args:
         css_styles (list): List of (property, value) tuples from pandas styler.
         text (str): The text content to style and wrap.
-        expand_background (bool): Whether this text has background styling.
-            Used to determine if special handling is needed.
+        column_width (int, optional): Target width for padding to achieve
+            full-width background colors. If None, no padding is applied.
 
     Returns:
         Text: Rich Text object with CSS styles converted to Rich formatting.
 
     Note:
         Supports background-color, color, font-weight (bold), and font-style
-        (italic) CSS properties. Background colors will automatically expand
-        to fill available column width when table is properly configured.
+        (italic) CSS properties.
     """
     text_content = str(text)
     text_obj = Text(text_content)
+
+    # Pad the text to fill the column width for better background display
+    if column_width is not None and len(text_content) < column_width:
+        text_obj.pad_right(column_width - len(text_content))
 
     if not css_styles:
         return text_obj
 
     # Apply styles to the Text object
-    has_background = False
     for prop, value in css_styles:
         if prop == "background-color":
             color = _parse_css_color(value)
             text_obj.stylize(f"on {color}")
-            has_background = True
         elif prop == "color":
             color = _parse_css_color(value)
             text_obj.stylize(color)
@@ -137,8 +137,6 @@ def _css_to_rich_text(
         elif prop == "font-style" and value == "italic":
             text_obj.stylize("italic")
 
-    # For backgrounds, let Rich handle the width expansion automatically
-    # through proper table column configuration
     return text_obj
 
 
@@ -239,7 +237,7 @@ def _optimize_table_for_backgrounds(
             "collapse_padding": True,  # Merge adjacent cell padding
             "show_edge": True,  # Keep outer border for structure
             "pad_edge": False,  # No padding around table edges
-            "expand": True,  # Allow table to expand for better background display
+            "expand": False,  # Allow table to expand for better background display
         }
     else:
         return {
@@ -363,6 +361,107 @@ def _create_index_gradient_styles(index_values, colormap="viridis", **_kwargs):
             f"Colormap error in _create_index_gradient_styles: {e}", stacklevel=2
         )
         return [""] * len(index_values)
+
+
+def _measure_formatted_column_widths(
+    df, format_funcs: dict, show_index: bool = True
+) -> dict:
+    """Measure column widths AFTER applying formatting functions.
+
+    This fixes the timing issue where widths were calculated on raw data
+    before formatting was applied.
+
+    Args:
+        df: DataFrame or Series to measure
+        format_funcs: Dictionary of formatting functions from styler
+        show_index: Whether index column will be shown
+
+    Returns:
+        Dictionary mapping column names/index to their measured widths
+    """
+    widths = {}
+
+    if isinstance(df, DataFrame):
+        # Measure index column width if showing index
+        if show_index:
+            index_header = _get_index_header_name(df.index)
+            index_values = []
+
+            for idx in df.index:
+                if isinstance(df.index, MultiIndex):
+                    index_values.append(_format_multiindex_value(idx))
+                else:
+                    index_values.append(_format_index_value(idx))
+
+            max_index_width = max(
+                len(index_header),
+                max(len(str(v)) for v in index_values) if index_values else 0,
+            )
+            widths["__index__"] = max_index_width
+
+        # Measure data columns with formatting applied
+        for col in df.columns:
+            col_header = str(col)
+
+            # Apply formatting if available, otherwise use raw values
+            if col in format_funcs:
+                formatter = format_funcs[col]
+                col_values = []
+                for val in df[col]:
+                    try:
+                        formatted_val = formatter(val)
+                        col_values.append(str(formatted_val))
+                    except Exception:
+                        col_values.append(str(val))
+            else:
+                col_values = [str(val) for val in df[col]]
+
+            max_width = max(
+                len(col_header), max(len(v) for v in col_values) if col_values else 0
+            )
+            widths[col] = max_width
+
+    elif isinstance(df, Series):
+        # For Series, measure index and value columns with formatting
+        if show_index:
+            index_header = _get_index_header_name(df.index)
+            index_values = []
+
+            for idx in df.index:
+                if isinstance(df.index, MultiIndex):
+                    index_values.append(_format_multiindex_value(idx))
+                else:
+                    index_values.append(_format_index_value(idx))
+
+            max_index_width = max(
+                len(index_header),
+                max(len(str(v)) for v in index_values) if index_values else 0,
+            )
+            widths["__index__"] = max_index_width
+
+        # Measure value column with formatting
+        value_header = df.name if df.name is not None else "Value"
+
+        # Apply formatting if available
+        if "__value__" in format_funcs:
+            formatter = format_funcs["__value__"]
+            value_strs = []
+            for val in df.values:
+                try:
+                    formatted_val = formatter(val)
+                    value_strs.append(str(formatted_val))
+                except Exception:
+                    value_strs.append(str(val))
+        else:
+            value_strs = [str(val) for val in df.values]
+
+        max_value_width = max(
+            len(str(value_header)),
+            max(len(v) for v in value_strs) if value_strs else 0,
+        )
+        widths["__value__"] = max_value_width
+
+    return widths
 
 
 def _measure_column_widths(df, show_index: bool = True) -> dict:
@@ -854,7 +953,8 @@ class UtilsAccessor:
             are detected, minimizing gaps for better visual appearance.
         """
         if console is None:
-            console = Console()
+            # Force terminal support and colors for proper background rendering
+            console = Console(force_terminal=True, color_system="truecolor")
 
         # Create or modify styler with built-in styling options
         if (
@@ -966,9 +1066,14 @@ class UtilsAccessor:
         if expand is not None:
             manual_overrides["expand"] = expand
 
-        # For Solution 2: Let Rich handle column widths automatically
-        # Remove manual width calculation - Rich auto-sizes based on actual content
-        column_widths = {}
+        # Calculate column widths AFTER formatting
+        # (Solution 1: Deferred Width Calculation)
+        # This fixes the timing issue where widths were calculated before formatting
+        column_widths = (
+            _measure_formatted_column_widths(self._obj, format_funcs, show_index)
+            if has_backgrounds
+            else {}
+        )
 
         # Merge settings: optimized < manual overrides < user kwargs
         # (user kwargs take priority)
@@ -1037,11 +1142,32 @@ class UtilsAccessor:
                         index_bg_style = index_gradient_styles[i]
 
                     # Apply padding to index if backgrounds are present
-                    if has_backgrounds or index_bg_style:
+                    if has_backgrounds or index_bg_style or alternating_rows:
+                        index_header = _get_index_header_name(self._obj.index)
+                        index_width_calc = (
+                            column_widths.get(index_header, 0) if has_backgrounds else 0
+                        )
                         index_text = Text(str(index_value))
+
+                        # Apply padding for proper background display
+                        if (
+                            index_width_calc
+                            and len(str(index_value)) < index_width_calc
+                        ):
+                            index_text.pad_right(
+                                index_width_calc - len(str(index_value))
+                            )
+
                         # Apply index background style
                         if index_bg_style:
                             index_text.style = index_bg_style
+
+                        # Apply alternating row colors to index if enabled
+                        if alternating_rows and not index_bg_style:
+                            alt_style = alternating_row_colors[i % 2]
+                            if alt_style:
+                                index_text.style = alt_style
+
                         styled_row.append(index_text)
                     else:
                         styled_row.append(index_value)
@@ -1055,10 +1181,10 @@ class UtilsAccessor:
                         value, i, j, format_funcs
                     )
 
-                    # Create styled text (Rich will handle width automatically)
-                    has_cell_background = any(prop == "background-color" for prop, _ in cell_styles)
+                    # Create styled text with proper width when backgrounds are present
+                    col_width = column_widths.get(col, 0) if has_backgrounds else None
                     styled_text = _css_to_rich_text(
-                        cell_styles, formatted_value, has_cell_background
+                        cell_styles, formatted_value, col_width
                     )
 
                     # Apply alternating row colors if enabled
@@ -1127,11 +1253,32 @@ class UtilsAccessor:
                         index_bg_style = index_gradient_styles[i]
 
                     # Apply padding to index if backgrounds are present
-                    if has_backgrounds or index_bg_style:
+                    if has_backgrounds or index_bg_style or alternating_rows:
+                        index_header = _get_index_header_name(self._obj.index)
+                        index_width_calc = (
+                            column_widths.get(index_header, 0) if has_backgrounds else 0
+                        )
                         index_text = Text(str(index_value))
+
+                        # Apply padding for proper background display
+                        if (
+                            index_width_calc
+                            and len(str(index_value)) < index_width_calc
+                        ):
+                            index_text.pad_right(
+                                index_width_calc - len(str(index_value))
+                            )
+
                         # Apply index background style
                         if index_bg_style:
                             index_text.style = index_bg_style
+
+                        # Apply alternating row colors to index if enabled
+                        if alternating_rows and not index_bg_style:
+                            alt_style = alternating_row_colors[i % 2]
+                            if alt_style:
+                                index_text.style = alt_style
+
                         styled_row.append(index_text)
                     else:
                         styled_row.append(index_value)
@@ -1143,8 +1290,9 @@ class UtilsAccessor:
                 formatted_value = _apply_styler_formatting(value, i, 0, format_funcs)
 
                 # Use dynamic column width for background padding
+                series_col = series_name if series_name else "Value"
                 column_width = (
-None
+                    column_widths.get(series_col, 0) if has_backgrounds else None
                 )
                 styled_value = _css_to_rich_text(
                     cell_styles, formatted_value, column_width
