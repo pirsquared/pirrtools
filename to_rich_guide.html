@@ -1,93 +1,439 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>to_rich Method Tutorial &mdash; pirrtools 0.2.14 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>to_rich Method Tutorial &#8212; pirrtools 0.2.20 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=71c180b9"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=3a36b171"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="_static/js/theme.js"></script>
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=b9727246"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=3a36b171"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'to_rich_guide';</script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-</head>
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
-          
-          
-          <a href="index.html" class="icon icon-home">
-            pirrtools
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
-<ul>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pirrtools 0.2.20 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="to_rich_tutorial.html">Pirrtools to_rich Tutorial</a></li>
+
+
 <li class="toctree-l1"><a class="reference internal" href="jupyter_example.html">Pirrtools Interactive Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
-<ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">pirrtools</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modules.html">pirrtools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pirrtools.html">pirrtools package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="pirrtools.structures.html">pirrtools.structures package</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Development</span></p>
-<ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
-        </div>
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
       </div>
-    </nav>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">pirrtools</a>
-      </nav>
+<div class="sbt-scroll-pixel-helper"></div>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">to_rich Method Tutorial</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/to_rich_guide.rst.txt" rel="nofollow"> View page source</a>
-      </li>
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pirsquared/pirrtools" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pirsquared/pirrtools/issues/new?title=Issue%20on%20page%20%2Fto_rich_guide.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
   </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/to_rich_guide.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>to_rich Method Tutorial</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-tutorial">Interactive Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-dataframes">Converting DataFrames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-series">Converting Series</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-gradients">Background Gradients</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-gradients">Basic Gradients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-direction">Gradient Direction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subset-styling">Subset Styling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-gradients">Text Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#header-and-index-styling">Header and Index Styling</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#column-headers">Column Headers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-styling">Index Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-background-gradients">Index Background Gradients</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternating-rows">Alternating Rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-styling">Advanced Styling</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#professional-report-style">Professional Report Style</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-contrast-theme">High Contrast Theme</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-styler-integration">Pandas Styler Integration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-integration">Basic Integration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#style-override">Style Override</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-parameter-reference">Complete Parameter Reference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-styling">Background Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-styling">Text Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#header-and-index">Header and Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#row-styling">Row Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-appearance">Table Appearance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-table-settings">Manual Table Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#string-formatting">String Formatting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#color-reference">Color Reference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rich-color-formats">Rich Color Formats</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-colormaps">Gradient Colormaps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="to-rich-method-tutorial">
-<h1>to_rich Method Tutorial<a class="headerlink" href="#to-rich-method-tutorial" title="Link to this heading"></a></h1>
+<h1>to_rich Method Tutorial<a class="headerlink" href="#to-rich-method-tutorial" title="Link to this heading">#</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> method is pirrtools’ flagship feature for converting pandas DataFrames and Series into beautifully styled Rich tables. This tutorial covers all styling options and provides examples for each feature.</p>
 <nav class="contents local" id="contents">
 <ul class="simple">
@@ -151,7 +497,7 @@
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">.pirr.to_rich()</span></code> accessor method extends pandas DataFrames and Series with Rich table styling capabilities. It supports:</p>
 <ul class="simple">
 <li><p>Background and text color gradients</p></li>
@@ -162,7 +508,7 @@
 </ul>
 </section>
 <section id="quick-start">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Quick Start</a><a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Quick Start</a><a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
 <p>Basic usage is simple:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
@@ -201,8 +547,7 @@
                     border: none !important;
                 }
                 </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">       Sales Report       </span>
+                <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="font-style: italic">       Sales Report       </span>
 ╭───────┬───────┬────────╮
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index </span>│<span style="font-weight: bold"> Sales </span>│<span style="font-weight: bold"> Profit </span>│
 ├───────┼───────┼────────┤
@@ -210,12 +555,11 @@
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> 1     </span>│ 230   │ 45     │
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f"> 2     </span>│ 180   │ 32     │
 ╰───────┴───────┴────────╯
-</pre>
-    </code>
+</code></pre>
             </div>
             </section>
 <section id="interactive-tutorial">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Interactive Tutorial</a><a class="headerlink" href="#interactive-tutorial" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Interactive Tutorial</a><a class="headerlink" href="#interactive-tutorial" title="Link to this heading">#</a></h2>
 <p>For hands-on learning, run the interactive tutorial:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># After installing pirrtools, run the tutorial directly:</span>
 pirrtools-tutorial
@@ -228,9 +572,9 @@ python<span class="w"> </span>tutor.py
 <p>This script provides step-by-step guidance through all <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> features with live examples.</p>
 </section>
 <section id="basic-usage">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Basic Usage</a><a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Basic Usage</a><a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
 <section id="converting-dataframes">
-<h3><a class="toc-backref" href="#id5" role="doc-backlink">Converting DataFrames</a><a class="headerlink" href="#converting-dataframes" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Converting DataFrames</a><a class="headerlink" href="#converting-dataframes" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic conversion</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">()</span>
 
@@ -243,7 +587,7 @@ python<span class="w"> </span>tutor.py
 </div>
 </section>
 <section id="converting-series">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">Converting Series</a><a class="headerlink" href="#converting-series" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Converting Series</a><a class="headerlink" href="#converting-series" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">85</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">78</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Scores&#39;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">()</span>
 </pre></div>
@@ -251,10 +595,10 @@ python<span class="w"> </span>tutor.py
 </section>
 </section>
 <section id="background-gradients">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Background Gradients</a><a class="headerlink" href="#background-gradients" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Background Gradients</a><a class="headerlink" href="#background-gradients" title="Link to this heading">#</a></h2>
 <p>Apply color gradients to table backgrounds for enhanced data visualization.</p>
 <section id="basic-gradients">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Basic Gradients</a><a class="headerlink" href="#basic-gradients" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Basic Gradients</a><a class="headerlink" href="#basic-gradients" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
@@ -297,8 +641,7 @@ python<span class="w"> </span>tutor.py
                     border: none !important;
                 }
                 </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">           📊 Quarterly Performance            </span>
+                <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="font-style: italic">           📊 Quarterly Performance            </span>
 ╭─────────┬────────┬────────┬────────┬────────╮
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold">Index    </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q1      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q2      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q3      </span>│<span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000080; font-weight: bold">Q4      </span>│
 ├─────────┼────────┼────────┼────────┼────────┤
@@ -306,13 +649,12 @@ python<span class="w"> </span>tutor.py
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product B</span>│<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21918c">150</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #22a884">180</span>     │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472d7b">170</span>     │
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product C</span>│<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span>     │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">220</span>     │<span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #35b779">180</span>     │<span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">240</span>     │
 ╰─────────┴────────┴────────┴────────┴────────╯
-</pre>
-    </code>
+</code></pre>
             </div>
             <p>Available colormaps include: <code class="docutils literal notranslate"><span class="pre">viridis</span></code>, <code class="docutils literal notranslate"><span class="pre">plasma</span></code>, <code class="docutils literal notranslate"><span class="pre">inferno</span></code>, <code class="docutils literal notranslate"><span class="pre">magma</span></code>, <code class="docutils literal notranslate"><span class="pre">cividis</span></code>, <code class="docutils literal notranslate"><span class="pre">coolwarm</span></code>, <code class="docutils literal notranslate"><span class="pre">RdYlBu</span></code>, <code class="docutils literal notranslate"><span class="pre">RdYlGn</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral</span></code>, and more.</p>
 </section>
 <section id="gradient-direction">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">Gradient Direction</a><a class="headerlink" href="#gradient-direction" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Gradient Direction</a><a class="headerlink" href="#gradient-direction" title="Link to this heading">#</a></h3>
 <p>Control gradient application direction:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Column-wise gradient (default)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
@@ -326,7 +668,7 @@ python<span class="w"> </span>tutor.py
 </div>
 </section>
 <section id="subset-styling">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">Subset Styling</a><a class="headerlink" href="#subset-styling" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Subset Styling</a><a class="headerlink" href="#subset-styling" title="Link to this heading">#</a></h3>
 <p>Apply gradients to specific columns:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
@@ -337,7 +679,7 @@ python<span class="w"> </span>tutor.py
 </section>
 </section>
 <section id="text-gradients">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Text Gradients</a><a class="headerlink" href="#text-gradients" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Text Gradients</a><a class="headerlink" href="#text-gradients" title="Link to this heading">#</a></h2>
 <p>Apply color gradients to text for enhanced readability.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
@@ -377,8 +719,7 @@ python<span class="w"> </span>tutor.py
                     border: none !important;
                 }
                 </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">               🌡️ Weather Data                </span>
+                <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="font-style: italic">               🌡️ Weather Data                </span>
 ╭───────┬─────────────┬──────────┬──────────╮
 │<span style="color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold"> Index </span>│<span style="font-weight: bold"> Temperature </span>│<span style="font-weight: bold"> Humidity </span>│<span style="font-weight: bold"> Pressure </span>│
 ├───────┼─────────────┼──────────┼──────────┤
@@ -388,15 +729,14 @@ python<span class="w"> </span>tutor.py
 │<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Thu   </span>│ <span style="color: #5c01a6; text-decoration-color: #5c01a6">29.8</span>        │ <span style="color: #f0f921; text-decoration-color: #f0f921">81.0</span>     │ <span style="color: #0d0887; text-decoration-color: #0d0887">1007.3</span>   │
 │<span style="color: #008080; text-decoration-color: #008080; font-weight: bold"> Fri   </span>│ <span style="color: #ed7a52; text-decoration-color: #ed7a52">33.2</span>        │ <span style="color: #c6417d; text-decoration-color: #c6417d">69.0</span>     │ <span style="color: #d7566c; text-decoration-color: #d7566c">1011.9</span>   │
 ╰───────┴─────────────┴──────────┴──────────╯
-</pre>
-    </code>
+</code></pre>
             </div>
             </section>
 <section id="header-and-index-styling">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Header and Index Styling</a><a class="headerlink" href="#header-and-index-styling" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Header and Index Styling</a><a class="headerlink" href="#header-and-index-styling" title="Link to this heading">#</a></h2>
 <p>Customize headers and index appearance.</p>
 <section id="column-headers">
-<h3><a class="toc-backref" href="#id13" role="doc-backlink">Column Headers</a><a class="headerlink" href="#column-headers" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Column Headers</a><a class="headerlink" href="#column-headers" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on blue&quot;</span>
 <span class="p">)</span>
@@ -404,7 +744,7 @@ python<span class="w"> </span>tutor.py
 </div>
 </section>
 <section id="index-styling">
-<h3><a class="toc-backref" href="#id14" role="doc-backlink">Index Styling</a><a class="headerlink" href="#index-styling" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Index Styling</a><a class="headerlink" href="#index-styling" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">index_style</span><span class="o">=</span><span class="s2">&quot;italic green&quot;</span><span class="p">,</span>
     <span class="n">index_header_style</span><span class="o">=</span><span class="s2">&quot;bold yellow on red&quot;</span>
@@ -413,7 +753,7 @@ python<span class="w"> </span>tutor.py
 </div>
 </section>
 <section id="index-background-gradients">
-<h3><a class="toc-backref" href="#id15" role="doc-backlink">Index Background Gradients</a><a class="headerlink" href="#index-background-gradients" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Index Background Gradients</a><a class="headerlink" href="#index-background-gradients" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">index_bg</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>
     <span class="n">index_bg_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="s2">&quot;plasma&quot;</span><span class="p">}</span>
@@ -423,7 +763,7 @@ python<span class="w"> </span>tutor.py
 </section>
 </section>
 <section id="alternating-rows">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink">Alternating Rows</a><a class="headerlink" href="#alternating-rows" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Alternating Rows</a><a class="headerlink" href="#alternating-rows" title="Link to this heading">#</a></h2>
 <p>Improve readability with alternating row colors.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pirrtools</span>
@@ -464,8 +804,7 @@ python<span class="w"> </span>tutor.py
                     border: none !important;
                 }
                 </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">     🎓 Student Grades     </span>
+                <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="font-style: italic">     🎓 Student Grades     </span>
 ╭─────────┬───────┬───────╮
 │<span style="font-weight: bold"> Name    </span>│<span style="font-weight: bold"> Score </span>│<span style="font-weight: bold"> Grade </span>│
 ├─────────┼───────┼───────┤
@@ -475,14 +814,13 @@ python<span class="w"> </span>tutor.py
 │ <span style="background-color: #000087">Diana  </span> │ <span style="background-color: #000087">89   </span> │ <span style="background-color: #000087">B+   </span> │
 │ Eve     │ 94    │ A     │
 ╰─────────┴───────┴───────╯
-</pre>
-    </code>
+</code></pre>
             </div>
             </section>
 <section id="advanced-styling">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink">Advanced Styling</a><a class="headerlink" href="#advanced-styling" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">Advanced Styling</a><a class="headerlink" href="#advanced-styling" title="Link to this heading">#</a></h2>
 <section id="professional-report-style">
-<h3><a class="toc-backref" href="#id18" role="doc-backlink">Professional Report Style</a><a class="headerlink" href="#professional-report-style" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Professional Report Style</a><a class="headerlink" href="#professional-report-style" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
     <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold white on dark_blue&quot;</span><span class="p">,</span>
@@ -539,21 +877,19 @@ python<span class="w"> </span>tutor.py
                     border: none !important;
                 }
                 </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">           📊 Quarterly Sales Report           </span>
+                <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="font-style: italic">           📊 Quarterly Sales Report           </span>
 <span style="color: #000080; text-decoration-color: #000080">╭─────────┬────────┬────────┬────────┬────────╮</span>
 <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #808000; text-decoration-color: #808000; background-color: #870000; font-weight: bold">Index    </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q1      </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q2      </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q3      </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #000087; font-weight: bold">Q4      </span><span style="color: #000080; text-decoration-color: #000080">│</span>
 <span style="color: #000080; text-decoration-color: #000080">├─────────┼────────┼────────┼────────┼────────┤</span>
 <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product A</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">100</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">120</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">140</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #440154">160</span>     <span style="color: #000080; text-decoration-color: #000080">│</span>
-<span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product B</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21918c">150</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #22a884">180</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472d7b">170</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span>
+<span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #008080; text-decoration-color: #008080; background-color: #1c1c1c; font-style: italic">Product B</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #21918c">150</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #22a884">180</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #472d7b">170</span><span style="background-color: #1c1c1c">     </span><span style="color: #000080; text-decoration-color: #000080">│</span>
 <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #008080; text-decoration-color: #008080; font-style: italic">Product C</span><span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">200</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">220</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #35b779">180</span>     <span style="color: #000080; text-decoration-color: #000080">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #fde725">240</span>     <span style="color: #000080; text-decoration-color: #000080">│</span>
 <span style="color: #000080; text-decoration-color: #000080">╰─────────┴────────┴────────┴────────┴────────╯</span>
-</pre>
-    </code>
+</code></pre>
             </div>
             </section>
 <section id="high-contrast-theme">
-<h3><a class="toc-backref" href="#id19" role="doc-backlink">High Contrast Theme</a><a class="headerlink" href="#high-contrast-theme" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">High Contrast Theme</a><a class="headerlink" href="#high-contrast-theme" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pirr</span><span class="o">.</span><span class="n">to_rich</span><span class="p">(</span>
     <span class="n">bg</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>
     <span class="n">column_header_style</span><span class="o">=</span><span class="s2">&quot;bold black on bright_white&quot;</span><span class="p">,</span>
@@ -606,8 +942,7 @@ python<span class="w"> </span>tutor.py
                     border: none !important;
                 }
                 </style>
-                <code>
-        <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">            ⚡ High Contrast Report            </span>
+                <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"><span style="font-style: italic">            ⚡ High Contrast Report            </span>
 <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">╭─────────┬────────┬────────┬────────┬────────╮</span>
 <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; background-color: #808080; font-weight: bold">Index    </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q1      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q2      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q3      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #ffffff; font-weight: bold">Q4      </span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span>
 <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">├─────────┼────────┼────────┼────────┼────────┤</span>
@@ -615,16 +950,15 @@ python<span class="w"> </span>tutor.py
 <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product B</span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #dddcdc">150</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #f2cbb7">180</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">200</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #6282ea">170</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span>
 <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">Product C</span><span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">200</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">220</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #000000; text-decoration-color: #000000; background-color: #f7b89c">180</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span><span style="color: #f1f1f1; text-decoration-color: #f1f1f1; background-color: #b40426">240</span>     <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">│</span>
 <span style="color: #ffff00; text-decoration-color: #ffff00; font-weight: bold">╰─────────┴────────┴────────┴────────┴────────╯</span>
-</pre>
-    </code>
+</code></pre>
             </div>
             </section>
 </section>
 <section id="pandas-styler-integration">
-<h2><a class="toc-backref" href="#id20" role="doc-backlink">Pandas Styler Integration</a><a class="headerlink" href="#pandas-styler-integration" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Pandas Styler Integration</a><a class="headerlink" href="#pandas-styler-integration" title="Link to this heading">#</a></h2>
 <p>Use existing pandas Styler objects with <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> enhancements.</p>
 <section id="basic-integration">
-<h3><a class="toc-backref" href="#id21" role="doc-backlink">Basic Integration</a><a class="headerlink" href="#basic-integration" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id21" role="doc-backlink">Basic Integration</a><a class="headerlink" href="#basic-integration" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create pandas styler</span>
 <span class="n">styled_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">highlight_max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightblue&#39;</span><span class="p">)</span>
 
@@ -637,7 +971,7 @@ python<span class="w"> </span>tutor.py
 </div>
 </section>
 <section id="style-override">
-<h3><a class="toc-backref" href="#id22" role="doc-backlink">Style Override</a><a class="headerlink" href="#style-override" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Style Override</a><a class="headerlink" href="#style-override" title="Link to this heading">#</a></h3>
 <p>Built-in <code class="docutils literal notranslate"><span class="pre">to_rich</span></code> options override pandas styler:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">styled_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Reds&#39;</span><span class="p">)</span>
 
@@ -652,9 +986,9 @@ python<span class="w"> </span>tutor.py
 </section>
 </section>
 <section id="complete-parameter-reference">
-<h2><a class="toc-backref" href="#id23" role="doc-backlink">Complete Parameter Reference</a><a class="headerlink" href="#complete-parameter-reference" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id23" role="doc-backlink">Complete Parameter Reference</a><a class="headerlink" href="#complete-parameter-reference" title="Link to this heading">#</a></h2>
 <section id="core-parameters">
-<h3><a class="toc-backref" href="#id24" role="doc-backlink">Core Parameters</a><a class="headerlink" href="#core-parameters" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id24" role="doc-backlink">Core Parameters</a><a class="headerlink" href="#core-parameters" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> (str): Table title</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">show_index</span></code> (bool): Show DataFrame index (default: True)</p></li>
@@ -662,7 +996,7 @@ python<span class="w"> </span>tutor.py
 </ul>
 </section>
 <section id="background-styling">
-<h3><a class="toc-backref" href="#id25" role="doc-backlink">Background Styling</a><a class="headerlink" href="#background-styling" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id25" role="doc-backlink">Background Styling</a><a class="headerlink" href="#background-styling" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bg</span></code> (str): Background gradient colormap</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">bg_kwargs</span></code> (dict): Background gradient options</p></li>
@@ -671,14 +1005,14 @@ python<span class="w"> </span>tutor.py
 </ul>
 </section>
 <section id="text-styling">
-<h3><a class="toc-backref" href="#id26" role="doc-backlink">Text Styling</a><a class="headerlink" href="#text-styling" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id26" role="doc-backlink">Text Styling</a><a class="headerlink" href="#text-styling" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tg</span></code> (str): Text gradient colormap</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tg_kwargs</span></code> (dict): Text gradient options</p></li>
 </ul>
 </section>
 <section id="header-and-index">
-<h3><a class="toc-backref" href="#id27" role="doc-backlink">Header and Index</a><a class="headerlink" href="#header-and-index" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id27" role="doc-backlink">Header and Index</a><a class="headerlink" href="#header-and-index" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">column_header_style</span></code> (str): Column header Rich style</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">index_header_style</span></code> (str): Index header Rich style</p></li>
@@ -687,14 +1021,14 @@ python<span class="w"> </span>tutor.py
 </ul>
 </section>
 <section id="row-styling">
-<h3><a class="toc-backref" href="#id28" role="doc-backlink">Row Styling</a><a class="headerlink" href="#row-styling" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id28" role="doc-backlink">Row Styling</a><a class="headerlink" href="#row-styling" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">alternating_rows</span></code> (bool): Enable alternating row colors</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">alternating_row_colors</span></code> (tuple): Custom row colors</p></li>
 </ul>
 </section>
 <section id="table-appearance">
-<h3><a class="toc-backref" href="#id29" role="doc-backlink">Table Appearance</a><a class="headerlink" href="#table-appearance" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id29" role="doc-backlink">Table Appearance</a><a class="headerlink" href="#table-appearance" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">table_style</span></code> (str): Overall table Rich style</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">border_style</span></code> (str): Border color/style</p></li>
@@ -703,7 +1037,7 @@ python<span class="w"> </span>tutor.py
 </ul>
 </section>
 <section id="manual-table-settings">
-<h3><a class="toc-backref" href="#id30" role="doc-backlink">Manual Table Settings</a><a class="headerlink" href="#manual-table-settings" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id30" role="doc-backlink">Manual Table Settings</a><a class="headerlink" href="#manual-table-settings" title="Link to this heading">#</a></h3>
 <p>Override automatic table optimization:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">auto_optimize</span></code> (bool): Enable automatic table optimization (default: True)</p></li>
@@ -716,7 +1050,7 @@ python<span class="w"> </span>tutor.py
 </ul>
 </section>
 <section id="string-formatting">
-<h3><a class="toc-backref" href="#id31" role="doc-backlink">String Formatting</a><a class="headerlink" href="#string-formatting" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id31" role="doc-backlink">String Formatting</a><a class="headerlink" href="#string-formatting" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> (dict or str): Format specifiers for columns</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">na_rep</span></code> (str): String representation of NaN values</p></li>
@@ -724,7 +1058,7 @@ python<span class="w"> </span>tutor.py
 </section>
 </section>
 <section id="examples">
-<h2><a class="toc-backref" href="#id32" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id32" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
 <p>All examples are available in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tutor.py</span></code> - Interactive tutorial (recommended starting point)</p></li>
@@ -742,9 +1076,9 @@ python<span class="w"> </span>example_to_rich_styling.py<span class="w">  </span
 </div>
 </section>
 <section id="color-reference">
-<h2><a class="toc-backref" href="#id33" role="doc-backlink">Color Reference</a><a class="headerlink" href="#color-reference" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id33" role="doc-backlink">Color Reference</a><a class="headerlink" href="#color-reference" title="Link to this heading">#</a></h2>
 <section id="rich-color-formats">
-<h3><a class="toc-backref" href="#id34" role="doc-backlink">Rich Color Formats</a><a class="headerlink" href="#rich-color-formats" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id34" role="doc-backlink">Rich Color Formats</a><a class="headerlink" href="#rich-color-formats" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">to_rich</span></code> supports all Rich color formats:</p>
 <ul class="simple">
 <li><p><strong>Named colors</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;red&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;blue&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;green&quot;</span></code></p></li>
@@ -755,7 +1089,7 @@ python<span class="w"> </span>example_to_rich_styling.py<span class="w">  </span
 </ul>
 </section>
 <section id="gradient-colormaps">
-<h3><a class="toc-backref" href="#id35" role="doc-backlink">Gradient Colormaps</a><a class="headerlink" href="#gradient-colormaps" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id35" role="doc-backlink">Gradient Colormaps</a><a class="headerlink" href="#gradient-colormaps" title="Link to this heading">#</a></h3>
 <p>Popular matplotlib colormaps supported:</p>
 <ul class="simple">
 <li><p><strong>Sequential</strong>: <code class="docutils literal notranslate"><span class="pre">viridis</span></code>, <code class="docutils literal notranslate"><span class="pre">plasma</span></code>, <code class="docutils literal notranslate"><span class="pre">inferno</span></code>, <code class="docutils literal notranslate"><span class="pre">magma</span></code>, <code class="docutils literal notranslate"><span class="pre">cividis</span></code></p></li>
@@ -765,7 +1099,7 @@ python<span class="w"> </span>example_to_rich_styling.py<span class="w">  </span
 </section>
 </section>
 <section id="see-also">
-<h2><a class="toc-backref" href="#id36" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id36" role="doc-backlink">See Also</a><a class="headerlink" href="#see-also" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="api_reference.html"><span class="doc">API Reference</span></a> - Complete API documentation</p></li>
 <li><p><a class="reference internal" href="examples.html"><span class="doc">Examples Gallery</span></a> - Additional usage examples</p></li>
@@ -776,31 +1110,134 @@ python<span class="w"> </span>example_to_rich_styling.py<span class="w">  </span
 </section>
 
 
-           </div>
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-tutorial">Interactive Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-dataframes">Converting DataFrames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-series">Converting Series</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-gradients">Background Gradients</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-gradients">Basic Gradients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-direction">Gradient Direction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subset-styling">Subset Styling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-gradients">Text Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#header-and-index-styling">Header and Index Styling</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#column-headers">Column Headers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-styling">Index Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-background-gradients">Index Background Gradients</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternating-rows">Alternating Rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-styling">Advanced Styling</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#professional-report-style">Professional Report Style</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-contrast-theme">High Contrast Theme</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-styler-integration">Pandas Styler Integration</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-integration">Basic Integration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#style-override">Style Override</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-parameter-reference">Complete Parameter Reference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-styling">Background Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-styling">Text Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#header-and-index">Header and Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#row-styling">Row Styling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-appearance">Table Appearance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-table-settings">Manual Table Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#string-formatting">String Formatting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#color-reference">Color Reference</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rich-color-formats">Rich Color Formats</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-colormaps">Gradient Colormaps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See Also</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
           </div>
-          <footer>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sean Smith
+</p>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2024, Sean Smith.</p>
   </div>
+  
+  <div class="footer-item">
+    
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+  <p class="copyright">
+    
+      © Copyright 2024, Sean Smith.
+      <br/>
+    
+  </p>
 
-</footer>
-        </div>
-      </div>
-    </section>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
 
-</body>
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
 </html>
