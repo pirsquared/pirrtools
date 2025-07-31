@@ -1,4 +1,4 @@
-.. pirrtools documentation master file
+.. pirrtools documentation master file - v0.2.20
 
 =================================
 pirrtools Documentation
